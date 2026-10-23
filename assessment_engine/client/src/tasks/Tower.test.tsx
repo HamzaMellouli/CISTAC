@@ -48,7 +48,7 @@ const predict = (v: string) => {
   fireEvent.change(screen.getByLabelText('How many moves will you need?'), { target: { value: v } })
   act(() => void fireEvent.click(screen.getByRole('button', { name: 'Start' })))
 }
-const pegText = (i: number) => peg(i).textContent
+const pegText = (i: number) => peg(i).getAttribute('aria-label')
 
 test('pegs are locked until a valid prediction is entered', () => {
   setup()
@@ -207,4 +207,43 @@ test('hiding and showing the page after the trial finished does not call onDone 
   act(() => void document.dispatchEvent(new Event('visibilitychange')))
   expect(pushed).toHaveLength(1)
   expect(onDone).toHaveBeenCalledOnce()
+})
+
+test('keystroke_latency_ms and hesitation_jitter come from keydown/pointerdown capture, including typing', () => {
+  setup()
+  advance(100)
+  fireEvent.keyDown(screen.getByLabelText('How many moves will you need?'), { key: '5' }) // t=100
+  predict('5')
+  advance(200)
+  fireEvent.pointerDown(window) // t=300
+  advance(300)
+  fireEvent.pointerDown(window) // t=600
+  for (const m of OPT) move(m) // keyboard clicks: no keydown, no new inputs
+  // intervals 200, 300 → population std-dev 50
+  expect(pushed[0]).toMatchObject({ keystroke_latency_ms: 100, hesitation_jitter: 50 })
+})
+
+test('peg names give capacity and bottom-to-top order', () => {
+  setup()
+  expect(peg(0).getAttribute('aria-label')).toBe('Peg 1, holds 3: R, G (top)')
+  expect(peg(2).getAttribute('aria-label')).toBe('Peg 3, holds 1: empty')
+})
+
+test('an invalid prediction shows a hint', () => {
+  setup()
+  predict('0')
+  expect(screen.getByRole('alert').textContent).toMatch(/whole number/)
+  expect(screen.getByLabelText('How many moves will you need?').getAttribute('aria-describedby')).toBe('tower-hint')
+  predict('5')
+  expect(screen.queryByRole('alert')).toBeNull()
+})
+
+test('disc colours come from the client palette, never from the payload id', () => {
+  const id = 'url(https://e.x/a)'
+  setup({ capacities: [1, 1], start: [[id], []], goal: [[], [id]], l_min: 1, optimal_moves: [[0, 1]], counter_intuitive: [] })
+  for (const el of screen.getAllByText(id)) {
+    const style = el.getAttribute('style') ?? ''
+    expect(style).not.toContain('url')
+    expect(style).toContain('background: rgb(29, 78, 216)') // PALETTE[0]
+  }
 })

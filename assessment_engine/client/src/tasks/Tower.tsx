@@ -1,16 +1,21 @@
 import { useEffect, useRef, useState, type FormEvent, type MouseEvent } from 'react'
 import { tracker } from '../telemetry/tracker'
+import { useInputCapture } from '../telemetry/useInputCapture'
 import type { TowerParams } from '../telemetry/types'
 import type { TaskProps } from './TaskRunner'
 
 const same = (a: string[][], b: string[][]) => JSON.stringify(a) === JSON.stringify(b)
 
+// Fixed client palette (white text on each is >= 4.5:1). Payload disc ids never reach CSS.
+// ponytail: colours repeat after 8 distinct discs; the id text still tells them apart.
+const PALETTE = ['#1d4ed8', '#b91c1c', '#15803d', '#7e22ce', '#a16207', '#0f766e', '#be185d', '#374151']
+
 // Pegs as columns, discs bottom-up (the last element of a stack is its top). Each disc carries its id as text.
-function Pegs({ stacks, capacities }: { stacks: string[][]; capacities: number[] }) {
+function Pegs({ stacks, capacities, color }: { stacks: string[][]; capacities: number[]; color: (id: string) => string }) {
   return stacks.map((s, i) => (
     <span key={i} style={{ display: 'inline-flex', flexDirection: 'column-reverse', minHeight: capacities[i] * 28, minWidth: 56, borderBottom: '4px solid #555', verticalAlign: 'bottom', margin: 4 }}>
       {s.map((d, k) => (
-        <span key={k} style={{ background: d, color: '#fff', textShadow: '0 0 2px #000', padding: '2px 6px', margin: 1, borderRadius: 4 }}>
+        <span key={k} style={{ background: color(d), color: '#fff', padding: '2px 6px', margin: 1, borderRadius: 4 }}>
           {d}
         </span>
       ))}
@@ -27,6 +32,8 @@ export function Tower({ params, recorder, onDone }: TaskProps<TowerParams>) {
   const [selected, setSelected] = useState<number | null>(null)
   const [predicted, setPredicted] = useState<number | null>(null)
   const [draft, setDraft] = useState('')
+  const [invalid, setInvalid] = useState(false)
+  const [live, setLive] = useState(true) // input capture runs until the trial finishes or aborts
   const t0 = useRef(0)
   const planned = useRef(0) // submit time
   const moveTimes = useRef<number[]>([])
@@ -42,6 +49,7 @@ export function Tower({ params, recorder, onDone }: TaskProps<TowerParams>) {
       if (document.hidden && !over.current) {
         over.current = aborted = true
         recorder.abort()
+        setLive(false)
       } else if (!document.hidden && aborted) {
         aborted = false
         onDone()
@@ -50,11 +58,19 @@ export function Tower({ params, recorder, onDone }: TaskProps<TowerParams>) {
     document.addEventListener('visibilitychange', onVis)
     return () => document.removeEventListener('visibilitychange', onVis)
   }, [recorder, onDone])
+  useInputCapture(recorder, live)
+
+  // Disc colour by first appearance in start, then goal.
+  const ids = [...new Set([...start.flat(), ...goal.flat()])]
+  const color = (id: string) => PALETTE[ids.indexOf(id) % PALETTE.length]
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
     const n = Number(draft)
-    if (over.current || predicted !== null || draft.trim() === '' || !Number.isInteger(n) || n <= 0) return
+    if (over.current || predicted !== null) return
+    const bad = draft.trim() === '' || !Number.isInteger(n) || n <= 0
+    setInvalid(bad)
+    if (bad) return
     planned.current = performance.now()
     setPredicted(n)
   }
@@ -72,7 +88,6 @@ export function Tower({ params, recorder, onDone }: TaskProps<TowerParams>) {
     const next = stacks.map((s) => [...s])
     next[i].push(next[from].pop()!)
     setStacks(next)
-    recorder.input()
     const now = performance.now()
     const times = moveTimes.current
     const m = times.length
@@ -84,6 +99,7 @@ export function Tower({ params, recorder, onDone }: TaskProps<TowerParams>) {
     const l_user = times.length
     if (!solved && l_user < 3 * l_min) return
     over.current = true
+    setLive(false)
     const c = conflicts.current
     tracker.push(
       recorder.finish({
@@ -108,17 +124,22 @@ export function Tower({ params, recorder, onDone }: TaskProps<TowerParams>) {
       <p>Rearrange the discs to match the goal. Move the top disc of one peg onto another peg; each peg holds a limited number of discs.</p>
       <div role="group" aria-label="Goal">
         <p>Goal</p>
-        <Pegs stacks={goal} capacities={capacities} />
+        <Pegs stacks={goal} capacities={capacities} color={color} />
       </div>
-      <form onSubmit={submit}>
+      <form noValidate onSubmit={submit}>
         <label>
           How many moves will you need?{' '}
-          <input type="number" min={1} step={1} value={draft} disabled={!locked} onChange={(e) => setDraft(e.target.value)} />
+          <input type="number" min={1} step={1} value={draft} disabled={!locked} aria-describedby={invalid ? 'tower-hint' : undefined} onChange={(e) => setDraft(e.target.value)} />
         </label>{' '}
         <button type="submit" disabled={!locked}>
           Start
         </button>
       </form>
+      {invalid && (
+        <p id="tower-hint" role="alert">
+          Enter a whole number of moves, 1 or more.
+        </p>
+      )}
       <div role="group" aria-label="Your pegs">
         {stacks.map((s, i) => (
           <button
@@ -126,6 +147,7 @@ export function Tower({ params, recorder, onDone }: TaskProps<TowerParams>) {
             type="button"
             aria-disabled={locked}
             aria-pressed={selected === i}
+            aria-label={`Peg ${i + 1}, holds ${capacities[i]}: ${s.length ? `${s.join(', ')} (top)` : 'empty'}`}
             style={{ verticalAlign: 'bottom', outline: selected === i ? '3px solid #2563eb' : undefined, opacity: locked ? 0.5 : 1 }}
             data-peg={i}
             // Native click covers pointer and Enter/Space once each; a held key's auto-repeat is suppressed.
@@ -133,7 +155,7 @@ export function Tower({ params, recorder, onDone }: TaskProps<TowerParams>) {
             onKeyDown={(e) => e.repeat && e.preventDefault()}
           >
             {`Peg ${i + 1} `}
-            <Pegs stacks={[s]} capacities={[capacities[i]]} />
+            <Pegs stacks={[s]} capacities={[capacities[i]]} color={color} />
           </button>
         ))}
       </div>
