@@ -28,6 +28,7 @@ test.each([
   ['mental_rotation', 'Shape turning'],
   ['relational', 'Word relations'],
   ['tower', 'Tower puzzle'],
+  ['mst', 'Shape memory'],
 ])('%s renders its task component', (schemaType, name) => {
   const task = (fixtures as TaskPayload[]).find((t) => t.schema_type === schemaType)!
   const recorder = new TrialRecorder({ ...task, user_id: 'u', session_id: 's', voice_opt_in: false })

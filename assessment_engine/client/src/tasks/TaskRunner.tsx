@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import type { TrialRecorder } from '../telemetry/tracker'
-import type { MatrixParams, NBackParams, RelationalParams, RotationParams, StroopParams, TaskPayload, TowerParams } from '../telemetry/types'
+import type { MatrixParams, MstParams, NBackParams, RelationalParams, RotationParams, StroopParams, TaskPayload, TowerParams } from '../telemetry/types'
 import { Matrix } from './Matrix'
 import { MentalRotation } from './MentalRotation'
+import { Mst } from './Mst'
 import { NBack } from './NBack'
 import { Relational } from './Relational'
 import { Stroop } from './Stroop'
@@ -29,6 +30,8 @@ export function TaskRunner(props: Props) {
       return <Relational params={task.params as RelationalParams} recorder={props.recorder} onDone={onDone} />
     case 'tower':
       return <Tower params={task.params as TowerParams} recorder={props.recorder} onDone={onDone} />
+    case 'mst':
+      return <Mst params={task.params as MstParams} recorder={props.recorder} onDone={onDone} />
     default:
       return <Unsupported schemaType={task.schema_type} onDone={onDone} />
   }

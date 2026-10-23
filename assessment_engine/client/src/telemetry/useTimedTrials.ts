@@ -7,7 +7,7 @@ import { useInputCapture } from './useInputCapture'
 // ended by the first response or by the time limit. A hidden page aborts the running trial; when
 // visible again the loop moves on to the next trial (or onDone after the last).
 // `onFinish(index, correct)` runs once per finished trial (response or timeout, not abort) and
-// returns its trial_meta.
+// returns its trial_meta; `respond(correct, extra)` merges `extra` over it for that response.
 // ponytail: no inter-trial interval or fixation; the next stimulus appears on the response frame.
 export function useTimedTrials(
   recorder: TrialRecorder,
@@ -50,10 +50,11 @@ export function useTimedTrials(
   }, [i, paused, count, timeLimitMs, recorder, onDone])
 
   const respond = useCallback(
-    (correct: boolean) => {
+    (correct: boolean, extra?: TrialMeta) => {
       if (!live.current) return
       live.current = false
-      tracker.push(recorder.finish({ correct, meta: onFinishRef.current?.(idx.current, correct) }))
+      const meta = onFinishRef.current?.(idx.current, correct)
+      tracker.push(recorder.finish({ correct, meta: extra ? { ...meta, ...extra } : meta }))
       setI((x) => x + 1)
     },
     [recorder],

@@ -34,3 +34,12 @@ test('CellsView draws one rect per cell inside a rotated, mirrored group', () =>
   expect(g).toContain('rotate(90')
   expect(g).toContain('scale(-1 1)')
 })
+
+test('PolyView with no points (and edges to missing points) renders without NaN', () => {
+  const poly = { points: [] as [number, number][], edges: [[0, 1]] as [number, number][] }
+  const { container } = render(<PolyView poly={poly} label="Test shape" />)
+  const svg = screen.getByLabelText('Test shape')
+  expect(svg.getAttribute('viewBox')).not.toMatch(/NaN|Infinity/)
+  expect(container.innerHTML).not.toMatch(/NaN|Infinity/)
+  expect(svg.querySelectorAll('line')).toHaveLength(0)
+})
