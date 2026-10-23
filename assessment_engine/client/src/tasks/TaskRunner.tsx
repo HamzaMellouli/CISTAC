@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import type { TrialRecorder } from '../telemetry/tracker'
-import type { MatrixParams, MstParams, NBackParams, RelationalParams, RotationParams, StroopParams, TaskPayload, TowerParams } from '../telemetry/types'
+import type { MatrixParams, MstParams, NBackParams, RelationalParams, RotationParams, StroopParams, TaskPayload, TowerParams, UfovParams } from '../telemetry/types'
 import { Matrix } from './Matrix'
 import { MentalRotation } from './MentalRotation'
 import { Mst } from './Mst'
@@ -8,6 +8,7 @@ import { NBack } from './NBack'
 import { Relational } from './Relational'
 import { Stroop } from './Stroop'
 import { Tower } from './Tower'
+import { Ufov } from './Ufov'
 
 // Every task component takes these props and calls tracker.push(recorder.finish(...)) once per trial.
 export type TaskProps<P> = { params: P; recorder: TrialRecorder; onDone: () => void }
@@ -30,6 +31,8 @@ export function TaskRunner(props: Props) {
       return <Relational params={task.params as RelationalParams} recorder={props.recorder} onDone={onDone} />
     case 'tower':
       return <Tower params={task.params as TowerParams} recorder={props.recorder} onDone={onDone} />
+    case 'ufov':
+      return <Ufov params={task.params as UfovParams} recorder={props.recorder} onDone={onDone} />
     case 'mst':
       return <Mst params={task.params as MstParams} recorder={props.recorder} onDone={onDone} />
     default:
