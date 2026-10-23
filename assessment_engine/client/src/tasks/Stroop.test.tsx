@@ -167,3 +167,19 @@ test('holding Enter on a focused button answers once; auto-repeat clicks do not 
   enter(false) // a fresh press answers the next trial
   expect(pushed.map((e) => e.trial_index)).toEqual([0, 1])
 })
+
+test('a detail-0 click with no preceding keydown answers even after a repeating keydown that never got a keyup', () => {
+  setup(params([conflict, conflict]))
+  const blue = () => screen.getByRole('button', { name: /blue/ })
+  // A repeating Enter (its click ignored) whose keyup lands elsewhere, then a held non-activating key.
+  act(() => {
+    fireEvent.keyDown(blue(), { key: 'Enter', repeat: true })
+    fireEvent.click(blue(), { detail: 0 })
+  })
+  expect(pushed).toHaveLength(0)
+  act(() => void fireEvent.click(blue(), { detail: 0 })) // e.g. a screen-reader activation
+  expect(pushed).toHaveLength(1)
+  act(() => void fireEvent.keyDown(blue(), { key: 'a', repeat: true }))
+  act(() => void fireEvent.click(blue(), { detail: 0 }))
+  expect(pushed).toHaveLength(2)
+})

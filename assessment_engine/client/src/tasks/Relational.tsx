@@ -24,25 +24,38 @@ function Sentence({ s, ask }: { s: Statement; ask?: boolean }) {
   return <p>{s.rel === 'contains' ? `${s.a} CONTAINS ${s.b}` : `${s.a} is ${WORDS[s.rel]} ${s.b}`}</p>
 }
 
+// The trial shown at index i, replayed from the outcomes of earlier trials: the staircase updates on
+// each finished trial (aborted ones only consume their item). An empty level falls back to the
+// nearest non-empty one (lower first); null when no level has trials.
+// ponytail: O(n_trials²) replay per pick; fine for tens of trials.
+function pickFor(levels: Trial[][], results: Record<number, boolean>, i: number) {
+  const stair = new WeightedStaircase(levels.length)
+  const used = levels.map(() => 0)
+  for (let j = 0; ; j++) {
+    const want = stair.level
+    let level = -1
+    for (let d = 0; d < levels.length && level < 0; d++)
+      level = [want - d, want + d].find((l) => levels[l]?.length) ?? -1
+    if (level < 0) return null
+    const trial = levels[level][used[level]++ % levels[level].length]
+    if (j === i) return { trial, level }
+    if (j in results) stair.update(results[j])
+  }
+}
+
 // Relational reasoning: true/false judgments over chained premises, staircased by level (easiest first).
 // Keys T/F or the buttons. A trial whose level runs out of items wraps to that level's first item.
 export function Relational({ params, recorder, onDone }: TaskProps<RelationalParams>) {
   const { n_trials, time_limit_ms, levels } = params
-  const [s] = useState(() => ({
-    stair: new WeightedStaircase(levels.length),
-    used: levels.map(() => 0),
-    picks: [] as { trial: Trial; level: number }[],
-  }))
-  const { i, paused, respond } = useTimedTrials(recorder, n_trials, time_limit_ms, onDone, (correct) => {
-    const { trial, level } = s.picks[i]
-    s.stair.update(correct)
-    return { hops: trial.hops, inverted: trial.inverted, level }
+  const [results, setResults] = useState<Record<number, boolean>>({})
+  const any = levels.some((l) => l.length > 0)
+  // No playable level: zero trials, so the loop calls onDone without emitting events.
+  const { i, paused, respond } = useTimedTrials(recorder, any ? n_trials : 0, time_limit_ms, onDone, (j, correct) => {
+    const p = pickFor(levels, results, j)
+    setResults((r) => ({ ...r, [j]: correct }))
+    return p ? { hops: p.trial.hops, inverted: p.trial.inverted, level: p.level } : undefined
   })
-  if (i < n_trials && !s.picks[i]) {
-    const level = s.stair.level
-    s.picks[i] = { trial: levels[level][s.used[level]++ % levels[level].length], level }
-  }
-  const t = s.picks[i]?.trial
+  const t = any && i < n_trials ? pickFor(levels, results, i)?.trial : undefined
 
   useEffect(() => {
     if (!t) return

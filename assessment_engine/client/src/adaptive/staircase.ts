@@ -3,8 +3,10 @@ export class WeightedStaircase {
   private x: number
   private readonly max: number
   private readonly down: number
+  private readonly step: number
 
-  constructor(nLevels: number, target = 0.85, private readonly step = 1, start = 0) {
+  constructor(nLevels: number, target = 0.85, step = 1, start = 0) {
+    this.step = step
     this.max = nLevels - 1
     this.down = (step * target) / (1 - target)
     this.x = Math.min(Math.max(start, 0), this.max)

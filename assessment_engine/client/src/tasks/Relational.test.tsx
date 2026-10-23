@@ -135,3 +135,22 @@ test('True/False buttons answer; held keys and modifiers do not', () => {
   expect(pushed.map((e) => e.score_norm)).toEqual([1, 0])
   expect(onDone).toHaveBeenCalledOnce()
 })
+
+test('empty levels are skipped: the nearest non-empty level is used', () => {
+  setup(params({ n_trials: 3, levels: [[trial(1)], [], [trial(3)]] }))
+  key('t') // level 0 -> staircase 1 (empty) -> nearest non-empty
+  key('t')
+  key('t')
+  expect(pushed.map((e) => e.trial_meta?.hops)).toEqual([1, 1, 3])
+  expect(pushed.map((e) => e.trial_meta?.level)).toEqual([0, 0, 2])
+})
+
+test('no non-empty level: onDone right away, no events', () => {
+  for (const lv of [[], [[], []]]) {
+    const { onDone } = setup(params({ levels: lv }))
+    advance(20000)
+    expect(onDone).toHaveBeenCalledOnce()
+    expect(pushed).toHaveLength(0)
+    cleanup()
+  }
+})
