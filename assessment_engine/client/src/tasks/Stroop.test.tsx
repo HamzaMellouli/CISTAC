@@ -148,3 +148,22 @@ test('a time limit that expires right after a hide (before cleanup) does not fin
   press('blue')
   expect(pushed.map((e) => e.trial_index)).toEqual([1])
 })
+
+test('holding Enter on a focused button answers once; auto-repeat clicks do not answer later trials', () => {
+  setup(params([conflict, conflict, conflict]))
+  const blue = () => screen.getByRole('button', { name: /blue/ })
+  blue().focus()
+  // Enter activates a button on keydown, so each (repeating) keydown is followed by a detail-0 click.
+  const enter = (repeat: boolean) =>
+    act(() => {
+      fireEvent.keyDown(blue(), { key: 'Enter', repeat })
+      fireEvent.click(blue(), { detail: 0 })
+    })
+  enter(false)
+  enter(true)
+  enter(true)
+  expect(pushed.map((e) => e.trial_index)).toEqual([0])
+  act(() => void fireEvent.keyUp(blue(), { key: 'Enter' }))
+  enter(false) // a fresh press answers the next trial
+  expect(pushed.map((e) => e.trial_index)).toEqual([0, 1])
+})

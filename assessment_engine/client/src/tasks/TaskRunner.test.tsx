@@ -26,6 +26,7 @@ test.each([
   ['stroop', 'Color naming'],
   ['matrix', 'Pattern puzzle'],
   ['mental_rotation', 'Shape turning'],
+  ['relational', 'Word relations'],
 ])('%s renders its task component', (schemaType, name) => {
   const task = (fixtures as TaskPayload[]).find((t) => t.schema_type === schemaType)!
   const recorder = new TrialRecorder({ ...task, user_id: 'u', session_id: 's', voice_opt_in: false })

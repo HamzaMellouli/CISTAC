@@ -1,17 +1,27 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { tracker, type TrialRecorder } from './tracker'
+import type { TrialMeta } from './types'
 import { useInputCapture } from './useInputCapture'
 
 // Shared loop for respond-or-time-out tasks (Stroop, matrix, mental rotation): one event per trial,
 // ended by the first response or by the time limit. A hidden page aborts the running trial; when
 // visible again the loop moves on to the next trial (or onDone after the last).
+// `onFinish` runs once per finished trial (response or timeout, not abort) and returns its trial_meta.
 // ponytail: no inter-trial interval or fixation; the next stimulus appears on the response frame.
-export function useTimedTrials(recorder: TrialRecorder, count: number, timeLimitMs: number, onDone: () => void) {
+export function useTimedTrials(
+  recorder: TrialRecorder,
+  count: number,
+  timeLimitMs: number,
+  onDone: () => void,
+  onFinish?: (correct: boolean) => TrialMeta | undefined,
+) {
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
   const live = useRef(false) // a trial is running and accepting its first response
   const done = useRef(false)
   const pausedRef = useRef(false)
+  const onFinishRef = useRef(onFinish)
+  onFinishRef.current = onFinish
 
   useEffect(() => {
     if (paused) return
@@ -28,7 +38,7 @@ export function useTimedTrials(recorder: TrialRecorder, count: number, timeLimit
       // An abort (hidden page) can land before this effect's cleanup clears the timer.
       if (!live.current) return
       live.current = false
-      tracker.push(recorder.finish({ correct: false, windowMs: timeLimitMs }))
+      tracker.push(recorder.finish({ correct: false, windowMs: timeLimitMs, meta: onFinishRef.current?.(false) }))
       setI(i + 1)
     }, timeLimitMs)
     return () => clearTimeout(id)
@@ -38,7 +48,7 @@ export function useTimedTrials(recorder: TrialRecorder, count: number, timeLimit
     (correct: boolean) => {
       if (!live.current) return
       live.current = false
-      tracker.push(recorder.finish({ correct }))
+      tracker.push(recorder.finish({ correct, meta: onFinishRef.current?.(correct) }))
       setI((x) => x + 1)
     },
     [recorder],
@@ -68,10 +78,19 @@ export function useTimedTrials(recorder: TrialRecorder, count: number, timeLimit
 
 // Response button handlers: pointer presses answer on pointerdown (RT at the press); a keyboard
 // activation (Enter/Space) arrives as a click with detail 0. Pointer clicks (detail >= 1) are
-// skipped so a press is not counted twice.
+// skipped so a press is not counted twice. A held Enter clicks again on every auto-repeat keydown,
+// so clicks are ignored from a repeating keydown until the key is released.
+// ponytail: one module-level flag, since there is one keyboard and focus stays on the held button.
+let keyRepeating = false
 export const pressProps = (respond: () => void) => ({
   onPointerDown: respond,
+  onKeyDown: (e: { repeat: boolean }) => {
+    keyRepeating = e.repeat
+  },
+  onKeyUp: () => {
+    keyRepeating = false
+  },
   onClick: (e: { detail: number }) => {
-    if (e.detail === 0) respond()
+    if (e.detail === 0 && !keyRepeating) respond()
   },
 })
