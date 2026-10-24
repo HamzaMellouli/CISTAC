@@ -1,12 +1,14 @@
 import { useEffect } from 'react'
 import { pressProps, useTimedTrials } from '../telemetry/useTimedTrials'
 import type { StroopParams } from '../telemetry/types'
+import type { VoiceSource } from '../voice/voiceProbe'
 import type { TaskProps } from './TaskRunner'
 
 // Stroop: name the ink color, not the word. Buttons carry the color name (not color alone); keys 1..9.
-export function Stroop({ params, recorder, onDone }: TaskProps<StroopParams>) {
+// Optional `voice`: an opt-in probe for spoken-answer latency and pacing (numbers only).
+export function Stroop({ params, recorder, onDone, voice }: TaskProps<StroopParams> & { voice?: VoiceSource | null }) {
   const { colors, trials, time_limit_ms } = params
-  const { i, paused, respond } = useTimedTrials(recorder, trials.length, time_limit_ms, onDone)
+  const { i, paused, respond } = useTimedTrials(recorder, trials.length, time_limit_ms, onDone, undefined, voice)
   const t = trials[i]
 
   useEffect(() => {

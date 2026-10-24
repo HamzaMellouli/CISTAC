@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { tracker, type TrialRecorder } from './tracker'
 import type { TrialMeta } from './types'
+import type { VoiceSource } from '../voice/voiceProbe'
 import { useInputCapture } from './useInputCapture'
 
 // Shared loop for respond-or-time-out tasks (Stroop, matrix, mental rotation): one event per trial,
@@ -8,6 +9,7 @@ import { useInputCapture } from './useInputCapture'
 // visible again the loop moves on to the next trial (or onDone after the last).
 // `onFinish(index, correct)` runs once per finished trial (response or timeout, not abort) and
 // returns its trial_meta; `respond(correct, extra)` merges `extra` over it for that response.
+// With an opt-in `voice` probe, each trial onset is marked and its measure() goes into the event.
 // ponytail: no inter-trial interval or fixation; the next stimulus appears on the response frame.
 export function useTimedTrials(
   recorder: TrialRecorder,
@@ -15,6 +17,7 @@ export function useTimedTrials(
   timeLimitMs: number,
   onDone: () => void,
   onFinish?: (index: number, correct: boolean) => TrialMeta | undefined,
+  voice?: VoiceSource | null,
 ) {
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -23,8 +26,10 @@ export function useTimedTrials(
   const done = useRef(false)
   const pausedRef = useRef(false)
   const onFinishRef = useRef(onFinish)
+  const voiceRef = useRef(voice)
   useLayoutEffect(() => {
     onFinishRef.current = onFinish
+    voiceRef.current = voice
   })
 
   useEffect(() => {
@@ -37,13 +42,21 @@ export function useTimedTrials(
       return
     }
     recorder.start(i)
+    voiceRef.current?.markOnset()
     idx.current = i
     live.current = true
     const id = setTimeout(() => {
       // An abort (hidden page) can land before this effect's cleanup clears the timer.
       if (!live.current) return
       live.current = false
-      tracker.push(recorder.finish({ correct: false, windowMs: timeLimitMs, meta: onFinishRef.current?.(i, false) }))
+      tracker.push(
+        recorder.finish({
+          correct: false,
+          windowMs: timeLimitMs,
+          meta: onFinishRef.current?.(i, false),
+          voice: voiceRef.current?.measure(),
+        }),
+      )
       setI(i + 1)
     }, timeLimitMs)
     return () => clearTimeout(id)
@@ -54,7 +67,8 @@ export function useTimedTrials(
       if (!live.current) return
       live.current = false
       const meta = onFinishRef.current?.(idx.current, correct)
-      tracker.push(recorder.finish({ correct, meta: extra ? { ...meta, ...extra } : meta }))
+      const voice = voiceRef.current?.measure()
+      tracker.push(recorder.finish({ correct, meta: extra ? { ...meta, ...extra } : meta, voice }))
       setI((x) => x + 1)
     },
     [recorder],

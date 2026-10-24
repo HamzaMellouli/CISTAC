@@ -2,6 +2,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { TrialRecorder, tracker } from '../telemetry/tracker'
 import type { StroopParams, TelemetryEvent } from '../telemetry/types'
+import type { VoiceSource } from '../voice/voiceProbe'
 import { Stroop } from './Stroop'
 
 const COLORS = ['red', 'green', 'blue', 'yellow']
@@ -182,4 +183,46 @@ test('a detail-0 click with no preceding keydown answers even after a repeating 
   act(() => void fireEvent.keyDown(blue(), { key: 'a', repeat: true }))
   act(() => void fireEvent.click(blue(), { detail: 0 }))
   expect(pushed).toHaveLength(2)
+})
+
+function setupVoice(optIn: boolean, voice?: VoiceSource) {
+  const recorder = new TrialRecorder({
+    user_id: 'u',
+    session_id: 's',
+    task_id: 't',
+    dimension: 'executive_function',
+    voice_opt_in: optIn,
+  })
+  render(<Stroop params={params([conflict, conflict])} recorder={recorder} onDone={vi.fn()} voice={voice} />)
+}
+
+const fakeVoice = () => ({
+  markOnset: vi.fn(),
+  measure: vi.fn(() => ({ voice_latency_ms: 420, vocal_pace_hz: 1.5 })),
+})
+
+test('with a voice probe and opt-in, each trial marks onset and its event carries the voice numbers', () => {
+  const voice = fakeVoice()
+  setupVoice(true, voice)
+  expect(voice.markOnset).toHaveBeenCalledTimes(1) // trial 0 onset
+  press('blue')
+  expect(voice.markOnset).toHaveBeenCalledTimes(2) // trial 1 onset
+  advance(3000) // timeout also measures
+  expect(pushed).toHaveLength(2)
+  for (const e of pushed) expect(e).toMatchObject({ voice_opt_in: true, voice_latency_ms: 420, vocal_pace_hz: 1.5 })
+})
+
+test('without a voice probe there are no voice fields', () => {
+  setupVoice(true)
+  press('blue')
+  expect(pushed[0].voice_opt_in).toBe(true)
+  expect(pushed[0]).not.toHaveProperty('voice_latency_ms')
+  expect(pushed[0]).not.toHaveProperty('vocal_pace_hz')
+})
+
+test('a probe without opt-in on the recorder sends no voice fields', () => {
+  setupVoice(false, fakeVoice())
+  press('blue')
+  expect(pushed[0].voice_opt_in).toBe(false)
+  expect(pushed[0]).not.toHaveProperty('voice_latency_ms')
 })
