@@ -25,7 +25,7 @@ export function Stroop({ params, recorder, onDone, voice }: TaskProps<StroopPara
   if (!t) return null
   return (
     <section aria-label="Color naming">
-      <p>Pick the color of the ink, not the word.</p>
+      <p>{voice ? 'Say the ink color aloud, then pick it.' : 'Pick the color of the ink, not the word.'}</p>
       {!paused && (
         <p style={{ color: t.ink, fontSize: '3rem', fontWeight: 700 }}>{t.word}</p>
       )}

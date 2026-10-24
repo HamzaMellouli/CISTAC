@@ -212,6 +212,16 @@ test('with a voice probe and opt-in, each trial marks onset and its event carrie
   for (const e of pushed) expect(e).toMatchObject({ voice_opt_in: true, voice_latency_ms: 420, vocal_pace_hz: 1.5 })
 })
 
+test('the instruction asks for a spoken answer only while a voice probe is active', () => {
+  setupVoice(true, fakeVoice())
+  expect(screen.getByText('Say the ink color aloud, then pick it.')).toBeTruthy()
+  expect(screen.queryByText('Pick the color of the ink, not the word.')).toBeNull()
+  cleanup()
+  setupVoice(true)
+  expect(screen.getByText('Pick the color of the ink, not the word.')).toBeTruthy()
+  expect(screen.queryByText(/aloud/)).toBeNull()
+})
+
 test('without a voice probe there are no voice fields', () => {
   setupVoice(true)
   press('blue')
