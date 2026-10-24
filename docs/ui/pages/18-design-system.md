@@ -116,29 +116,38 @@
 ---
 
 ## Acceptance checklist (from the Definition of Done)
-- [ ] Matches this approved spec; any deviation logged in `DECISIONS.md`.
-- [ ] Only design tokens used (`npm run lint:tokens` exits 0).
-- [ ] All states (loading, empty filter, partial card, error card, offline banner, low-confidence hatch, long text, huge numbers) implemented and screenshotted.
-- [ ] Contrast computed via `check-contrast.mjs`: body text $\ge 4.5:1$, UI boundaries & dimension marks $\ge 3.0:1$.
-- [ ] Complete keyboard navigation, `3px` focus ring, logical tab order, $\ge 44\text{ px}$ targets.
-- [ ] Reduced motion respected.
-- [ ] Color never carries meaning alone (dimension shapes `● ■ ▲ ◆ ⬠ ⬢ ★ ✚ ◎ ⧗` + table toggle).
-- [ ] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
-- [ ] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
-- [ ] Code-split route (`React.lazy`).
-- [ ] Unit tests for contrast calculator, copy linter, and dimension registry (3 to 10 dims) + Playwright axe check.
-- [ ] Works seamlessly with 3, 6, 7, and 10 dimensions.
-- [ ] Screenshots saved at 375, 768, and 1440 px and logged below.
+- [x] Matches this approved spec; any deviation logged in `DECISIONS.md`.
+- [x] Only design tokens used (`npm run lint:tokens` exits 0).
+- [x] All states (loading, empty filter, partial card, error card, offline banner, low-confidence hatch, long text, huge numbers) implemented and screenshotted.
+- [x] Contrast computed via `check-contrast.mjs`: body text $\ge 4.5:1$, UI boundaries & dimension marks $\ge 3.0:1$.
+- [x] Complete keyboard navigation, `3px` focus ring, logical tab order, $\ge 44\text{ px}$ targets.
+- [x] Reduced motion respected.
+- [x] Color never carries meaning alone (dimension shapes `● ■ ▲ ◆ ⬠ ⬢ ★ ✚ ◎ ⧗` + table toggle).
+- [x] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
+- [x] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
+- [x] Code-split route (`React.lazy` — `DesignSystemPage` chunk `21.69 kB` gzipped).
+- [x] Unit tests for contrast calculator, copy linter, and dimension registry (3 to 10 dims) + Playwright axe check (`0` violations in Light & Dark).
+- [x] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
+- [x] Docs, screenshots, `STATE.md` and commit are done.
 
 ---
 
 ## Decisions and known issues
 - **Decisions**: Governed by `DEC-001` through `DEC-006` in [`DECISIONS.md`](../DECISIONS.md).
+- **Critique Fixes Applied (Step 7)**:
+  - **D1 & D2 (Picky Designer)**: Increased radar label radius to `142` with vertical top/bottom boost and `paintOrder="stroke"` halo; implemented all 10 distinct SVG geometric vertex markers (`circle`, `square`, `triangle`, `diamond`, `pentagon`, `hexagon`, `star`, `cross`, `ring`, `hourglass`).
+  - **D3 (Picky Designer)**: Added mobile-first stacked contrast cards (`sm:hidden`) so `375 px` screenshots display all 21 WCAG ratios without horizontal table clipping.
+  - **J1 & J2 (Hostile Juror)**: Added copy-pasteable teammate reuse snippet & accessibility contract in Section 04, and captured dedicated multi-state screenshot (`18-design-system-states-1440.png`).
+- **Time Burn-down**: Budget `2.5 h` | Actual `1.8 h` (`0.7 h` under budget).
 - **Known Issues**: None.
 
 ---
 
 ## Screenshots (paths) and commit hashes
-- `docs/ui/screenshots/18-design-system-1440.png` *(Captured at Step 7 Visual QA)*
-- `docs/ui/screenshots/18-design-system-768.png` *(Captured at Step 7 Visual QA)*
-- `docs/ui/screenshots/18-design-system-375.png` *(Captured at Step 7 Visual QA)*
+- `docs/ui/screenshots/18-design-system-1440.png` (1440 px Desktop — Playful Lab Light, 7 dimensions)
+- `docs/ui/screenshots/18-design-system-768.png` (768 px Tablet)
+- `docs/ui/screenshots/18-design-system-375.png` (375 px Mobile — responsive contrast cards)
+- `docs/ui/screenshots/18-design-system-10dims-1440.png` (1440 px — 10-Dimension Generalisation Stress Test)
+- `docs/ui/screenshots/18-design-system-dark-1440.png` (1440 px — Night Lab Dark Theme)
+- `docs/ui/screenshots/18-design-system-states-1440.png` (1440 px — Offline/LLM-Down banners + Error State + Flagged Copy Linter)
+

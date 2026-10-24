@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+:root,
+[data-theme="light"] {
+  /* OKLCH 10-step Warm Paper & Ink Neutral Ramp */
+  --oklch-neutral-50: oklch(0.982 0.016 82);
+  --oklch-neutral-100: oklch(0.958 0.022 80);
+  --oklch-neutral-200: oklch(0.912 0.024 78);
+  --oklch-neutral-300: oklch(0.825 0.026 285);
+  --oklch-neutral-400: oklch(0.625 0.035 288);
+  --oklch-neutral-500: oklch(0.515 0.042 288);
+  --oklch-neutral-600: oklch(0.452 0.045 288);
+  --oklch-neutral-700: oklch(0.350 0.052 286);
+  --oklch-neutral-800: oklch(0.245 0.055 284);
+  --oklch-neutral-900: oklch(0.195 0.048 265);
+  --oklch-neutral-950: oklch(0.145 0.042 265);
+
+  /* Semantic Color Roles — Playful Lab (Light Default) */
+  --color-canvas: #FFF8EE;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #F7EFE2;
+  --color-ink: #1F1B3B;
+  --color-ink-muted: #5B5675;
+  --color-border: #8C86A0;
+  --color-border-strong: #1F1B3B;
+  --color-brand: #0F766E;
+  --color-brand-hover: #115E59;
+  --color-brand-subtle: #ECFDF9;
+  --color-brand-ink: #FFFFFF;
+  --color-reward: #FFC83D;
+  --color-reward-ink: #1F1B3B;
+  --color-accent: #FF6B6B;
+  --color-accent-ink: #1F1B3B;
+  --color-success: #15803D;
+  --color-success-subtle: #DCFCE7;
+  --color-warning: #B45309;
+  --color-warning-subtle: #FEF3C7;
+  --color-danger: #C62828;
+  --color-danger-subtle: #FEE2E2;
+  --color-info: #0369A1;
+  --color-info-subtle: #E0F2FE;
+
+  /* Okabe-Ito WCAG ≥3:1 Adapted Dimension Palette (3 to 10 Dimensions) */
+  --dim-1: #0072B2;
+  --dim-2: #C45100;
+  --dim-3: #008662;
+  --dim-4: #9E4778;
+  --dim-5: #A86E00;
+  --dim-6: #0B76A8;
+  --dim-7: #7D7300;
+  --dim-8: #4F46E5;
+  --dim-9: #0F766E;
+  --dim-10: #831843;
+
+  /* Uncertainty Tokens */
+  --uncertainty-band-fill: rgba(15, 118, 110, 0.18);
+  --uncertainty-low-stroke: #9E4778;
+  --uncertainty-low-tint: #FDF2F8;
+
+  /* Typography Families */
+  --font-display: 'Fredoka', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Lexend', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Typography Scale (4px baseline grid) */
+  --text-xs: 0.75rem;
+  --leading-xs: 1rem;
+  --text-sm: 0.875rem;
+  --leading-sm: 1.25rem;
+  --text-base: 1rem;
+  --leading-base: 1.5rem;
+  --text-lg: 1.125rem;
+  --leading-lg: 1.75rem;
+  --text-xl: 1.375rem;
+  --leading-xl: 1.75rem;
+  --text-2xl: 1.75rem;
+  --leading-2xl: 2.25rem;
+  --text-3xl: 2.25rem;
+  --leading-3xl: 2.75rem;
+
+  /* 4px Base Spacing Scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radius Scale */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-pill: 9999px;
+
+  /* Tactile Elevation Scale */
+  --shadow-tactile: 0 3px 0 var(--color-border-strong);
+  --shadow-tactile-active: 0 1px 0 var(--color-border-strong);
+  --shadow-card: 0 4px 0 var(--color-border-strong);
+
+  /* Motion Scale */
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --duration-slow: 360ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+[data-theme="dark"] {
+  /* Semantic Color Roles — Night Lab (Dark Theme) */
+  --color-canvas: #0B1020;
+  --color-surface: #131B33;
+  --color-surface-raised: #1C2747;
+  --color-ink: #E8ECFF;
+  --color-ink-muted: #A3ABCB;
+  --color-border: #3B4A78;
+  --color-border-strong: #E8ECFF;
+  --color-brand: #22D3EE;
+  --color-brand-hover: #67E8F9;
+  --color-brand-subtle: #112A40;
+  --color-brand-ink: #0B1020;
+  --color-reward: #A3E635;
+  --color-reward-ink: #0B1020;
+  --color-accent: #F472B6;
+  --color-accent-ink: #0B1020;
+  --color-success: #4ADE80;
+  --color-success-subtle: #0F2E1E;
+  --color-warning: #FBBF24;
+  --color-warning-subtle: #332409;
+  --color-danger: #F87171;
+  --color-danger-subtle: #381418;
+  --color-info: #38BDF8;
+  --color-info-subtle: #0D2840;
+
+  /* Okabe-Ito Dark Theme Dimension Palette */
+  --dim-1: #56B4E9;
+  --dim-2: #FF8C3B;
+  --dim-3: #2DD4BF;
+  --dim-4: #E899C8;
+  --dim-5: #FACC15;
+  --dim-6: #38BDF8;
+  --dim-7: #F0E442;
+  --dim-8: #818CF8;
+  --dim-9: #34D399;
+  --dim-10: #F472B6;
+
+  --uncertainty-band-fill: rgba(34, 211, 238, 0.20);
+  --uncertainty-low-stroke: #F472B6;
+  --uncertainty-low-tint: #2D162B;
+  --shadow-tactile: 0 3px 0 var(--color-border);
+  --shadow-tactile-active: 0 1px 0 var(--color-border);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.45);
+}
+
+@theme {
+  --color-canvas: var(--color-canvas);
+  --color-surface: var(--color-surface);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-brand: var(--color-brand);
+  --color-brand-hover: var(--color-brand-hover);
+  --color-brand-subtle: var(--color-brand-subtle);
+  --color-brand-ink: var(--color-brand-ink);
+  --color-reward: var(--color-reward);
+  --color-reward-ink: var(--color-reward-ink);
+  --color-accent: var(--color-accent);
+  --color-accent-ink: var(--color-accent-ink);
+  --color-success: var(--color-success);
+  --color-success-subtle: var(--color-success-subtle);
+  --color-warning: var(--color-warning);
+  --color-warning-subtle: var(--color-warning-subtle);
+  --color-danger: var(--color-danger);
+  --color-danger-subtle: var(--color-danger-subtle);
+  --color-info: var(--color-info);
+  --color-info-subtle: var(--color-info-subtle);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-pill: var(--radius-pill);
+}
+
+/* Base Document Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tactile Surface & Button Primitives */
+.tactile-card {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.tactile-btn {
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border-strong);
+  box-shadow: var(--shadow-tactile);
+  transition-property: transform, background-color, box-shadow, border-color;
+  transition-duration: var(--duration-fast);
+  transition-timing-function: var(--ease-out);
+}
+
+.tactile-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: var(--shadow-tactile-active);
+}
+
+.tactile-btn:focus-visible,
+.focus-ring:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion & Timed-Trial Zero-Distraction Lock */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .tactile-btn:active:not(:disabled) {
+    transform: none !important;
+  }
+}
+
+[data-reduced-motion="true"] *,
+[data-timed-trial="true"] * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+[data-reduced-motion="true"] .tactile-btn:active:not(:disabled),
+[data-timed-trial="true"] .tactile-btn:active:not(:disabled) {
+  transform: none !important;
+}
