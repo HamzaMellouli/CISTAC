@@ -164,26 +164,38 @@
 ---
 
 ## 10. Per-Page Definition of Done (DoD Checklist)
-- [ ] Matches this approved spec; any deviation logged in `DECISIONS.md`.
-- [ ] Only design tokens used (`npm run lint:tokens` exits 0).
-- [ ] All states (`active-plan`, `rest-pacing-engaged`, `loading`, `empty`, `error`, `extreme-text`) implemented and screenshotted.
-- [ ] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
-- [ ] Complete keyboard navigation, `3px` focus ring, $\ge 44\text{ px}$ targets.
-- [ ] Reduced motion respected.
-- [ ] Color never carries meaning alone.
-- [ ] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
-- [ ] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
-- [ ] Code-split route (`React.lazy`).
-- [ ] Unit/component tests + Playwright `axe-core` check (`0` violations).
-- [ ] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
-- [ ] Docs, screenshots, `STATE.md` and commit are done.
+- [x] Matches this approved spec; any deviation logged in `DECISIONS.md`.
+- [x] Only design tokens used (`npm run lint:tokens` exits 0).
+- [x] All states (`active-plan`, `rest-pacing-engaged`, `loading`, `empty`, `error`, `extreme-text`) implemented and screenshotted.
+- [x] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
+- [x] Complete keyboard navigation, `3px` focus ring, $\ge 44\text{ px}$ targets.
+- [x] Reduced motion respected.
+- [x] Color never carries meaning alone.
+- [x] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
+- [x] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
+- [x] Code-split route (`React.lazy`).
+- [x] Unit/component tests + Playwright `axe-core` check (`0` violations).
+- [x] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
+- [x] Docs, screenshots, `STATE.md` and commit are done.
+
+---
+
+## Visual Critique Log (Rounds 1 & 2)
+- **Round 1 Critique**:
+  - *Observation*: On `1440 px` desktop, the left column (7 cols: Weekly Ribbon + Daily Prescriptions) and right column (5 cols: SAT-JEPA $\Delta c$ Matrix + Staircase Simulator + `<WhyThisPanel />`) align cleanly at the bottom edge.
+  - *Observation*: Toggling `2 · ☾ Rest-First Pacing` immediately swaps the Thursday training blocks with the Wednesday Proactive Recovery card (`Scheduled Recovery & Memory Consolidation Day · Streak Protected`), and `<Mascot />` switches to its serene `rest` state.
+- **Round 2 Critique**:
+  - *Observation*: The arbitrary `text-[10px]` styling on the 7-day ribbon was flagged by `lint:tokens`.
+  - *Fix*: Replaced `text-[10px]` with standard design token `text-xs`.
+  - *Observation*: The SAT-JEPA $\Delta c$ priority table required keyboard accessibility on scrollable viewports.
+  - *Fix*: Added `tabIndex={0} role="region" aria-label="SAT-JEPA delta c allocation table scrollable container"` to the table container, passing `axe-core` with 0 violations across 375, 768, and 1440 px.
 
 ---
 
 ## 11. Decisions, Known Issues & Screenshots
 - **Decisions**: Provide a 1-click **Rest-First Pacing Toggle** so judges can immediately see how SynapseTwin handles high-fatigue days without guilt.
 - **Known Issues**: None.
-- **Planned Screenshots**:
+- **Screenshots**:
   - `docs/ui/screenshots/10-plan-1440.png`
   - `docs/ui/screenshots/10-plan-rest-pacing-1440.png`
   - `docs/ui/screenshots/10-plan-dark-10dims-1440.png`
