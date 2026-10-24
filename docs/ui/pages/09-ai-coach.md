@@ -137,19 +137,31 @@
 ---
 
 ## Acceptance checklist (from the Definition of Done)
-- [ ] Matches this approved spec; any deviation logged in `DECISIONS.md`.
-- [ ] Only design tokens used (`npm run lint:tokens` exits 0).
-- [ ] All states (`live`, `fallback-mode`, `rest-pacing`, `loading`, `empty`, `error`, `extreme-text`) implemented and screenshotted.
-- [ ] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
-- [ ] Complete keyboard navigation, `3px` focus ring, $\ge 44\text{ px}$ targets.
-- [ ] Reduced motion respected.
-- [ ] Color never carries meaning alone.
-- [ ] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
-- [ ] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
-- [ ] Code-split route (`React.lazy`).
-- [ ] Unit/component tests + Playwright `axe-core` check (`0` violations).
-- [ ] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
-- [ ] Docs, screenshots, `STATE.md` and commit are done.
+- [x] Matches this approved spec; any deviation logged in `DECISIONS.md`.
+- [x] Only design tokens used (`npm run lint:tokens` exits 0).
+- [x] All states (`live`, `fallback-mode`, `rest-pacing`, `loading`, `empty`, `error`, `extreme-text`) implemented and screenshotted.
+- [x] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
+- [x] Complete keyboard navigation, `3px` focus ring, $\ge 44\text{ px}$ targets.
+- [x] Reduced motion respected.
+- [x] Color never carries meaning alone.
+- [x] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
+- [x] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
+- [x] Code-split route (`React.lazy`).
+- [x] Unit/component tests + Playwright `axe-core` check (`0` violations).
+- [x] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
+- [x] Docs, screenshots, `STATE.md` and commit are done.
+
+---
+
+## Visual Critique Log (Rounds 1 & 2)
+- **Round 1 Critique**:
+  - *Observation 1*: On `1440 px` desktop, the right 5-column stack (Dimension Grounding + Copy Guardrail Inspector) extended slightly lower than the left 7-column Coaching Studio card.
+  - *Fix 1*: Added a compact **Deterministic Rule Engine & Explainability Guarantees** card (`Card L2`) below the main Coaching Studio card in the left 7-column stack so both columns align cleanly at the bottom edge.
+  - *Observation 2*: Clicking `3 · ☾ Rest-First Pacing` after `2 · ⚙ Rule Fallback` retained `simulateLlmDown = true`, keeping `<Mascot />` in `'thinking'` state instead of transitioning to `'rest'` state.
+  - *Fix 2*: Updated the `3 · ☾ Rest-First Pacing` state handler to set `setSimulateLlmDown(false)` alongside `setActiveTurn(SEEDED_COACH_TURNS[3]!)`, ensuring `<Mascot state="rest" />` renders as designed.
+- **Round 2 Critique**:
+  - *Observation*: Long dimension names (`Cognitive Flexibility (Set-Shifting)` and `Episodic Pattern Separation`) caused the `Ask Coach` button to wrap onto a second line on some desktop rows.
+  - *Fix*: Added `sm:flex-nowrap` on the dimension grounding row and `shrink-0` on the `Ask Coach` button so all `3/6/7/8/10` rows keep their action button aligned on the right edge.
 
 ---
 
@@ -160,6 +172,8 @@
 ---
 
 ## Screenshots (paths) and commit hashes
-- `docs/ui/screenshots/09-ai-coach-1440.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/09-ai-coach-768.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/09-ai-coach-375.png` *(Pending Step 7 Visual QA)*
+- `docs/ui/screenshots/09-ai-coach-1440.png`
+- `docs/ui/screenshots/09-ai-coach-fallback-10dims-1440.png`
+- `docs/ui/screenshots/09-ai-coach-dark-1440.png`
+- `docs/ui/screenshots/09-ai-coach-768.png`
+- `docs/ui/screenshots/09-ai-coach-375.png`

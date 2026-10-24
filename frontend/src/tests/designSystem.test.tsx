@@ -280,6 +280,55 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
     ).toBeGreaterThanOrEqual(1)
   })
 
+  it('renders Page 09 AI Coach (/coach) with WhyThisPanel, Deterministic Fallback toggle, Coach Log Table, and Copy Guardrail Inspector', async () => {
+    window.history.pushState({}, '', '/coach')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Explainable AI Coach & Cognitive Strategy Studio/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Toggle Deterministic Rule Fallback
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Simulate LLM Down \(Fallback\)/i,
+      }),
+    )
+    expect(
+      screen.getAllByText(/deterministic_fallback/i).length,
+    ).toBeGreaterThanOrEqual(1)
+
+    // Toggle Guardrail Interception Demo
+    fireEvent.click(
+      screen.getByRole('button', { name: /Test Guardrail Interception/i }),
+    )
+    expect(
+      screen.getByText(/Intercepted \(3 Rules\)/i),
+    ).toBeInTheDocument()
+
+    // Toggle Coach Log Table
+    fireEvent.click(
+      screen.getByRole('button', { name: /View Coach Log as Table/i }),
+    )
+    expect(
+      screen.getByRole('table', {
+        name: /AI Coach recommendations and reasoning log table/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Reset simulateLlmDown so subsequent tests start clean
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Deterministic Fallback: ON/i,
+      }),
+    )
+  })
+
   it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {
     window.history.pushState({}, '', '/design-system')
     render(<App />)

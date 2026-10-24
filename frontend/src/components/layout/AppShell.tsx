@@ -212,6 +212,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Link>
             )}
 
+            {location.pathname !== '/coach' && (
+              <Link
+                to="/coach"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                AI Coach
+              </Link>
+            )}
+
             {location.pathname !== '/design-system' && (
               <Link
                 to="/design-system"
