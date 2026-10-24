@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { VoiceProbe } from './voiceProbe'
 
 type Props = { value: VoiceProbe | null; onChange: (probe: VoiceProbe | null) => void }
@@ -7,6 +7,13 @@ type Props = { value: VoiceProbe | null; onChange: (probe: VoiceProbe | null) =>
 export function VoiceToggle({ value, onChange }: Props) {
   const [pending, setPending] = useState(false)
   const [reason, setReason] = useState<string | null>(null)
+  const mounted = useRef(true)
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+    }
+  }, [])
 
   const toggle = async () => {
     setReason(null)
@@ -17,16 +24,19 @@ export function VoiceToggle({ value, onChange }: Props) {
     }
     setPending(true)
     try {
-      onChange(await VoiceProbe.start())
+      const probe = await VoiceProbe.start()
+      // Unmounted while the permission prompt was open: release the mic instead of handing it on.
+      if (!mounted.current) return probe.stop()
+      onChange(probe)
     } catch (e) {
+      if (!mounted.current) return
       setReason(
         e instanceof DOMException && e.name === 'NotAllowedError'
           ? 'Microphone access was denied, so speaking speed stays off.'
           : 'No microphone is available, so speaking speed stays off.',
       )
-    } finally {
-      setPending(false)
     }
+    setPending(false)
   }
 
   return (

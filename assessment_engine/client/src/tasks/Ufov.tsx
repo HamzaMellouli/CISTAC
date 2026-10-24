@@ -174,7 +174,15 @@ export function Ufov({ params, recorder, onDone, raf = defaultRaf }: TaskProps<U
     const correct = central_ok && peripheral_ok
     // QuestPlus has no NaN guard, so only a measured, positive duration updates it.
     if (Number.isFinite(shownMs) && shownMs > 0) quest.update(shownMs, correct)
-    const meta: TrialMeta = { requested_ms: requested, shown_ms: shownMs, frames, similarity, mask_noise, central_ok, peripheral_ok }
+    const meta: TrialMeta = {
+      requested_ms: requested,
+      shown_ms: shownMs,
+      frames,
+      similarity: clamp01(similarity),
+      mask_noise: clamp01(mask_noise),
+      central_ok,
+      peripheral_ok,
+    }
     // ponytail: if the final valid trial is aborted, no event carries the threshold; it is recomputable
     // from the logged shown_ms and correctness.
     if (i === lastValid) meta.quest_threshold_ms = Math.round(quest.thresholdMs() * 10) / 10

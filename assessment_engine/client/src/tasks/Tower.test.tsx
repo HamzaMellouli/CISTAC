@@ -238,6 +238,14 @@ test('an invalid prediction shows a hint', () => {
   expect(screen.queryByRole('alert')).toBeNull()
 })
 
+test('a payload l_min above the real optimum still scores at most 1', () => {
+  setup({ capacities: [1, 1], start: [['R'], []], goal: [[], ['R']], l_min: 3, optimal_moves: [[0, 1]], counter_intuitive: [] })
+  predict('1')
+  move([0, 1])
+  expect(pushed).toHaveLength(1)
+  expect(pushed[0]).toMatchObject({ score_norm: 1, trial_meta: { l_min: 3, l_user: 1, solved: true } })
+})
+
 test('disc colours come from the client palette, never from the payload id', () => {
   const id = 'url(https://e.x/a)'
   setup({ capacities: [1, 1], start: [[id], []], goal: [[], [id]], l_min: 1, optimal_moves: [[0, 1]], counter_intuitive: [] })

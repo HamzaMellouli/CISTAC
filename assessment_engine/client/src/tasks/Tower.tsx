@@ -104,7 +104,7 @@ export function Tower({ params, recorder, onDone }: TaskProps<TowerParams>) {
     tracker.push(
       recorder.finish({
         correct: solved && l_user === l_min,
-        score: solved ? l_min / l_user : 0,
+        score: solved ? Math.min(1, l_min / l_user) : 0,
         meta: {
           l_min,
           l_user,

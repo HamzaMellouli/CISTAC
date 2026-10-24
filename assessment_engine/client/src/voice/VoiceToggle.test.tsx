@@ -64,3 +64,16 @@ test('no microphone available reverts to off and says why', async () => {
   expect(box().checked).toBe(false)
   expect(screen.getByRole('alert').textContent).toMatch(/no microphone/i)
 })
+
+test('unmounting while the permission prompt is open stops the probe once it arrives', async () => {
+  const stop = vi.fn()
+  let resolve!: (p: VoiceProbe) => void
+  vi.spyOn(VoiceProbe, 'start').mockReturnValue(new Promise((r) => (resolve = r)))
+  const onProbe = vi.fn()
+  const { unmount } = render(<Host onProbe={onProbe} />)
+  await toggle()
+  unmount()
+  await act(async () => resolve({ stop } as unknown as VoiceProbe))
+  expect(stop).toHaveBeenCalledOnce()
+  expect(onProbe).not.toHaveBeenCalled()
+})

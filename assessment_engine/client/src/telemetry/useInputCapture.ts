@@ -11,14 +11,14 @@ export function useInputCapture(recorder: TrialRecorder, active: boolean): void 
     if (!active) return
     let lastMove = -Infinity
     const onKey = (e: KeyboardEvent) => {
-      if (!e.repeat) recorder.input()
+      if (!e.repeat) recorder.input('key')
     }
-    const onDown = () => recorder.input()
+    const onDown = () => recorder.input('down')
     const onMove = () => {
       const t = performance.now()
       if (t - lastMove < MOVE_THROTTLE_MS) return
       lastMove = t
-      recorder.input()
+      recorder.input('move')
     }
     const opts = { capture: true }
     window.addEventListener('keydown', onKey, opts)

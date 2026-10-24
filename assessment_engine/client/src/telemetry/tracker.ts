@@ -9,6 +9,8 @@ type TrialCtx = {
   voice_opt_in: boolean
 }
 
+const MAX_RT_MS = 600_000 // server response_time_ms upper bound
+
 type TrialResult = {
   correct: boolean
   score?: number
@@ -21,7 +23,8 @@ type TrialResult = {
 export class TrialRecorder {
   private ctx: TrialCtx
   private now: () => number
-  private trial: { index: number; start: number; inputs: number[] } | null = null
+  private trial: { index: number; start: number; inputs: number[]; firstPress: number | null } | null =
+    null
   private burst = 0
 
   constructor(ctx: TrialCtx, now = () => performance.now()) {
@@ -30,11 +33,16 @@ export class TrialRecorder {
   }
 
   start(trialIndex: number): void {
-    this.trial = { index: trialIndex, start: this.now(), inputs: [] }
+    this.trial = { index: trialIndex, start: this.now(), inputs: [], firstPress: null }
   }
 
-  input(): void {
-    this.trial?.inputs.push(this.now())
+  // Every kind feeds hesitation jitter; only a key or pointer press sets keystroke latency.
+  input(kind: 'key' | 'down' | 'move' = 'down'): void {
+    const t = this.trial
+    if (!t) return
+    const now = this.now()
+    t.inputs.push(now)
+    if (kind !== 'move' && t.firstPress === null) t.firstPress = now
   }
 
   finish(r: TrialResult): TelemetryEvent {
@@ -49,12 +57,13 @@ export class TrialRecorder {
       task_id: this.ctx.task_id,
       trial_index: t.index,
       dimension: this.ctx.dimension,
-      score_norm: r.score ?? (r.correct ? 1 : 0),
-      response_time_ms: r.windowMs ?? this.now() - t.start,
+      // Clamped to the server's bounds so one out-of-range value cannot get a whole batch rejected.
+      score_norm: Math.min(1, Math.max(0, r.score ?? (r.correct ? 1 : 0))),
+      response_time_ms: Math.min(MAX_RT_MS, r.windowMs ?? this.now() - t.start),
       error_flag: !r.correct,
       error_burst: this.burst,
       hesitation_jitter: hesitationJitter(t.inputs),
-      keystroke_latency_ms: t.inputs.length ? t.inputs[0] - t.start : null,
+      keystroke_latency_ms: t.firstPress === null ? null : t.firstPress - t.start,
       trial_meta: { item_id: `${this.ctx.task_id}:${t.index}`, ...r.meta },
       voice_opt_in,
       // The server rejects voice fields without opt-in, so they are only attached when opted in.
@@ -90,6 +99,10 @@ export class Tracker {
   private inFlight = false
   private timer: ReturnType<typeof setInterval>
   private onPageHide = () => this.flushBeacon()
+  // Mobile browsers often discard a backgrounded tab without firing pagehide; hidden is the last reliable signal.
+  private onVisibility = () => {
+    if (document.visibilityState === 'hidden') this.flushBeacon()
+  }
 
   constructor(opts: TrackerOpts = {}) {
     this.endpoint = opts.endpoint ?? '/v1/telemetry/event'
@@ -103,6 +116,7 @@ export class Tracker {
         : undefined)
     this.timer = setInterval(() => void this.flush(), opts.flushMs ?? 2000)
     if (typeof window !== 'undefined') window.addEventListener('pagehide', this.onPageHide)
+    if (typeof document !== 'undefined') document.addEventListener('visibilitychange', this.onVisibility)
   }
 
   push(e: TelemetryEvent): void {
@@ -153,6 +167,7 @@ export class Tracker {
   destroy(): void {
     clearInterval(this.timer)
     if (typeof window !== 'undefined') window.removeEventListener('pagehide', this.onPageHide)
+    if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', this.onVisibility)
   }
 }
 

@@ -1,7 +1,6 @@
-/// <reference types="node" />
-import { readFileSync } from 'node:fs'
-import { expect, test, vi } from 'vitest'
+import { afterEach, expect, test, vi } from 'vitest'
 import { detectOnsets, VoiceProbe } from './voiceProbe'
+import src from './voiceProbe.ts?raw'
 
 const frames = (n: number, spikes: number[]) => Array.from({ length: n }, (_, k) => (spikes.includes(k) ? 0.2 : 0.001))
 
@@ -22,7 +21,6 @@ test('sustained sound above the threshold is a single onset', () => {
 })
 
 test('the probe source never records, buffers for upload, or touches the network', () => {
-  const src = readFileSync('src/voice/voiceProbe.ts', 'utf8') // vitest runs from the client root
   for (const banned of ['MediaRecorder', 'fetch(', 'sendBeacon', 'XMLHttpRequest', 'WebSocket']) {
     expect(src).not.toContain(banned)
   }
@@ -74,4 +72,20 @@ test('stop() releases the microphone once', () => {
   probe.stop()
   probe.stop()
   expect(release).toHaveBeenCalledOnce()
+})
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
+
+test('a context that stays suspended releases the mic and the context, then throws', async () => {
+  const track = { stop: vi.fn() }
+  vi.stubGlobal('navigator', {
+    mediaDevices: { getUserMedia: vi.fn(async () => ({ getTracks: () => [track] })) },
+  })
+  const ctx = { state: 'suspended', resume: vi.fn(async () => {}), close: vi.fn(async () => {}) }
+  await expect(VoiceProbe.start(() => ctx as unknown as AudioContext)).rejects.toThrow(/not running/)
+  expect(ctx.resume).toHaveBeenCalledOnce()
+  expect(track.stop).toHaveBeenCalledOnce()
+  expect(ctx.close).toHaveBeenCalledOnce()
 })

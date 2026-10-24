@@ -113,6 +113,15 @@ test('central right and peripheral wrong scores 0 with central_ok true; meta and
   expect(onDone).toHaveBeenCalledOnce()
 })
 
+test('meta logs the clamped similarity and mask_noise that were drawn', async () => {
+  vi.spyOn(QuestPlus.prototype, 'next').mockReturnValue(50)
+  await setup(params({ trials: [trial('A', 0)], similarity: 2, mask_noise: 'x' as unknown as number }))
+  runStimulus()
+  key('a')
+  key('1')
+  expect(pushed[0].trial_meta).toMatchObject({ similarity: 1, mask_noise: 0 })
+})
+
 test('keyboard-only: Enter/Space activation of the buttons answers both parts, in either order', async () => {
   await setup(params({ trials: [trial('A', 4)] }))
   runStimulus(80)

@@ -18,7 +18,7 @@
 - Dimensions are the README 4 (`working_memory`, `pattern_induction`, `executive_function`, `spatial_orientation`) plus `processing_speed` (UFOV) and `episodic_memory` (MST). **Confirm the two new ones with Members 3 and 4.**
 - Event field names follow the README `x_t` list: `score_norm`, `response_time_ms`, `error_flag`, `hesitation_jitter`.
 - Payloads are data only. Render with SVG/canvas from numbers and strings. No `dangerouslySetInnerHTML`, `eval`, or `new Function`.
-- Adaptive target accuracy is 0.85 (the brief's 80–85% band, using the "85% rule").
+- Adaptive target accuracy is 0.85 (the brief's 80–85% band, using the "85% rule") for Relational's staircase. UFOV's QUEST+ estimates a display-duration threshold instead; it does not hold accuracy at 85%.
 - User-facing text never names brain regions or uses diagnostic words. Those belong to Member 2's guardrails; the UI copy is ours.
 - Trial loops never `await` the network.
 - All code lives under `assessment_engine/`. The README's `src/client/...` and `src/api/...` paths are mirrored inside it.
@@ -91,7 +91,7 @@ Core fields:
 | relational | `hops`, `inverted` |
 | tower | `l_min`, `l_user`, `predicted_moves`, `planning_time_ms`, `conflict_latency_ms` (mean pause before moves matching a `counter_intuitive` step, 0 if none), `solved` |
 | ufov | `requested_ms`, `shown_ms`, `frames`, `similarity`, `mask_noise`, `central_ok`, `peripheral_ok` |
-| mst | `kind`, `delta`, `response` (`old`/`similar`/`new`) |
+| mst | `kind`, `delta`, `response` (`old`/`similar`/`new`, or `none` on timeout) |
 
 ---
 
@@ -345,7 +345,7 @@ Behavior: calibrate the frame interval once at mount. Each trial: `requested = q
 1. **Field names:** the README `x_t` has two versions; this plan uses `score_norm/response_time_ms/error_flag/hesitation_jitter`. Member 3 needs to agree, and also agree to `trial_meta`.
 2. **New dimensions:** `processing_speed` and `episodic_memory` would add two radar axes for Member 4 and two model inputs for Member 3.
 3. **Payload contract:** Member 5 has to produce the `answer`s, `levels` ladders, and Tower `optimal_moves`/`counter_intuitive` with their solvers. Because answers are in the payload, a user could read them in devtools. That's acceptable for non-clinical self-training; if it ever matters, move scoring server-side.
-4. **85% rule granularity:** adaptation is per trial for Relational (staircase) and UFOV (QUEST+). For N-back, `n` and lure density can only change between blocks, so Member 5 adapts those from our telemetry. MST keeps a fixed spread of `delta` because the tuning curve needs it.
+4. **85% rule granularity:** 85% adaptation is per trial for Relational (staircase). UFOV also adapts per trial, but QUEST+ estimates a duration threshold rather than holding 85%. For N-back, `n` and lure density can only change between blocks, so Member 5 adapts those from our telemetry. MST keeps a fixed spread of `delta` because the tuning curve needs it.
 5. **Shared FastAPI app:** decide whether Member 4 owns `main.py`. Their delete route removes `{TELEMETRY_DIR}/{user_id}.jsonl`.
 6. **Identity:** an anonymous UUID for now.
 7. **Science wording:** keep brain-region names and "neuroplastic" claims out of the UI (see the review notes on the brief).

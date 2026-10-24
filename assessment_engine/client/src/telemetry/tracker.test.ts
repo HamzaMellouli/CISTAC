@@ -64,6 +64,19 @@ describe('TrialRecorder', () => {
     expect(e.keystroke_latency_ms).toBeNull()
   })
 
+  test('response_time_ms is capped at 600000 and score_norm clamped into [0, 1]', () => {
+    const c = clock()
+    const r = new TrialRecorder(ctx, c.now)
+    r.start(0)
+    c.set(700_000)
+    expect(r.finish({ correct: true, score: 1.4 })).toMatchObject({ response_time_ms: 600_000, score_norm: 1 })
+    r.start(1)
+    expect(r.finish({ correct: false, score: -0.2, windowMs: 900_000 })).toMatchObject({
+      response_time_ms: 600_000,
+      score_norm: 0,
+    })
+  })
+
   test('score override and meta merge', () => {
     const r = new TrialRecorder(ctx, clock().now)
     r.start(0)
@@ -77,6 +90,34 @@ describe('TrialRecorder', () => {
     r.start(0)
     r.abort()
     expect(() => r.finish({ correct: true })).toThrow()
+  })
+
+  test('pointer moves feed jitter but not first-press latency', () => {
+    const c = clock()
+    const r = new TrialRecorder(ctx, c.now)
+    r.start(0)
+    c.set(30)
+    r.input('move')
+    c.set(90)
+    r.input('move')
+    c.set(250)
+    r.input('key')
+    c.set(300)
+    r.input('down')
+    c.set(400)
+    const e = r.finish({ correct: true })
+    expect(e.keystroke_latency_ms).toBe(250)
+    expect(e.hesitation_jitter).toBeGreaterThan(0)
+  })
+
+  test('moves only: latency stays null', () => {
+    const c = clock()
+    const r = new TrialRecorder(ctx, c.now)
+    r.start(0)
+    c.set(30)
+    r.input('move')
+    c.set(400)
+    expect(r.finish({ correct: true }).keystroke_latency_ms).toBeNull()
   })
 
   test('input outside a trial is ignored', () => {
@@ -104,6 +145,11 @@ describe('TrialRecorder', () => {
   })
 })
 
+function setVisibility(v: DocumentVisibilityState) {
+  Object.defineProperty(document, 'visibilityState', { value: v, configurable: true })
+  document.dispatchEvent(new Event('visibilitychange'))
+}
+
 function ev(i: number): TelemetryEvent {
   return { trial_index: i } as TelemetryEvent
 }
@@ -128,6 +174,7 @@ describe('Tracker', () => {
   afterEach(() => {
     trackers.forEach((t) => t.destroy())
     trackers = []
+    Reflect.deleteProperty(document, 'visibilityState') // back to jsdom's own getter
     vi.useRealTimers()
   })
 
@@ -253,6 +300,16 @@ describe('Tracker', () => {
     expect(fetchFn).not.toHaveBeenCalled()
   })
 
+  test('page becoming hidden sends a beacon; becoming visible does not', () => {
+    const beacon = vi.fn((_url: string, _data: Blob) => true)
+    const t = make({ fetchFn: okFetch(), beacon })
+    t.push(ev(1))
+    setVisibility('visible')
+    expect(beacon).not.toHaveBeenCalled()
+    setVisibility('hidden')
+    expect(beacon).toHaveBeenCalledTimes(1)
+  })
+
   test('refused beacon keeps events', async () => {
     const fetchFn = okFetch()
     const t = make({ fetchFn, beacon: () => false })
@@ -262,7 +319,7 @@ describe('Tracker', () => {
     expect(sent(fetchFn)).toEqual([1])
   })
 
-  test('destroy stops the interval and pagehide listener', async () => {
+  test('destroy stops the interval, pagehide and visibilitychange listeners', async () => {
     const beacon = vi.fn(() => true)
     const fetchFn = okFetch()
     const t = make({ fetchFn, beacon })
@@ -270,6 +327,7 @@ describe('Tracker', () => {
     t.push(ev(1))
     await vi.advanceTimersByTimeAsync(5000)
     window.dispatchEvent(new Event('pagehide'))
+    setVisibility('hidden')
     expect(fetchFn).not.toHaveBeenCalled()
     expect(beacon).not.toHaveBeenCalled()
   })
