@@ -21,9 +21,13 @@ export default function App() {
   const [voice, setVoice] = useState<VoiceProbe | null>(null) // opt-in, off on every page load
   // Read when the next task's recorder is created, so toggling never rebuilds a running task.
   const optedIn = useRef(false)
+  const voiceRef = useRef<VoiceProbe | null>(null)
   useLayoutEffect(() => {
     optedIn.current = voice !== null
+    voiceRef.current = voice
   })
+  // Never leave the microphone open past this component (HMR, embedding).
+  useEffect(() => () => voiceRef.current?.stop(), [])
 
   useEffect(() => {
     let cancelled = false

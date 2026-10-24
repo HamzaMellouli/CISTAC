@@ -21,3 +21,16 @@ test('a fetch error shows a message and retry loads the task', async () => {
   expect(fetchNextTask).toHaveBeenCalledTimes(2)
   expect(fetchNextTask).toHaveBeenCalledWith('u1')
 })
+
+test('unmounting App with the voice probe on stops the probe (mic released)', async () => {
+  const { VoiceProbe } = await import('./voice/voiceProbe')
+  const stop = vi.fn()
+  const start = vi.spyOn(VoiceProbe, 'start').mockResolvedValue({ stop } as unknown as InstanceType<typeof VoiceProbe>)
+  fetchNextTask.mockResolvedValue({ task_id: 't1', dimension: 'working_memory', schema_type: 'bogus', params: {}, surface_seed: 0 })
+  const { unmount } = render(<App />)
+  await userEvent.click(screen.getByRole('checkbox', { name: /speaking speed/i }))
+  expect((screen.getByRole('checkbox') as HTMLInputElement).checked).toBe(true)
+  unmount()
+  expect(stop).toHaveBeenCalledOnce()
+  start.mockRestore()
+})

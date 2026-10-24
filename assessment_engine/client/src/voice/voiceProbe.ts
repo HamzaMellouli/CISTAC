@@ -39,14 +39,19 @@ export class VoiceProbe {
     this.now = now
   }
 
-  static async start(): Promise<VoiceProbe> {
+  // `makeContext` is injectable for tests; the default is a real AudioContext.
+  static async start(makeContext: () => AudioContext = () => new AudioContext()): Promise<VoiceProbe> {
     if (!navigator.mediaDevices?.getUserMedia) throw new Error('microphone unavailable')
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
     const stopTracks = () => stream.getTracks().forEach((t) => t.stop())
     let ctx: AudioContext | undefined
     let analyser: AnalyserNode
     try {
-      ctx = new AudioContext()
+      ctx = makeContext()
+      // Created after an await, so autoplay policy (e.g. Safari) may leave it suspended: the
+      // analyser would then read zeros and measure() would silently stay null.
+      await ctx.resume()
+      if (ctx.state !== 'running') throw new Error('audio context not running')
       analyser = ctx.createAnalyser()
       analyser.fftSize = 1024
       ctx.createMediaStreamSource(stream).connect(analyser) // not connected to the speakers
