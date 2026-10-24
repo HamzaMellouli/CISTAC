@@ -167,6 +167,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Link>
             )}
 
+            {location.pathname !== '/assessment' && (
+              <Link
+                to="/assessment"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                Assess
+              </Link>
+            )}
+
             {location.pathname !== '/profile-reveal' && (
               <Link
                 to="/profile-reveal"

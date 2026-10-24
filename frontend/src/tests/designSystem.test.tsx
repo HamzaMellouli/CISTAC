@@ -5,7 +5,7 @@ import { lintCopyText } from '../utils/copyLinter'
 import { getDimensionsByPreset } from '../config/dimensions'
 import { App } from '../App'
 
-describe('Design System, Welcome, Onboarding, Profile Reveal & Dashboard Unit Suite', () => {
+describe('Design System, Welcome, Onboarding, Assessment Hub, Profile Reveal & Dashboard Unit Suite', () => {
   it('verifies all 21 Light & Dark token pairs pass WCAG 2.1 thresholds', () => {
     const reports = evaluateDesignSystemContrast()
     expect(reports.length).toBeGreaterThanOrEqual(20)
@@ -103,6 +103,38 @@ describe('Design System, Welcome, Onboarding, Profile Reveal & Dashboard Unit Su
     ).toBeGreaterThanOrEqual(1)
   })
 
+  it('renders Page 03 Assessment Hub (/assessment) and supports session modes, table toggle, and /v1/tasks/next payload inspector', async () => {
+    window.history.pushState({}, '', '/assessment')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Calibrate your cognitive twin—2-minute adaptive micro-tasks/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Toggle Task Queue Table
+    fireEvent.click(
+      screen.getByRole('button', { name: /View Task Queue as Table/i }),
+    )
+    expect(
+      screen.getByRole('table', {
+        name: /Assessment Hub cognitive task queue table/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Open Next-Task Payload JSON
+    fireEvent.click(
+      screen.getByRole('button', { name: /Inspect Payload JSON/i }),
+    )
+    expect(
+      screen.getByText(/low_confidence_hatched_band_narrowing/i),
+    ).toBeInTheDocument()
+  })
+
   it('renders Page 05 Profile Reveal (/profile-reveal) and supports 5-state Mascot switcher, confidence filters, and snapshot JSON inspector', async () => {
     window.history.pushState({}, '', '/profile-reveal')
     render(<App />)
@@ -116,7 +148,6 @@ describe('Design System, Welcome, Onboarding, Profile Reveal & Dashboard Unit Su
     )
     expect(heading).toBeInTheDocument()
 
-    // Switch to First-Session Hatched (Salma)
     fireEvent.click(
       screen.getByRole('button', {
         name: /First-Session Hatched \(Salma/i,
@@ -126,11 +157,9 @@ describe('Design System, Welcome, Onboarding, Profile Reveal & Dashboard Unit Su
       screen.getByText(/Exploratory Fast-Responder \(Preliminary Profile\)/i),
     ).toBeInTheDocument()
 
-    // Test Mascot state override button
     fireEvent.click(screen.getByRole('button', { name: 'thinking' }))
     expect(screen.getByText(/State: thinking/i)).toBeInTheDocument()
 
-    // Open Snapshot JSON inspector
     fireEvent.click(
       screen.getByRole('button', { name: /Inspect Snapshot JSON/i }),
     )
@@ -150,7 +179,6 @@ describe('Design System, Welcome, Onboarding, Profile Reveal & Dashboard Unit Su
     )
     expect(heading).toBeInTheDocument()
 
-    // Toggle Trajectory Fan Table
     fireEvent.click(
       screen.getByRole('button', { name: /View Trajectory as Table/i }),
     )
@@ -160,7 +188,6 @@ describe('Design System, Welcome, Onboarding, Profile Reveal & Dashboard Unit Su
       }),
     ).toBeInTheDocument()
 
-    // Toggle Fatigue Heatmap Table
     fireEvent.click(
       screen.getByRole('button', { name: /View Heatmap as Table/i }),
     )
@@ -170,7 +197,6 @@ describe('Design System, Welcome, Onboarding, Profile Reveal & Dashboard Unit Su
       }),
     ).toBeInTheDocument()
 
-    // Switch to Low-Conf Hatched state
     fireEvent.click(
       screen.getByRole('button', { name: /Low-Conf Hatched \(Salma/i }),
     )

@@ -97,3 +97,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/profileReveal.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Dark (`Night Lab`), and 10-Dimension Hatched Stress Mode; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/05-profile-reveal-*.png`.
 - **Critique Round 1 (Picky Designer)**: Added the **Baseline Psychometric Convergence** card (`QUEST+ 85% Staircase`) to the right 5-column stack so the 7:5 desktop columns align cleanly at the bottom edge.
 - **Critique Round 2 (Hostile Juror)**: Added `tabIndex={0}`, `role="region"`, and `aria-label="Snapshot provenance JSON payload"` on the scrollable `<pre>` snapshot inspector and verified SAT-JEPA hysteresis lock indicators (`1 / 3` vs `3 / 3` sessions).
+
+
+---
+
+## 8. Page 03 (`/assessment` · `Assessment Hub`) Automated QA & Critique Log (2026-10-24)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `AssessmentHubPage.tsx`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical or guilt terms across all task descriptions, staircase levels, and bias notes.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 9/9 unit & component tests pass (`src/tests/designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `AssessmentHubPage` route chunk is `23.30 kB` (`6.39 kB` gzipped).
+- **`npx playwright test e2e/assessmentHub.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Dark (`Night Lab`), and 10-Dimension Table View; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/03-assessment-hub-*.png`.
+- **Critique Round 1 (Picky Designer)**: Added explicit `GET /v1/tasks/next` and `POST /v1/telemetry/event` contract summary boxes inside the **Scheduler & Telemetry Contracts** card so the 7:5 desktop columns align cleanly at the bottom edge.
+- **Critique Round 2 (Hostile Juror)**: Verified the 1-click **"View Task Queue as Table"** semantic `<table>` toggle and explicit **Known Measurement Biases** per dimension.
