@@ -113,29 +113,36 @@
 ---
 
 ## Acceptance checklist (from the Definition of Done)
-- [ ] Matches this approved spec; any deviation logged in `DECISIONS.md`.
-- [ ] Only design tokens used (`npm run lint:tokens` exits 0).
-- [ ] All states (`steady-improver`, `noisy-low-confidence`, `edge-missing-dim`, `new-user`, `loading`, `error`, `extreme-text`) implemented and screenshotted.
-- [ ] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
-- [ ] Complete keyboard navigation, `3px` focus ring, logical tab order, $\ge 44\text{ px}$ targets.
-- [ ] Reduced motion respected.
-- [ ] Color never carries meaning alone.
-- [ ] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
-- [ ] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
-- [ ] Code-split route (`React.lazy`).
-- [ ] Unit/component tests + Playwright `axe-core` check (`0` violations).
-- [ ] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
-- [ ] Docs, screenshots, `STATE.md` and commit are done.
+- [x] Matches this approved spec; any deviation logged in `DECISIONS.md`.
+- [x] Only design tokens used (`npm run lint:tokens` exits 0).
+- [x] All states (`steady-improver`, `noisy-low-confidence`, `edge-missing-dim`, `new-user`, `loading`, `error`, `extreme-text`) implemented and screenshotted.
+- [x] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
+- [x] Complete keyboard navigation, `3px` focus ring, logical tab order, $\ge 44\text{ px}$ targets.
+- [x] Reduced motion respected.
+- [x] Color never carries meaning alone.
+- [x] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
+- [x] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
+- [x] Code-split route (`React.lazy` — `AssessmentHubPage` chunk `23.30 kB`, `6.39 kB` gzipped).
+- [x] Unit/component tests (`9/9` pass in `designSystem.test.tsx`) + Playwright `axe-core` check (`0` violations across Light, Dark, and 10-Dim Table states).
+- [x] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
+- [x] Docs, screenshots, `STATE.md` and commit are done.
 
 ---
 
 ## Decisions and known issues
 - **Decisions**: Link every dimension task card directly to `/task/:dimId` so **Page 04 (`Task Runner · HERO`)** seamlessly receives the selected dimension and staircase parameters.
+- **Critique Round 1 (Picky Designer)**:
+  1. Added explicit `GET /v1/tasks/next` and `POST /v1/telemetry/event` contract summary boxes inside the **Scheduler & Telemetry Contracts** card so the 7-column left stack and 5-column right stack align cleanly at the bottom edge on `1440 px`.
+  2. Verified `0` horizontal overflow at `375 px` and `768 px`.
+- **Critique Round 2 (Hostile Juror)**:
+  1. Verified the 1-click **"View Task Queue as Table"** semantic `<table>` alternative and explicit **Known Measurement Biases** card per dimension.
 - **Known Issues**: None.
 
 ---
 
 ## Screenshots (paths) and commit hashes
-- `docs/ui/screenshots/03-assessment-hub-1440.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/03-assessment-hub-768.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/03-assessment-hub-375.png` *(Pending Step 7 Visual QA)*
+- `docs/ui/screenshots/03-assessment-hub-1440.png`
+- `docs/ui/screenshots/03-assessment-hub-768.png`
+- `docs/ui/screenshots/03-assessment-hub-375.png`
+- `docs/ui/screenshots/03-assessment-hub-10dims-table-1440.png`
+- `docs/ui/screenshots/03-assessment-hub-dark-1440.png`

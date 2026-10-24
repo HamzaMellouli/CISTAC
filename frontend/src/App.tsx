@@ -4,6 +4,7 @@ import { AppShell } from './components/layout/AppShell'
 
 const WelcomePage = React.lazy(() => import('./pages/WelcomePage'))
 const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'))
+const AssessmentHubPage = React.lazy(() => import('./pages/AssessmentHubPage'))
 const ProfileRevealPage = React.lazy(() => import('./pages/ProfileRevealPage'))
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
@@ -32,6 +33,7 @@ export function App() {
           <Routes>
             <Route path="/" element={<WelcomePage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
+            <Route path="/assessment" element={<AssessmentHubPage />} />
             <Route path="/profile-reveal" element={<ProfileRevealPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
