@@ -139,3 +139,18 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/brainTwin.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Dark (`Night Lab` @ `Snap #7`), and 10-Dimension Early Snapshot (`Snap #1` Table View); 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/08-brain-twin-*.png`.
 - **Critique Round 1 (Picky Designer)**: Added the **Aggregate Twin Convergence (`Mean Δc`)** tile when `dimensions.length % 2 === 1` (`3` or `7` dimensions) so the 2-column diff grid has zero empty cells, and added the **Snapshot Milestone & QUEST+ Cadence** card in the right 5-column stack of Row 1 to balance the left `<BrainTwinTimeTravel />` stack.
 - **Critique Round 2 (Hostile Juror)**: Verified that scrubbing across `Snap #1` (10/10 Hatched), `Snap #7` (7/10 Solid, 3/10 Hatched), and `Snap #14` (Converged) dynamically updates `<UncertaintyRadar />`, the 2D SAT-JEPA manifold polyline, the hysteresis hold counter (`1/3` → `3/3`), and the cryptographic hash chain inspector.
+
+
+---
+
+## 11. Page 09 (`/coach` · `AI Coach` HERO) Automated QA & Critique Log (2026-10-24)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `AiCoachPage.tsx` and `copyLinter.ts`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical or guilt terms across all coach recommendations, scenario chips, and deterministic rule-engine explanations.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 12/12 unit & component tests pass (`src/tests/designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `AiCoachPage` route chunk is `24.46 kB` (`7.92 kB` gzipped).
+- **`npx playwright test e2e/aiCoach.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Deterministic Rule-Engine Fallback + 10-Dimension Table View (`fallback-mode`), and Dark (`Night Lab` @ `rest-pacing`); 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/09-ai-coach-*.png`.
+- **Critique Round 1 (Picky Designer)**: Added the **Deterministic Rule Engine & Explainability Guarantees** card (`Card L2`) below the main Coaching Studio card in the left 7-column stack so both columns align cleanly at the bottom edge on `1440 px`, and updated the `3 · ☾ Rest-First Pacing` handler to set `setSimulateLlmDown(false)` so `<Mascot state="rest" />` renders as designed.
+- **Critique Round 2 (Hostile Juror)**: Added `sm:flex-nowrap` and `shrink-0` on the `Ask Coach` buttons in the `SAT-JEPA Δc Dimension Grounding` rail so long dimension labels (`Cognitive Flexibility (Set-Shifting)` and `Episodic Pattern Separation`) never wrap the action button on desktop, and verified the live `lintCopyText()` guardrail interception demo.
+

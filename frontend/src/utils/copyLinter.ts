@@ -123,3 +123,7 @@ export function lintCopyText(input: string): CopyLintResult {
     sanitizedPreview,
   }
 }
+
+
+export const SAMPLE_GUARDRAIL_INTERCEPTION_INPUT =
+  'Patient shows working-memory deficit and broke your 4-day streak after a slow block.'
