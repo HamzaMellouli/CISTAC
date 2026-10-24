@@ -5,7 +5,7 @@ import { lintCopyText } from '../utils/copyLinter'
 import { getDimensionsByPreset } from '../config/dimensions'
 import { App } from '../App'
 
-describe('Wave 1 Core Pages & Design System Unit Suite', () => {
+describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
   it('verifies all 21 Light & Dark token pairs pass WCAG 2.1 thresholds', () => {
     const reports = evaluateDesignSystemContrast()
     expect(reports.length).toBeGreaterThanOrEqual(20)
@@ -246,6 +246,38 @@ describe('Wave 1 Core Pages & Design System Unit Suite', () => {
       screen.getByRole('button', { name: /Low-Conf Hatched \(Salma/i }),
     )
     expect(screen.getByText(/Rest-First Pacing/i)).toBeInTheDocument()
+  })
+
+  it('renders Page 08 Brain Twin (/brain-twin) with Signature #2 BrainTwinTimeTravel scrubber, snapshot diff table toggle, and manifold trajectory', async () => {
+    window.history.pushState({}, '', '/brain-twin')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Longitudinal Brain Twin & Time-Travel Studio/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Toggle Snapshot Diff Table
+    fireEvent.click(
+      screen.getByRole('button', { name: /View Snapshot Diff as Table/i }),
+    )
+    expect(
+      screen.getByRole('table', {
+        name: /Side-by-side historical snapshot comparison table/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Scrub to Early Snapshot (#1)
+    fireEvent.click(
+      screen.getByRole('button', { name: /2 · Scrub to Snap #1 \(Hatched\)/i }),
+    )
+    expect(
+      screen.getAllByText(/Day 1 Cold Baseline/i).length,
+    ).toBeGreaterThanOrEqual(1)
   })
 
   it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {

@@ -203,6 +203,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Link>
             )}
 
+            {location.pathname !== '/brain-twin' && (
+              <Link
+                to="/brain-twin"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                Brain Twin
+              </Link>
+            )}
+
             {location.pathname !== '/design-system' && (
               <Link
                 to="/design-system"
