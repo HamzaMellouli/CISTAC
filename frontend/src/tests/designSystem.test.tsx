@@ -1,11 +1,15 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { evaluateDesignSystemContrast } from '../utils/contrast'
 import { lintCopyText } from '../utils/copyLinter'
 import { getDimensionsByPreset } from '../config/dimensions'
+import { useAppStore } from '../store/useAppStore'
 import { App } from '../App'
 
 describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
+  beforeEach(() => {
+    useAppStore.getState().resetDemoState()
+  })
   it('verifies all 21 Light & Dark token pairs pass WCAG 2.1 thresholds', () => {
     const reports = evaluateDesignSystemContrast()
     expect(reports.length).toBeGreaterThanOrEqual(20)
@@ -327,6 +331,52 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
         name: /Deterministic Fallback: ON/i,
       }),
     )
+  })
+
+  it('renders Page 07 Dimension Detail (/dimensions/:dimId) with ProjectionFanChart, Session Trial Log Table, Psychometric Formula, and Biases', async () => {
+    window.history.pushState({}, '', '/dimensions/working_memory')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /WM · Working Memory/i,
+        level: 1,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Check Session Trial Log table
+    expect(
+      screen.getByRole('table', {
+        name: /Recent calibration sessions for Working Memory/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Switch to Hatched (<60% CI) state (jumps to Episodic Pattern Separation)
+    fireEvent.click(
+      screen.getByRole('button', { name: /2 · ⚡ Hatched \(<60% CI\)/i }),
+    )
+    expect(
+      await screen.findByRole('heading', {
+        name: /EP · Episodic Pattern Separation/i,
+        level: 1,
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(/Diagonal SVG Hatching Active/i),
+    ).toBeInTheDocument()
+
+    // Toggle Raw Telemetry JSON inspector
+    fireEvent.click(
+      screen.getByRole('button', { name: /View Telemetry JSON/i }),
+    )
+    expect(
+      screen.getByRole('region', {
+        name: /Dimension telemetry summary JSON payload/i,
+      }),
+    ).toBeInTheDocument()
   })
 
   it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {

@@ -154,3 +154,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **Critique Round 1 (Picky Designer)**: Added the **Deterministic Rule Engine & Explainability Guarantees** card (`Card L2`) below the main Coaching Studio card in the left 7-column stack so both columns align cleanly at the bottom edge on `1440 px`, and updated the `3 · ☾ Rest-First Pacing` handler to set `setSimulateLlmDown(false)` so `<Mascot state="rest" />` renders as designed.
 - **Critique Round 2 (Hostile Juror)**: Added `sm:flex-nowrap` and `shrink-0` on the `Ask Coach` buttons in the `SAT-JEPA Δc Dimension Grounding` rail so long dimension labels (`Cognitive Flexibility (Set-Shifting)` and `Episodic Pattern Separation`) never wrap the action button on desktop, and verified the live `lintCopyText()` guardrail interception demo.
 
+
+---
+
+## 12. Page 07 (`/dimensions/:dimId` · `Dimension Detail`) Automated QA & Critique Log (2026-10-24)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `DimensionDetailPage.tsx` and `ProjectionFanChart.tsx`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical or guilt terms across all psychometric formulas, known measurement biases, and session trial logs.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 13/13 unit & component tests pass (`src/tests/designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `DimensionDetailPage` route chunk is `22.09 kB` (`7.02 kB` gzipped).
+- **`npx playwright test e2e/dimensionDetail.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Hatched (`<60%` CI) + 10-Dimension Stress (`low-confidence-hatched`), and Dark (`Night Lab` @ `VP · Visuospatial Planning & Gf`); 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/07-dimension-detail-*.png`.
+- **Critique Round 1 (Picky Designer)**: Replaced literal markdown backticks in `ProjectionFanChart.tsx` (`+1 Wk`, `+2 Wk`) with `<code className="font-mono-tabular">` elements, promoted `<ProjectionFanChart />` heading to `<h2>` for strict `h1 -> h2` semantic hierarchy, and added `sm:flex-nowrap` with `shrink-0` on the card header action buttons (`View Trajectory as Table` and `View Telemetry JSON`).
+- **Critique Round 2 (Hostile Juror)**: Calibrated `buildSessionHistory()` accuracy values (`84%` to `91%`) to align with the `85%` QUEST+ staircase target in the formula specification card, and added `tabIndex={0} role="region"` to the mobile table scroll container.
+

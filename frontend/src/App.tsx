@@ -8,6 +8,9 @@ const AssessmentHubPage = React.lazy(() => import('./pages/AssessmentHubPage'))
 const TaskRunnerPage = React.lazy(() => import('./pages/TaskRunnerPage'))
 const ProfileRevealPage = React.lazy(() => import('./pages/ProfileRevealPage'))
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'))
+const DimensionDetailPage = React.lazy(
+  () => import('./pages/DimensionDetailPage'),
+)
 const BrainTwinPage = React.lazy(() => import('./pages/BrainTwinPage'))
 const AiCoachPage = React.lazy(() => import('./pages/AiCoachPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
@@ -46,6 +49,14 @@ export function App() {
             <Route path="/task/:dimId" element={<TaskRunnerPage />} />
             <Route path="/profile-reveal" element={<ProfileRevealPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route
+              path="/dimensions"
+              element={<Navigate to="/dimensions/working_memory" replace />}
+            />
+            <Route
+              path="/dimensions/:dimId"
+              element={<DimensionDetailPage />}
+            />
             <Route path="/brain-twin" element={<BrainTwinPage />} />
             <Route path="/coach" element={<AiCoachPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />

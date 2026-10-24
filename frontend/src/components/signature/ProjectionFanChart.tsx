@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useState } from 'react'
 import type { DimensionConfig, TrajectoryPoint } from '../../contracts'
 import { buildTrajectoryForTarget } from '../../services/mocks/fixtures'
 import type { PersonaId } from '../../store/useAppStore'
@@ -10,6 +10,7 @@ export interface ProjectionFanChartProps {
   dimensions: readonly DimensionConfig[]
   persona: PersonaId
   title?: string
+  initialTarget?: string
 }
 
 const CHART_W = 680
@@ -23,10 +24,15 @@ export function ProjectionFanChart({
   dimensions,
   persona,
   title = '6-Week Historical Trajectory & 2-Week Uncertainty Fan',
+  initialTarget = 'composite',
 }: ProjectionFanChartProps) {
   const hatchPatternId = useId().replace(/:/g, '')
-  const [selectedTarget, setSelectedTarget] = useState<string>('composite')
+  const [selectedTarget, setSelectedTarget] = useState<string>(initialTarget)
   const [showTable, setShowTable] = useState<boolean>(false)
+
+  useEffect(() => {
+    setSelectedTarget(initialTarget)
+  }, [initialTarget])
 
   const activeDim = useMemo(
     () => dimensions.find((d) => d.id === selectedTarget) ?? null,
@@ -104,23 +110,26 @@ export function ProjectionFanChart({
 
   return (
     <Card className="p-4 space-y-3">
-      <div className="flex flex-wrap items-start justify-between gap-2 border-b border-border pb-3">
-        <div>
+      <div className="flex flex-wrap sm:flex-nowrap items-start justify-between gap-2 border-b border-border pb-3">
+        <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-display text-lg font-bold text-ink">{title}</h3>
+            <h2 className="font-display text-lg font-bold text-ink">{title}</h2>
             <Badge tone="info" glyph="◈">
               SAT-JEPA Forecast Fan
             </Badge>
           </div>
           <p className="text-xs text-ink-muted">
             Observed 95% confidence band narrows with practice (W1→W6), while
-            the 2-week forecast cone widens honestly (`+1 Wk`, `+2 Wk`).
+            the 2-week forecast cone widens honestly (
+            <code className="font-mono-tabular">+1 Wk</code>,{' '}
+            <code className="font-mono-tabular">+2 Wk</code>).
           </p>
         </div>
 
         <Button
           variant="secondary"
           size="sm"
+          className="shrink-0"
           aria-pressed={showTable}
           onClick={() => setShowTable((prev) => !prev)}
         >
@@ -400,7 +409,9 @@ export function ProjectionFanChart({
               </span>
               <span>
                 <strong className="text-ink">▨ Hatched Cone:</strong> 2-Week
-                SAT-JEPA Forecast Fan (`+1 Wk`, `+2 Wk`)
+                SAT-JEPA Forecast Fan (
+                <code className="font-mono-tabular">+1 Wk</code>,{' '}
+                <code className="font-mono-tabular">+2 Wk</code>)
               </span>
             </div>
             <span className="font-mono-tabular text-ink font-semibold">
