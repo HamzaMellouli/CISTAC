@@ -83,3 +83,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/dashboard.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Dark (`Night Lab`), Partial (`edge-missing-dim` with table toggles open), and 10-Dimension Stress Mode; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/06-dashboard-*.png`.
 - **Critique Round 1 (Picky Designer)**: Added the **SAT-JEPA Latent Twin State & Hysteresis** card in Row 1 so the 5-column left stack and 7-column right stack align cleanly at the bottom edge on `1440 px`, and updated `Badge.tsx` (`max-w-full whitespace-normal sm:whitespace-nowrap`) so long badges wrap inside `375 px` mobile cards without clipping.
 - **Critique Round 2 (Hostile Juror)**: Verified accessible table toggles on all 3 visualizations (`<UncertaintyRadar />`, `<ProjectionFanChart />`, `<FatigueHeatmap />`) and explicit `"Design proposal, not validated"` badge + weighted formula printout on the 0–100 Collaboration Score card.
+
+
+---
+
+## 7. Page 05 (`/profile-reveal` · `Profile Reveal` HERO) + Mascot Sprint Automated QA & Critique Log (2026-10-24)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `ProfileRevealPage.tsx` and `Mascot.tsx`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical or guilt terms across all archetype discovery cards, Mascot messages, and dimension reveal strips.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 8/8 unit & component tests pass (`src/tests/designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `ProfileRevealPage` route chunk is `20.28 kB` (`5.77 kB` gzipped) and `Mascot` chunk is `5.05 kB` (`1.67 kB` gzipped, well under the `15 kB` SVG budget).
+- **`npx playwright test e2e/profileReveal.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Dark (`Night Lab`), and 10-Dimension Hatched Stress Mode; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/05-profile-reveal-*.png`.
+- **Critique Round 1 (Picky Designer)**: Added the **Baseline Psychometric Convergence** card (`QUEST+ 85% Staircase`) to the right 5-column stack so the 7:5 desktop columns align cleanly at the bottom edge.
+- **Critique Round 2 (Hostile Juror)**: Added `tabIndex={0}`, `role="region"`, and `aria-label="Snapshot provenance JSON payload"` on the scrollable `<pre>` snapshot inspector and verified SAT-JEPA hysteresis lock indicators (`1 / 3` vs `3 / 3` sessions).

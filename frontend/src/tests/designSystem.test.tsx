@@ -5,7 +5,7 @@ import { lintCopyText } from '../utils/copyLinter'
 import { getDimensionsByPreset } from '../config/dimensions'
 import { App } from '../App'
 
-describe('Design System, Welcome, Onboarding & Dashboard Unit Suite', () => {
+describe('Design System, Welcome, Onboarding, Profile Reveal & Dashboard Unit Suite', () => {
   it('verifies all 21 Light & Dark token pairs pass WCAG 2.1 thresholds', () => {
     const reports = evaluateDesignSystemContrast()
     expect(reports.length).toBeGreaterThanOrEqual(20)
@@ -101,6 +101,40 @@ describe('Design System, Welcome, Onboarding & Dashboard Unit Suite', () => {
     expect(
       screen.getAllByText(/CONSENT-ST-2026-FAST/i).length,
     ).toBeGreaterThanOrEqual(1)
+  })
+
+  it('renders Page 05 Profile Reveal (/profile-reveal) and supports 5-state Mascot switcher, confidence filters, and snapshot JSON inspector', async () => {
+    window.history.pushState({}, '', '/profile-reveal')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Meet your initial Cognitive Twin—calibrated strengths/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Switch to First-Session Hatched (Salma)
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /First-Session Hatched \(Salma/i,
+      }),
+    )
+    expect(
+      screen.getByText(/Exploratory Fast-Responder \(Preliminary Profile\)/i),
+    ).toBeInTheDocument()
+
+    // Test Mascot state override button
+    fireEvent.click(screen.getByRole('button', { name: 'thinking' }))
+    expect(screen.getByText(/State: thinking/i)).toBeInTheDocument()
+
+    // Open Snapshot JSON inspector
+    fireEvent.click(
+      screen.getByRole('button', { name: /Inspect Snapshot JSON/i }),
+    )
+    expect(screen.getByText(/SNAP-2026-SALMA-01/i)).toBeInTheDocument()
   })
 
   it('renders Page 06 Dashboard (/dashboard) and supports trajectory fan table toggle, fatigue heatmap table toggle, and 3-to-10 dimensions', async () => {
