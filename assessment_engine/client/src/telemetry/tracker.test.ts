@@ -145,6 +145,11 @@ describe('TrialRecorder', () => {
   })
 })
 
+function setVisibility(v: DocumentVisibilityState) {
+  Object.defineProperty(document, 'visibilityState', { value: v, configurable: true })
+  document.dispatchEvent(new Event('visibilitychange'))
+}
+
 function ev(i: number): TelemetryEvent {
   return { trial_index: i } as TelemetryEvent
 }
@@ -169,6 +174,7 @@ describe('Tracker', () => {
   afterEach(() => {
     trackers.forEach((t) => t.destroy())
     trackers = []
+    Reflect.deleteProperty(document, 'visibilityState') // back to jsdom's own getter
     vi.useRealTimers()
   })
 
@@ -294,6 +300,16 @@ describe('Tracker', () => {
     expect(fetchFn).not.toHaveBeenCalled()
   })
 
+  test('page becoming hidden sends a beacon; becoming visible does not', () => {
+    const beacon = vi.fn((_url: string, _data: Blob) => true)
+    const t = make({ fetchFn: okFetch(), beacon })
+    t.push(ev(1))
+    setVisibility('visible')
+    expect(beacon).not.toHaveBeenCalled()
+    setVisibility('hidden')
+    expect(beacon).toHaveBeenCalledTimes(1)
+  })
+
   test('refused beacon keeps events', async () => {
     const fetchFn = okFetch()
     const t = make({ fetchFn, beacon: () => false })
@@ -303,7 +319,7 @@ describe('Tracker', () => {
     expect(sent(fetchFn)).toEqual([1])
   })
 
-  test('destroy stops the interval and pagehide listener', async () => {
+  test('destroy stops the interval, pagehide and visibilitychange listeners', async () => {
     const beacon = vi.fn(() => true)
     const fetchFn = okFetch()
     const t = make({ fetchFn, beacon })
@@ -311,6 +327,7 @@ describe('Tracker', () => {
     t.push(ev(1))
     await vi.advanceTimersByTimeAsync(5000)
     window.dispatchEvent(new Event('pagehide'))
+    setVisibility('hidden')
     expect(fetchFn).not.toHaveBeenCalled()
     expect(beacon).not.toHaveBeenCalled()
   })

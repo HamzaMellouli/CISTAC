@@ -99,6 +99,10 @@ export class Tracker {
   private inFlight = false
   private timer: ReturnType<typeof setInterval>
   private onPageHide = () => this.flushBeacon()
+  // Mobile browsers often discard a backgrounded tab without firing pagehide; hidden is the last reliable signal.
+  private onVisibility = () => {
+    if (document.visibilityState === 'hidden') this.flushBeacon()
+  }
 
   constructor(opts: TrackerOpts = {}) {
     this.endpoint = opts.endpoint ?? '/v1/telemetry/event'
@@ -112,6 +116,7 @@ export class Tracker {
         : undefined)
     this.timer = setInterval(() => void this.flush(), opts.flushMs ?? 2000)
     if (typeof window !== 'undefined') window.addEventListener('pagehide', this.onPageHide)
+    if (typeof document !== 'undefined') document.addEventListener('visibilitychange', this.onVisibility)
   }
 
   push(e: TelemetryEvent): void {
@@ -162,6 +167,7 @@ export class Tracker {
   destroy(): void {
     clearInterval(this.timer)
     if (typeof window !== 'undefined') window.removeEventListener('pagehide', this.onPageHide)
+    if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', this.onVisibility)
   }
 }
 
