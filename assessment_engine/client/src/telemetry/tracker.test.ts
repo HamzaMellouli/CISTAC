@@ -79,6 +79,34 @@ describe('TrialRecorder', () => {
     expect(() => r.finish({ correct: true })).toThrow()
   })
 
+  test('pointer moves feed jitter but not first-press latency', () => {
+    const c = clock()
+    const r = new TrialRecorder(ctx, c.now)
+    r.start(0)
+    c.set(30)
+    r.input('move')
+    c.set(90)
+    r.input('move')
+    c.set(250)
+    r.input('key')
+    c.set(300)
+    r.input('down')
+    c.set(400)
+    const e = r.finish({ correct: true })
+    expect(e.keystroke_latency_ms).toBe(250)
+    expect(e.hesitation_jitter).toBeGreaterThan(0)
+  })
+
+  test('moves only: latency stays null', () => {
+    const c = clock()
+    const r = new TrialRecorder(ctx, c.now)
+    r.start(0)
+    c.set(30)
+    r.input('move')
+    c.set(400)
+    expect(r.finish({ correct: true }).keystroke_latency_ms).toBeNull()
+  })
+
   test('input outside a trial is ignored', () => {
     const c = clock()
     const r = new TrialRecorder(ctx, c.now)

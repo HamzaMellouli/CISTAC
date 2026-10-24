@@ -24,6 +24,7 @@ test('keydown and pointerdown record inputs; key repeat is ignored', () => {
   fireEvent.keyDown(window, { key: 'a', repeat: true })
   fireEvent.pointerDown(window)
   expect(input).toHaveBeenCalledTimes(2)
+  expect(input.mock.calls).toEqual([['key'], ['down']])
 })
 
 test('pointermove is throttled to one input per 50 ms', () => {
@@ -36,6 +37,7 @@ test('pointermove is throttled to one input per 50 ms', () => {
   act(() => void vi.advanceTimersByTime(5)) // 50 ms after the first move
   fireEvent.pointerMove(window)
   expect(input).toHaveBeenCalledTimes(2)
+  expect(input.mock.calls).toEqual([['move'], ['move']])
 })
 
 test('records the input before bubble-phase handlers see the event', () => {

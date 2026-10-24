@@ -21,7 +21,8 @@ type TrialResult = {
 export class TrialRecorder {
   private ctx: TrialCtx
   private now: () => number
-  private trial: { index: number; start: number; inputs: number[] } | null = null
+  private trial: { index: number; start: number; inputs: number[]; firstPress: number | null } | null =
+    null
   private burst = 0
 
   constructor(ctx: TrialCtx, now = () => performance.now()) {
@@ -30,11 +31,16 @@ export class TrialRecorder {
   }
 
   start(trialIndex: number): void {
-    this.trial = { index: trialIndex, start: this.now(), inputs: [] }
+    this.trial = { index: trialIndex, start: this.now(), inputs: [], firstPress: null }
   }
 
-  input(): void {
-    this.trial?.inputs.push(this.now())
+  // Every kind feeds hesitation jitter; only a key or pointer press sets keystroke latency.
+  input(kind: 'key' | 'down' | 'move' = 'down'): void {
+    const t = this.trial
+    if (!t) return
+    const now = this.now()
+    t.inputs.push(now)
+    if (kind !== 'move' && t.firstPress === null) t.firstPress = now
   }
 
   finish(r: TrialResult): TelemetryEvent {
@@ -54,7 +60,7 @@ export class TrialRecorder {
       error_flag: !r.correct,
       error_burst: this.burst,
       hesitation_jitter: hesitationJitter(t.inputs),
-      keystroke_latency_ms: t.inputs.length ? t.inputs[0] - t.start : null,
+      keystroke_latency_ms: t.firstPress === null ? null : t.firstPress - t.start,
       trial_meta: { item_id: `${this.ctx.task_id}:${t.index}`, ...r.meta },
       voice_opt_in,
       // The server rejects voice fields without opt-in, so they are only attached when opted in.
