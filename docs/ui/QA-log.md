@@ -111,3 +111,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/assessmentHub.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Dark (`Night Lab`), and 10-Dimension Table View; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/03-assessment-hub-*.png`.
 - **Critique Round 1 (Picky Designer)**: Added explicit `GET /v1/tasks/next` and `POST /v1/telemetry/event` contract summary boxes inside the **Scheduler & Telemetry Contracts** card so the 7:5 desktop columns align cleanly at the bottom edge.
 - **Critique Round 2 (Hostile Juror)**: Verified the 1-click **"View Task Queue as Table"** semantic `<table>` toggle and explicit **Known Measurement Biases** per dimension.
+
+
+---
+
+## 9. Page 04 (`/task/:dimId` · `Task Runner` HERO) Automated QA & Critique Log (2026-10-24)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `TaskRunnerPage.tsx`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical or guilt terms across all task prompts, tab-blur pause dialogs, and completion summaries.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 10/10 unit & component tests pass (`src/tests/designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `TaskRunnerPage` route chunk is `32.80 kB` (`8.15 kB` gzipped).
+- **`npx playwright test e2e/taskRunner.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Dark (`Night Lab`), Tab-Blur Auto-Pause (`paused-blur`), and 10-Dimension Post-Block Completion (`completed`); 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/04-task-runner-*.png`.
+- **Critique Round 1 (Picky Designer)**: Removed literal markdown backticks from headings and badges (`POST /v1/telemetry/event Log` and `Micro-Block Complete · Telemetry Synced (202 Accepted)`) and added the **QUEST+ Posterior & Hysteresis Update** card in the Stage 4 (`completed`) 7-column stack to balance the right `<WhyThisPanel />` column.
+- **Critique Round 2 (Hostile Juror)**: Verified the **Zero-Distraction Lock** (`<Mascot />` hidden during `running` timed trials and re-enabled in `briefing` and `completed`), the **Tab-Blur / VisibilityChange Auto-Pause Guard**, live dimension switching (`3/6/7/8/10` dimensions) updating the `POST /v1/telemetry/event` JSON payload, and the **"View Telemetry as Table"** toggle.

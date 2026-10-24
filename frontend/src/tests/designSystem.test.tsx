@@ -5,7 +5,7 @@ import { lintCopyText } from '../utils/copyLinter'
 import { getDimensionsByPreset } from '../config/dimensions'
 import { App } from '../App'
 
-describe('Design System, Welcome, Onboarding, Assessment Hub, Profile Reveal & Dashboard Unit Suite', () => {
+describe('Wave 1 Core Pages & Design System Unit Suite', () => {
   it('verifies all 21 Light & Dark token pairs pass WCAG 2.1 thresholds', () => {
     const reports = evaluateDesignSystemContrast()
     expect(reports.length).toBeGreaterThanOrEqual(20)
@@ -116,7 +116,6 @@ describe('Design System, Welcome, Onboarding, Assessment Hub, Profile Reveal & D
     )
     expect(heading).toBeInTheDocument()
 
-    // Toggle Task Queue Table
     fireEvent.click(
       screen.getByRole('button', { name: /View Task Queue as Table/i }),
     )
@@ -126,12 +125,58 @@ describe('Design System, Welcome, Onboarding, Assessment Hub, Profile Reveal & D
       }),
     ).toBeInTheDocument()
 
-    // Open Next-Task Payload JSON
     fireEvent.click(
       screen.getByRole('button', { name: /Inspect Payload JSON/i }),
     )
     expect(
       screen.getByText(/low_confidence_hatched_band_narrowing/i),
+    ).toBeInTheDocument()
+  })
+
+  it('renders Page 04 Task Runner (/task/:dimId) with Zero-Distraction Mascot Lock, Tab-Blur Auto-Pause, and live telemetry table toggle', async () => {
+    window.history.pushState({}, '', '/task/episodic_pattern_separation')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Mnemonic Similarity Task/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+    expect(
+      screen.getByText(/Zero-Distraction Lock: Mascot Hidden/i),
+    ).toBeInTheDocument()
+
+    // Toggle Telemetry Table
+    fireEvent.click(
+      screen.getByRole('button', { name: /View Telemetry as Table/i }),
+    )
+    expect(
+      screen.getByRole('table', {
+        name: /Recorded trial telemetry events table/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Trigger Tab-Blur Auto-Pause
+    fireEvent.click(
+      screen.getByRole('button', { name: /Simulate Tab-Blur Pause/i }),
+    )
+    expect(
+      screen.getByRole('heading', {
+        name: /Trial Auto-Paused — Focus Left Window/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Resume and Fast-Forward to Summary (where Mascot Celebrate re-engages)
+    fireEvent.click(
+      screen.getByRole('button', { name: /Fast-Forward to Summary/i }),
+    )
+    expect(
+      screen.getByRole('heading', {
+        name: /Episodic Pattern Separation confidence interval narrowed!/i,
+      }),
     ).toBeInTheDocument()
   })
 

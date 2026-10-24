@@ -109,29 +109,35 @@
 ---
 
 ## Acceptance checklist (from the Definition of Done)
-- [ ] Matches this approved spec; any deviation logged in `DECISIONS.md`.
-- [ ] Only design tokens used (`npm run lint:tokens` exits 0).
-- [ ] All states (`running`, `briefing`, `paused-blur`, `completed`, `loading`, `error`, `extreme-text`) implemented and screenshotted.
-- [ ] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
-- [ ] Complete keyboard navigation (`1/2/3`, `Escape`), `3px` focus ring, $\ge 44\text{ px}$ targets.
-- [ ] Reduced motion respected; `<Mascot />` locked off during `running` state.
-- [ ] Color never carries meaning alone.
-- [ ] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
-- [ ] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
-- [ ] Code-split route (`React.lazy`).
-- [ ] Unit/component tests + Playwright `axe-core` check (`0` violations).
-- [ ] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
-- [ ] Docs, screenshots, `STATE.md` and commit are done.
+- [x] Matches this approved spec; any deviation logged in `DECISIONS.md`.
+- [x] Only design tokens used (`npm run lint:tokens` exits 0).
+- [x] All states (`running`, `briefing`, `paused-blur`, `completed`, `loading`, `error`, `extreme-text`) implemented and screenshotted.
+- [x] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
+- [x] Complete keyboard navigation (`1/2/3`, `Escape`), `3px` focus ring, $\ge 44\text{ px}$ targets.
+- [x] Reduced motion respected; `<Mascot />` locked off during `running` state.
+- [x] Color never carries meaning alone.
+- [x] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
+- [x] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
+- [x] Code-split route (`React.lazy` — `31.18 kB` chunk, `7.98 kB` gzipped).
+- [x] Unit/component tests + Playwright `axe-core` check (`0` violations).
+- [x] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
+- [x] Docs, screenshots, `STATE.md` and commit are done.
 
 ---
 
 ## Decisions and known issues
 - **Decisions**: Default `/task/:dimId` to the `running` (active trial) view with 1 pre-logged trial in the live telemetry stream so evaluators and screenshots immediately see the interactive stimulus canvas + live `POST /v1/telemetry/event` JSON payload, while offering 1-click tabs for `Pre-Block Briefing`, `⏸ Tab-Blur Auto-Pause`, and `✓ Post-Block Summary`.
+- **Critique Round 1 & 2 Polish**:
+  - Replaced literal markdown backticks in UI badges and headings with clean typography (`Micro-Block Complete · Telemetry Synced (202 Accepted)` and `POST /v1/telemetry/event Log`).
+  - Synchronized the pre-seeded telemetry JSON log (`recordedEvents[0]`) when switching dimensions via the Dimension Switcher bar so `task_id`, `dimension`, and `schema_type` immediately match the active dimension.
+  - Added a **QUEST+ Posterior & Hysteresis Update** summary card below `<WhyThisPanel />` in the Stage 4 (`completed`) 5-column stack so both columns align cleanly.
 - **Known Issues**: None.
 
 ---
 
 ## Screenshots (paths) and commit hashes
-- `docs/ui/screenshots/04-task-runner-1440.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/04-task-runner-768.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/04-task-runner-375.png` *(Pending Step 7 Visual QA)*
+- `docs/ui/screenshots/04-task-runner-1440.png`
+- `docs/ui/screenshots/04-task-runner-768.png`
+- `docs/ui/screenshots/04-task-runner-375.png`
+- `docs/ui/screenshots/04-task-runner-completed-10dims-1440.png`
+- `docs/ui/screenshots/04-task-runner-dark-1440.png`
