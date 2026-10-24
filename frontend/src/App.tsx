@@ -4,6 +4,7 @@ import { AppShell } from './components/layout/AppShell'
 
 const WelcomePage = React.lazy(() => import('./pages/WelcomePage'))
 const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'))
+const DashboardPage = React.lazy(() => import('./pages/DashboardPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
 
 function RouteLoadingSkeleton() {
@@ -30,6 +31,7 @@ export function App() {
           <Routes>
             <Route path="/" element={<WelcomePage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

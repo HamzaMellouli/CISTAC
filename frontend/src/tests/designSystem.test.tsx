@@ -5,7 +5,7 @@ import { lintCopyText } from '../utils/copyLinter'
 import { getDimensionsByPreset } from '../config/dimensions'
 import { App } from '../App'
 
-describe('Design System, Welcome & Onboarding Unit Suite', () => {
+describe('Design System, Welcome, Onboarding & Dashboard Unit Suite', () => {
   it('verifies all 21 Light & Dark token pairs pass WCAG 2.1 thresholds', () => {
     const reports = evaluateDesignSystemContrast()
     expect(reports.length).toBeGreaterThanOrEqual(20)
@@ -49,11 +49,9 @@ describe('Design System, Welcome & Onboarding Unit Suite', () => {
     )
     expect(heading).toBeInTheDocument()
 
-    // Switch preview to Low-Conf (Hatched)
     fireEvent.click(screen.getByRole('button', { name: /Low-Conf \(Hatched\)/i }))
     expect(screen.getByText(/Hatched = Confidence < 60%/i)).toBeInTheDocument()
 
-    // Load Salma persona card
     fireEvent.click(
       screen.getByRole('button', { name: /Load Salma \(Hatched Twin\)/i }),
     )
@@ -75,7 +73,6 @@ describe('Design System, Welcome & Onboarding Unit Suite', () => {
     )
     expect(heading).toBeInTheDocument()
 
-    // Navigate to Step 2: Granular Telemetry Consent
     fireEvent.click(
       screen.getByRole('button', {
         name: /Continue to Step 2: Granular Consent/i,
@@ -87,7 +84,6 @@ describe('Design System, Welcome & Onboarding Unit Suite', () => {
       }),
     ).toBeInTheDocument()
 
-    // Toggle Minimal Mode (Reject All Optional)
     fireEvent.click(
       screen.getByRole('button', {
         name: /Reject All Optional \(Minimal Mode\)/i,
@@ -97,7 +93,6 @@ describe('Design System, Welcome & Onboarding Unit Suite', () => {
       screen.getAllByText(/CONSENT-ST-2026-MINIMAL/i).length,
     ).toBeGreaterThanOrEqual(1)
 
-    // Trigger Judge Fast-Track
     fireEvent.click(
       screen.getByRole('button', {
         name: /Judge Fast-Track: Safe Defaults & Go/i,
@@ -106,6 +101,46 @@ describe('Design System, Welcome & Onboarding Unit Suite', () => {
     expect(
       screen.getAllByText(/CONSENT-ST-2026-FAST/i).length,
     ).toBeGreaterThanOrEqual(1)
+  })
+
+  it('renders Page 06 Dashboard (/dashboard) and supports trajectory fan table toggle, fatigue heatmap table toggle, and 3-to-10 dimensions', async () => {
+    window.history.pushState({}, '', '/dashboard')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Your evolving cognitive twin—live confidence bands/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Toggle Trajectory Fan Table
+    fireEvent.click(
+      screen.getByRole('button', { name: /View Trajectory as Table/i }),
+    )
+    expect(
+      screen.getByRole('table', {
+        name: /Brain Twin 6-week historical trajectory and 2-week forecast table/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Toggle Fatigue Heatmap Table
+    fireEvent.click(
+      screen.getByRole('button', { name: /View Heatmap as Table/i }),
+    )
+    expect(
+      screen.getByRole('table', {
+        name: /Session Fatigue and Alertness by Time of Day and Day of Week/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Switch to Low-Conf Hatched state
+    fireEvent.click(
+      screen.getByRole('button', { name: /Low-Conf Hatched \(Salma/i }),
+    )
+    expect(screen.getByText(/Rest-First Pacing/i)).toBeInTheDocument()
   })
 
   it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {

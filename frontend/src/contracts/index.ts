@@ -108,6 +108,27 @@ export interface BrainTwinSnapshot {
   estimates: DimensionEstimate[]
 }
 
+export interface TrajectoryPoint {
+  weekKey: string // e.g. 'W1', 'W2', ..., 'W6', '+1 Wk', '+2 Wk'
+  weekLabel: string
+  scorePct: number
+  ciLowerPct: number
+  ciUpperPct: number
+  confidence: number
+  isProjected: boolean
+  sessionCount: number
+}
+
+export interface FatigueHeatmapCell {
+  windowId: 'morning' | 'afternoon' | 'evening'
+  windowLabel: string
+  dayKey: 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun'
+  readinessPct: number | null // null when no session logged in that slot
+  meanRtMs: number | null
+  status: 'optimal' | 'moderate' | 'fatigued' | 'unlogged'
+  glyph: '●' | '◐' | '▲' | '—'
+}
+
 export interface TelemetryEvent {
   user_id: string
   session_id: string

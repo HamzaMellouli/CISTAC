@@ -137,29 +137,37 @@
 ---
 
 ## Acceptance checklist (from the Definition of Done)
-- [ ] Matches this approved spec; any deviation logged in `DECISIONS.md`.
-- [ ] Only design tokens used (`npm run lint:tokens` exits 0).
-- [ ] All states (`steady-improver`, `noisy-low-confidence`, `edge-missing-dim`, `new-user`, `loading`, `error`, `extreme-text`, `offline`) implemented and screenshotted.
-- [ ] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
-- [ ] Complete keyboard navigation, `3px` focus ring, logical tab order, $\ge 44\text{ px}$ targets.
-- [ ] Reduced motion respected.
-- [ ] Color never carries meaning alone (vertex glyphs, trend arrows, cell numbers/glyphs, table toggles).
-- [ ] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
-- [ ] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
-- [ ] Code-split route (`React.lazy`).
-- [ ] Unit/component tests + Playwright axe-core check (`0` violations).
-- [ ] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
-- [ ] Docs, screenshots, `STATE.md` and commit are done.
+- [x] Matches this approved spec; any deviation logged in `DECISIONS.md`.
+- [x] Only design tokens used (`npm run lint:tokens` exits 0).
+- [x] All states (`steady-improver`, `noisy-low-confidence`, `edge-missing-dim`, `new-user`, `loading`, `error`, `extreme-text`, `offline`) implemented and screenshotted.
+- [x] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
+- [x] Complete keyboard navigation, `3px` focus ring, logical tab order, $\ge 44\text{ px}$ targets.
+- [x] Reduced motion respected.
+- [x] Color never carries meaning alone (vertex glyphs, trend arrows, cell numbers/glyphs, table toggles).
+- [x] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
+- [x] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
+- [x] Code-split route (`React.lazy` — `DashboardPage` chunk `26.20 kB`, `7.20 kB` gzipped).
+- [x] Unit/component tests (`7/7` pass in `designSystem.test.tsx`) + Playwright `axe-core` check (`0` violations in Light and Dark themes).
+- [x] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
+- [x] Docs, screenshots, `STATE.md` and commit are done.
 
 ---
 
 ## Decisions and known issues
-- **Decisions**: Build **Signature #4 (`<ProjectionFanChart />`)** and **`<FatigueHeatmap />`** as reusable, accessible components in `frontend/src/components/signature/` so they can also be embedded on Page 07 (`Dimension Detail`) and Page 08 (`Brain Twin Timeline`).
+- **Decisions**: Built **Signature #4 (`<ProjectionFanChart />`)** and **`<FatigueHeatmap />`** as reusable, accessible components in `frontend/src/components/signature/` so they can also be embedded on Page 07 (`Dimension Detail`) and Page 08 (`Brain Twin Timeline`).
+- **Critique Round 1 (Picky Designer)**:
+  1. Added the **SAT-JEPA Latent Twin State & Hysteresis** card (`Cluster C5 · 3/3 Sessions Stable`, `Prototype Δc`, `Hysteresis Lock Confirmed`) in the left column of Row 1 so the 5-column left stack and 7-column right stack align cleanly at the bottom edge on `1440 px`.
+  2. Updated `Badge.tsx` (`max-w-full whitespace-normal sm:whitespace-nowrap text-start leading-snug sm:leading-none`) and added `min-w-0` on `<main>` and header wrappers so long badges wrap gracefully at `375 px` without clipping.
+- **Critique Round 2 (Hostile Juror)**:
+  1. Verified that every chart on `/dashboard` (`<UncertaintyRadar />`, `<ProjectionFanChart />`, and `<FatigueHeatmap />`) has a 1-click accessible semantic `<table>` toggle (`"View as Table"`, `"View Trajectory as Table"`, `"View Heatmap as Table"`).
+  2. Verified explicit `"Design proposal, not validated"` badge and formula printout (`S_collab = 0.20·Clarification + 0.25·Verification + 0.20·Iteration + 0.20·Autonomy + 0.15·ResponsibleUse`) on the 0–100 AI Collaboration Score card.
 - **Known Issues**: None.
 
 ---
 
 ## Screenshots (paths) and commit hashes
-- `docs/ui/screenshots/06-dashboard-1440.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/06-dashboard-768.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/06-dashboard-375.png` *(Pending Step 7 Visual QA)*
+- `docs/ui/screenshots/06-dashboard-1440.png`
+- `docs/ui/screenshots/06-dashboard-768.png`
+- `docs/ui/screenshots/06-dashboard-375.png`
+- `docs/ui/screenshots/06-dashboard-tables-partial-1440.png`
+- `docs/ui/screenshots/06-dashboard-dark-1440.png`
