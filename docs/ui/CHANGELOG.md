@@ -4,7 +4,8 @@ All notable UI, UX, design system, and documentation changes on `ui/main` follow
 
 ## [Unreleased] — Sprint Day 1 (2026-10-24)
 ### Added
-- `frontend/src/pages/DimensionDetailPage.tsx`, `frontend/src/components/signature/ProjectionFanChart.tsx`, and `frontend/e2e/dimensionDetail.spec.ts`: Implemented Page 07 (`Dimension Detail`, route `/dimensions/:dimId`) with 1-click in-place dimension switching across `3/6/7/8/10` dimensions, dimension-filtered `<ProjectionFanChart />`, 6-session QUEST+ trial & staircase log table, explicit psychometric scoring formulas, Known Measurement Biases & Validity Limits card, and 5 Playwright screenshots (`docs/ui/screenshots/07-dimension-detail-*.png`).
+- `docs/ui/pages/10-plan.md`: Complete 11-section page specification for Page 10 (`Plan & Adaptive Exercises`, route `/plan`).
+- `frontend/src/pages/DimensionDetailPage.tsx`, `frontend/src/components/signature/ProjectionFanChart.tsx`, and `frontend/e2e/dimensionDetail.spec.ts`: Implemented and merged Page 07 (`Dimension Detail`, route `/dimensions/:dimId`) into `ui/main` (`d54f2ad`).
 - `docs/ui/pages/07-dimension-detail.md`: Complete 11-section page specification for Page 07 (`Dimension Detail`, route `/dimensions/:dimId`).
 - `frontend/src/pages/AiCoachPage.tsx`, `frontend/src/utils/copyLinter.ts`, and `frontend/e2e/aiCoach.spec.ts`: Implemented and merged Page 09 (`AI Coach · HERO`, route `/coach`) into `ui/main` (`9cbd702`).
 - `docs/ui/pages/09-ai-coach.md`: Complete 11-section page specification for Page 09 (`AI Coach · HERO`, route `/coach`).
