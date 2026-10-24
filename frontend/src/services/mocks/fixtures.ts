@@ -3,6 +3,8 @@ import type {
   CollaborationScorePayload,
   DimensionConfig,
   DimensionEstimate,
+  FatigueHeatmapCell,
+  TrajectoryPoint,
   WhyThisTrail,
 } from '../../contracts'
 import type { PersonaId } from '../../store/useAppStore'
@@ -203,4 +205,149 @@ export function buildSnapshotsForDimensions(
       estimates: currentEstimates,
     },
   ]
+}
+
+/**
+ * Generates 6 weeks of observed trajectory points (W1..W6) plus 2 weeks of projected fan
+ * (+1 Wk, +2 Wk) with widening epistemic uncertainty intervals for Signature #4 <ProjectionFanChart />.
+ */
+export function buildTrajectoryForTarget(
+  targetId: string, // 'composite' or dimensionId
+  persona: PersonaId,
+  slotSeed = 1,
+): TrajectoryPoint[] {
+  const isNoisy = persona === 'noisy-low-confidence'
+  const baseStart = isNoisy ? 52 + (slotSeed % 8) : 62 + (slotSeed % 10)
+  const weeklyGain = isNoisy ? 1.5 : 2.6
+
+  const weeks: { key: string; label: string; isProj: boolean }[] = [
+    { key: 'W1', label: 'Week 1 (Baseline)', isProj: false },
+    { key: 'W2', label: 'Week 2', isProj: false },
+    { key: 'W3', label: 'Week 3', isProj: false },
+    { key: 'W4', label: 'Week 4', isProj: false },
+    { key: 'W5', label: 'Week 5', isProj: false },
+    { key: 'W6', label: 'Week 6 (Current)', isProj: false },
+    { key: '+1 Wk', label: '+1 Week Forecast', isProj: true },
+    { key: '+2 Wk', label: '+2 Weeks Forecast', isProj: true },
+  ]
+
+  return weeks.map((w, idx) => {
+    const jitter = isNoisy && idx % 2 === 1 ? -3 : 0
+    const rawScore = Math.round(
+      Math.min(95, Math.max(30, baseStart + idx * weeklyGain + jitter)),
+    )
+    // Observed CI narrows from W1 (±14%) to W6 (±5%); Projected fan widens (+1 Wk: ±9%, +2 Wk: ±13%)
+    const halfBand = w.isProj
+      ? isNoisy
+        ? 16 + (idx - 5) * 4
+        : 8 + (idx - 5) * 4
+      : isNoisy
+        ? Math.max(11, 18 - idx)
+        : Math.max(5, 13 - idx * 1.5)
+
+    const roundedHalf = Math.round(halfBand)
+    const confidence = w.isProj
+      ? isNoisy
+        ? 0.44
+        : 0.68 - (idx - 6) * 0.08
+      : isNoisy
+        ? 0.52 + idx * 0.01
+        : Math.min(0.88, 0.58 + idx * 0.05)
+
+    return {
+      weekKey: w.key,
+      weekLabel: `${w.label} (${targetId})`,
+      scorePct: rawScore,
+      ciLowerPct: Math.max(10, rawScore - roundedHalf),
+      ciUpperPct: Math.min(99, rawScore + roundedHalf),
+      confidence: Math.round(confidence * 100) / 100,
+      isProjected: w.isProj,
+      sessionCount: w.isProj ? 0 : isNoisy ? 1 + (idx % 2) : 3 + (idx % 2),
+    }
+  })
+}
+
+/**
+ * Generates the 3 (Time Windows) x 7 (Days) Session Fatigue & Alertness Heatmap matrix.
+ */
+export function buildFatigueHeatmap(persona: PersonaId): FatigueHeatmapCell[] {
+  const days: readonly FatigueHeatmapCell['dayKey'][] = [
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat',
+    'Sun',
+  ]
+  const windows: readonly {
+    id: FatigueHeatmapCell['windowId']
+    label: string
+  }[] = [
+    { id: 'morning', label: 'Morning (08:00–12:00)' },
+    { id: 'afternoon', label: 'Afternoon (13:00–17:00)' },
+    { id: 'evening', label: 'Evening (18:00–22:00)' },
+  ]
+
+  const isNoisy = persona === 'noisy-low-confidence'
+  const cells: FatigueHeatmapCell[] = []
+
+  windows.forEach((win, wIdx) => {
+    days.forEach((day, dIdx) => {
+      // Leave a couple of weekend slots unlogged for realism
+      if ((wIdx === 1 && dIdx >= 5) || (wIdx === 0 && dIdx === 6)) {
+        cells.push({
+          windowId: win.id,
+          windowLabel: win.label,
+          dayKey: day,
+          readinessPct: null,
+          meanRtMs: null,
+          status: 'unlogged',
+          glyph: '—',
+        })
+        return
+      }
+
+      const baseReadiness =
+        wIdx === 0
+          ? isNoisy
+            ? 74
+            : 89
+          : wIdx === 1
+            ? isNoisy
+              ? 66
+              : 78
+            : isNoisy
+              ? 51
+              : 63
+
+      const score = Math.min(
+        96,
+        Math.max(42, baseReadiness + ((dIdx * 3) % 7) - 3),
+      )
+      const rt =
+        wIdx === 0
+          ? 545 + dIdx * 8
+          : wIdx === 1
+            ? 610 + dIdx * 10
+            : 695 + dIdx * 14 + (isNoisy ? 85 : 0)
+
+      const status: FatigueHeatmapCell['status'] =
+        score >= 80 ? 'optimal' : score >= 65 ? 'moderate' : 'fatigued'
+      const glyph: FatigueHeatmapCell['glyph'] =
+        status === 'optimal' ? '●' : status === 'moderate' ? '◐' : '▲'
+
+      cells.push({
+        windowId: win.id,
+        windowLabel: win.label,
+        dayKey: day,
+        readinessPct: score,
+        meanRtMs: rt,
+        status,
+        glyph,
+      })
+    })
+  })
+
+  return cells
 }

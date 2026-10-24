@@ -167,6 +167,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Link>
             )}
 
+            {location.pathname !== '/dashboard' && (
+              <Link
+                to="/dashboard"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                Dashboard
+              </Link>
+            )}
+
             {location.pathname !== '/design-system' && (
               <Link
                 to="/design-system"
@@ -179,7 +188,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main id="main-content" className="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+      <main id="main-content" className="flex-1 max-w-7xl w-full min-w-0 mx-auto px-4 py-6">
         {children}
       </main>
 

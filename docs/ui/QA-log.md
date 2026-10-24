@@ -69,3 +69,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/onboarding.spec.ts`**: `PASS` — 0 `axe-core` violations across Step Wizard, All-Steps Expanded, 10-Dimension Stress Mode, and Dark Theme; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/02-onboarding-*.png`.
 - **Critique Round 1 (Picky Designer)**: Added the **Active Calibration Blueprint** summary box in Step 1 to balance the 8:4 desktop columns, and updated `Badge.tsx` + `<pre>` wrapping so long dimension names and JSON lines wrap cleanly at `375 px`.
 - **Critique Round 2 (Hostile Juror)**: Added explicit **Bound Backend Contracts** (`POST /v1/telemetry/event`, `GET /v1/tasks/next`, `DELETE /v1/user/telemetry`) below the live JSON payload inspector.
+
+
+---
+
+## 6. Page 06 (`/dashboard` · `Dashboard` HERO) Automated QA & Critique Log (2026-10-24)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `DashboardPage.tsx`, `ProjectionFanChart.tsx`, and `FatigueHeatmap.tsx`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical or guilt terms across all dashboard cards, trajectory fan legends, fatigue windows, and state recovery banners.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 7/7 unit & component tests pass (`src/tests/designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `DashboardPage` route chunk is `26.20 kB` (`7.20 kB` gzipped).
+- **`npx playwright test e2e/dashboard.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Dark (`Night Lab`), Partial (`edge-missing-dim` with table toggles open), and 10-Dimension Stress Mode; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/06-dashboard-*.png`.
+- **Critique Round 1 (Picky Designer)**: Added the **SAT-JEPA Latent Twin State & Hysteresis** card in Row 1 so the 5-column left stack and 7-column right stack align cleanly at the bottom edge on `1440 px`, and updated `Badge.tsx` (`max-w-full whitespace-normal sm:whitespace-nowrap`) so long badges wrap inside `375 px` mobile cards without clipping.
+- **Critique Round 2 (Hostile Juror)**: Verified accessible table toggles on all 3 visualizations (`<UncertaintyRadar />`, `<ProjectionFanChart />`, `<FatigueHeatmap />`) and explicit `"Design proposal, not validated"` badge + weighted formula printout on the 0–100 Collaboration Score card.

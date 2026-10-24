@@ -4,8 +4,9 @@ All notable UI, UX, design system, and documentation changes on `ui/main` follow
 
 ## [Unreleased] — Sprint Day 1 (2026-10-24)
 ### Added
-- `frontend/src/pages/OnboardingPage.tsx` & `frontend/e2e/onboarding.spec.ts`: Implemented and verified Page 02 (`Onboarding & Consent`, route `/onboarding`), featuring the 3-step progressive wizard (*Study Context*, *Granular Telemetry Consent & Non-Biometric Lock*, *30-Second Input Timer Check & Baseline Mode*), `View All 3 Steps` mode, 1-click `⚡ Judge Fast-Track` button, equal-prominence `Reject All Optional (Minimal Mode)` preset, and live `"What SynapseTwin Sees"` JSON payload inspector.
-- `docs/ui/screenshots/02-onboarding-*.png`: Captured 5 full-page verification screenshots across `1440px`, `768px`, and `375px` viewports in Playful Lab (Light) and Night Lab (Dark) themes with `0` `axe-core` violations.
+- `frontend/src/pages/DashboardPage.tsx`, `frontend/src/components/signature/ProjectionFanChart.tsx` (Signature #4), `frontend/src/components/signature/FatigueHeatmap.tsx`, and `frontend/e2e/dashboard.spec.ts`: Implemented and verified Page 06 (`Dashboard · HERO`, route `/dashboard`) with 5 verification screenshots (`docs/ui/screenshots/06-dashboard-*.png`).
+- `docs/ui/pages/06-dashboard.md`: Complete 11-section page specification for Page 06 (`Dashboard · HERO`, route `/dashboard`).
+- `frontend/src/pages/OnboardingPage.tsx` & `frontend/e2e/onboarding.spec.ts`: Implemented and merged Page 02 (`Onboarding & Consent`, route `/onboarding`) into `ui/main` (`763968b`).
 - `frontend/src/pages/WelcomePage.tsx`: Implemented and merged Page 01 (`Welcome` · HERO) into `ui/main` (`a4c1646`).
 
 ### Fixed
