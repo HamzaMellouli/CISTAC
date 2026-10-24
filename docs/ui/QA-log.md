@@ -32,5 +32,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 | 4 | Attention Networks (`AN`) | `#CC79A7` | `#9E4778` | **4.81 : 1** | Diamond (`◆`) |
 | 5 | Divided Perceptual Speed (`PS`) | `#E69F00` | `#A86E00` | **3.94 : 1** | Pentagon (`⬠`) |
 | 6 | Episodic Pattern Separation (`EP`) | `#56B4E9` | `#0B76A8` | **4.63 : 1** | Hexagon (`⬢`) |
-| 7 | Visuospatial Planning & $G_f$ (`VP`) | `#F0E442` | `#7D7300` (stroke) / `#F0E442` (fill) | **4.12 : 1** | Star (`★`) |
+| 7 | Visuospatial Planning & $G_f$ (`VP`) | `#F0E442` | `#7D7300` (stroke) / `#F0E442` (fill) | **4.61 : 1** | Star (`★`) |
 | 8–10 | Extra / Surprise Dimensions | — | High-contrast stroke + dash/hatch | **$\ge 4.50 : 1$** | Cross (`✚`), Ring (`◎`), Hourglass (`⧗`) |
+
+---
+
+## 3. Page 18 (`/design-system`) Automated QA & Critique Log (2026-10-24)
+
+- **`npm run lint:tokens`**: `PASS` — 0 hardcoded hex colors, rgb/hsl functions, arbitrary spacing, or raw durations outside `src/styles/`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical diagnostic or punitive guilt phrases in UI copy or mock fixtures.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark semantic and Okabe-Ito dimension pairs pass WCAG 2.1 thresholds.
+- **`npm test` (Vitest)**: `PASS` — 4/4 unit & component tests passing (`designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — 0 TypeScript errors; `DesignSystemPage` code-split at `67.49 kB` (`21.69 kB` gzipped).
+- **`npm run qa:e2e` (Playwright + `@axe-core/playwright`)**: `PASS` — 0 `axe-core` violations in Light and Dark themes; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 6 verification screenshots saved to `docs/ui/screenshots/`.
+
