@@ -50,3 +50,16 @@ Every non-trivial frontend, UX, design-system, and contract decision is recorded
 - **Options**: Build i18n previews and Layer D early vs. gate them strictly behind `ui-m3-feature-freeze`.
 - **Choice**: **English-only UI copy** until all `Must` pages pass the 13-point Definition of Done, using **CSS logical properties** (`ms-*`, `me-*`, `ps-*`, `pe-*`, `text-start`, `border-inline-start`) from Day 1 so RTL (Arabic) requires zero layout rewrites later. Layer D screens (`Page 19`) are built only after all `Must` pages pass DoD.
 - **Why**: Protects the 6 Hero pages and mandatory rubric proofs first.
+
+---
+
+## DEC-006: Design Direction & Typography Lock (Playful Lab + Fredoka/Lexend/JetBrains Mono)
+- **Date**: 2026-10-24
+- **Context**: Following the 3-tile Design Direction Sprint (`docs/ui/direction-sprint.html`), we needed to lock the primary visual identity and self-hosted open-license typography pairing.
+- **Options**:
+  1. **Tile A (Playful Lab)** Light default + **Tile C (Night Lab)** Dark theme, paired with **Pairing 1 (`Fredoka` display + `Lexend` UI body + `JetBrains Mono` metrics)**.
+  2. Tile B (Calm Clarity) + Pairing 2 (`Baloo 2` + `Atkinson Hyperlegible`).
+  3. Tile C (Night Lab dark-first) + Pairing 3 (`Sora` + `Lexend`).
+- **Choice**: **Option 1 (Playful Lab Light + Night Lab Dark + Fredoka / Lexend / JetBrains Mono)**.
+- **Why**: Warm paper (`#FFF8EE`) with crisp `#1F1B3B` (`15.61:1`) tactile borders avoids clinical anxiety while keeping charts rigorous; `Lexend` is empirically designed to reduce visual crowding and improve reading speed, giving us a strong accessibility narrative for the jury pitch.
+

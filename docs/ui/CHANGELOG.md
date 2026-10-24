@@ -4,6 +4,8 @@ All notable UI, UX, design system, and documentation changes on `ui/main` follow
 
 ## [Unreleased] — Sprint Day 1 (2026-10-24)
 ### Added
+- `docs/ui/02-design-system.md`: Locked **Playful Lab** + **Night Lab** OKLCH token specification, computed WCAG 2.1 contrast table, and 3-to-10 dimension Okabe-Ito colorblind-safe palette (`DEC-006`).
+- `docs/ui/pages/18-design-system.md`: Complete 11-section page specification for Page 18 (`/design-system`) ready for Gate 1 review.
 - `docs/ui/README.md`: Documentation index and page spec registry.
 - `docs/ui/00-context.md`: Challenge brief rules, dates, and rubric proof strategy.
 - `docs/ui/contracts.md`: Full TypeScript contract specification bridging Member 1's `assessment_engine` (`TelemetryEvent`, `TaskPayload`) with Layers B & C (`BrainTwinProfile`, `WhyThisTrail`, `CollaborationScorePayload`).
