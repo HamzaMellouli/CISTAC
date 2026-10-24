@@ -5,14 +5,14 @@ export default defineConfig({
   timeout: 30000,
   fullyParallel: false,
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:4173',
     channel: 'chrome',
     trace: 'off',
   },
   webServer: {
-    command: 'npm run dev -- --port 5173',
-    url: 'http://localhost:5173',
-    reuseExistingServer: true,
+    command: 'npm run preview -- --port 4173',
+    url: 'http://localhost:4173',
+    reuseExistingServer: false,
     timeout: 30000,
   },
 })

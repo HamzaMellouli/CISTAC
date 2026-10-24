@@ -36,7 +36,7 @@ export function Badge({
 }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill border text-xs font-medium leading-none ${TONE_CLASSES[tone]} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill border text-xs font-medium leading-none whitespace-nowrap shrink-0 ${TONE_CLASSES[tone]} ${className}`}
       {...rest}
     >
       {glyph && <span aria-hidden="true">{glyph}</span>}

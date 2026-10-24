@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 
+const WelcomePage = React.lazy(() => import('./pages/WelcomePage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
 
 function RouteLoadingSkeleton() {
@@ -26,8 +27,9 @@ export function App() {
       <AppShell>
         <Suspense fallback={<RouteLoadingSkeleton />}>
           <Routes>
+            <Route path="/" element={<WelcomePage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
-            <Route path="*" element={<Navigate to="/design-system" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
       </AppShell>

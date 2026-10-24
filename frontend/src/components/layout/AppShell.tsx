@@ -74,13 +74,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Primary Header & Judge Quick Controls */}
       <header
         role="banner"
-        className="sticky top-0 z-40 bg-surface border-b-2 border-border-strong px-4 py-3"
+        className="sticky top-0 z-40 bg-surface border-b-2 border-border-strong px-4 py-2.5"
       >
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2.5">
             <Link
-              to="/design-system"
-              className="focus-ring rounded-sm flex items-center gap-2.5 text-ink no-underline"
+              to="/"
+              className="focus-ring rounded-sm flex items-center gap-2 text-ink no-underline"
             >
               <span
                 aria-hidden="true"
@@ -89,7 +89,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 ST
               </span>
               <div>
-                <span className="font-display text-xl font-bold tracking-tight block leading-none">
+                <span className="font-display text-lg font-bold tracking-tight block leading-none">
                   {BRAND_CONFIG.productName}
                 </span>
                 <span className="text-xs text-ink-muted block mt-0.5">
@@ -149,10 +149,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {reducedMotion ? 'Motion: Reduced' : 'Motion: Standard'}
             </Button>
 
+            {location.pathname !== '/' && (
+              <Link
+                to="/"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                Welcome
+              </Link>
+            )}
+
             {location.pathname !== '/design-system' && (
               <Link
                 to="/design-system"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
               >
                 Style Guide
               </Link>

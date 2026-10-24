@@ -5,7 +5,7 @@ import { lintCopyText } from '../utils/copyLinter'
 import { getDimensionsByPreset } from '../config/dimensions'
 import { App } from '../App'
 
-describe('Design System & Epistemic Rigor Unit Suite', () => {
+describe('Design System & Welcome Hero Unit Suite', () => {
   it('verifies all 21 Light & Dark token pairs pass WCAG 2.1 thresholds', () => {
     const reports = evaluateDesignSystemContrast()
     expect(reports.length).toBeGreaterThanOrEqual(20)
@@ -36,7 +36,34 @@ describe('Design System & Epistemic Rigor Unit Suite', () => {
     expect(getDimensionsByPreset('10')).toHaveLength(10)
   })
 
-  it('renders /design-system and supports 3-to-10 dimension switching and radar table toggle', async () => {
+  it('renders Page 01 Welcome (/) and supports persona switching, preview states, and 3-to-10 dimensions', async () => {
+    window.history.pushState({}, '', '/')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Meet your evolving cognitive twin/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Switch preview to Low-Conf (Hatched)
+    fireEvent.click(screen.getByRole('button', { name: /Low-Conf \(Hatched\)/i }))
+    expect(screen.getByText(/Hatched = Confidence < 60%/i)).toBeInTheDocument()
+
+    // Load Salma persona card
+    fireEvent.click(
+      screen.getByRole('button', { name: /Load Salma \(Hatched Twin\)/i }),
+    )
+    expect(
+      screen.getByText(/Active persona switched to Salma/i),
+    ).toBeInTheDocument()
+  })
+
+  it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {
+    window.history.pushState({}, '', '/design-system')
     render(<App />)
 
     const heading = await screen.findByRole(
@@ -48,21 +75,18 @@ describe('Design System & Epistemic Rigor Unit Suite', () => {
     )
     expect(heading).toBeInTheDocument()
 
-    // Switch to 10 dimensions
     const tenBtn = screen.getByRole('button', { name: '10 Dimensions' })
     fireEvent.click(tenBtn)
     expect(
       screen.getByRole('heading', { name: /10 Dimensions Active/i }),
     ).toBeInTheDocument()
 
-    // Switch to 3 dimensions
     const threeBtn = screen.getByRole('button', { name: '3 Dimensions' })
     fireEvent.click(threeBtn)
     expect(
       screen.getByRole('heading', { name: /3 Dimensions Active/i }),
     ).toBeInTheDocument()
 
-    // Toggle Accessible Table on Uncertainty Radar
     const tableBtn = screen.getByRole('button', { name: /View as Table/i })
     fireEvent.click(tableBtn)
     expect(
