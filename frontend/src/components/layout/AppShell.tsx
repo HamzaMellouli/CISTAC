@@ -212,6 +212,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Link>
             )}
 
+            {location.pathname !== '/plan' && (
+              <Link
+                to="/plan"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                Plan
+              </Link>
+            )}
+
             {location.pathname !== '/brain-twin' && (
               <Link
                 to="/brain-twin"
@@ -260,3 +269,4 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     </div>
   )
 }
+export default AppShell

@@ -379,6 +379,52 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
     ).toBeInTheDocument()
   })
 
+  it('renders Page 10 Plan & Adaptive Exercises (/plan) with 7-day ribbon, prescribed exercise cards, delta-c table, and staircase simulator', async () => {
+    window.history.pushState({}, '', '/plan')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Adaptive Training Plan & Staircase Curriculum/i,
+        level: 1,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Verify 7-day ribbon exists
+    expect(
+      screen.getByRole('group', {
+        name: /Weekly training schedule day selector/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Verify SAT-JEPA Delta-C table exists
+    expect(
+      screen.getByRole('table', {
+        name: /SAT-JEPA delta-c weekly allocation breakdown/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Switch to Rest-First Pacing preview state
+    fireEvent.click(
+      screen.getByRole('button', { name: /2 · ☾ Rest-First Pacing/i }),
+    )
+    expect(
+      screen.getByText(/Scheduled Recovery & Memory Consolidation Day/i),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(/Streak Protected \(Zero Penalty\)/i),
+    ).toBeInTheDocument()
+
+    // Test Staircase Simulator stepper
+    fireEvent.click(screen.getByRole('button', { name: 'Lvl 5' }))
+    expect(
+      screen.getByText(/Level 5 · Peak Attentional Stretch/i),
+    ).toBeInTheDocument()
+  })
+
   it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {
     window.history.pushState({}, '', '/design-system')
     render(<App />)

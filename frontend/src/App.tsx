@@ -11,6 +11,7 @@ const DashboardPage = React.lazy(() => import('./pages/DashboardPage'))
 const DimensionDetailPage = React.lazy(
   () => import('./pages/DimensionDetailPage'),
 )
+const PlanPage = React.lazy(() => import('./pages/PlanPage'))
 const BrainTwinPage = React.lazy(() => import('./pages/BrainTwinPage'))
 const AiCoachPage = React.lazy(() => import('./pages/AiCoachPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
@@ -57,6 +58,7 @@ export function App() {
               path="/dimensions/:dimId"
               element={<DimensionDetailPage />}
             />
+            <Route path="/plan" element={<PlanPage />} />
             <Route path="/brain-twin" element={<BrainTwinPage />} />
             <Route path="/coach" element={<AiCoachPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
