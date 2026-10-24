@@ -1,0 +1,52 @@
+# UI & UX Architecture Decisions (`DECISIONS.md`)
+
+Every non-trivial frontend, UX, design-system, and contract decision is recorded here in chronological order.
+
+---
+
+## DEC-001: Repository Directory Boundary (`frontend/` + `docs/ui/`) vs Existing Repo Folders
+- **Date**: 2026-10-24
+- **Context**: On cloning `https://github.com/anwrG-p/ai4brain`, we found `README.md` describing a 5-member layout (`assessment_engine/client/` already populated by Member 1, and an empty `dashboard_ui/` folder with `.gitkeep`). However, Section 4 of our working agreement strictly mandates: *"Touch only `frontend/**` and `docs/ui/`."*
+- **Options**:
+  1. Build inside `frontend/` and `docs/ui/` as mandated by Section 4, while making `frontend/src/contracts/` 100% compatible with `assessment_engine/` (`POST /v1/telemetry/event`, `GET /v1/tasks/next`, `GET /v1/dashboard/profile`, `DELETE /v1/user/telemetry`).
+  2. Build inside `dashboard_ui/` instead of `frontend/`.
+- **Choice**: **Option 1 (`frontend/` + `docs/ui/`)**, while flagging `[VERIFY]` for the team on whether `frontend/` stays at `/frontend` or gets symlinked/aliased to `dashboard_ui/` at integration checkpoint #1 (26/10).
+- **Why**: Honors the hard Section 4 file-boundary rule without touching teammates' directories, and allows us to wrap and unify Member 1's assessment schemas (`n_back`, `stroop`, `matrix`, `mental_rotation`, `relational`, `tower`, `ufov`, `mst`), Member 2's AI Coach + Collaboration Score, Member 3's SAT-JEPA Brain Twin + 9 GMM archetypes, and Member 4's Dashboard + Privacy Center into one cohesive, single-origin SPA experience for the jury.
+
+---
+
+## DEC-002: Dimension Registry Bridging (7 Cognitive Dimensions vs Member 1's 6 Backend Keys)
+- **Date**: 2026-10-24
+- **Context**: The official challenge brief omits Section 3's dimension list. Our Section 3 team plan specifies 7 dimensions (*Working Memory, Inhibition Control, Cognitive Flexibility [Set-Shifting], Attention Networks, Divided Perceptual Speed, Episodic Pattern Separation, Visuospatial Planning & Gf*), our intake note adds a 6-dimension preset (*Attention, Working Memory, Processing Speed, Cognitive Flexibility, Inhibitory Control, Reasoning*), and Member 1's `assessment_engine/api/routes/telemetry.py` currently validates 6 snake_case literals (`working_memory`, `pattern_induction`, `executive_function`, `spatial_orientation`, `processing_speed`, `episodic_memory`) across 8 cognitive task schemas (`n_back`, `stroop`, `matrix`, `mental_rotation`, `relational`, `tower`, `ufov`, `mst`).
+- **Options**:
+  1. Hardcode one list and risk breaking either the UI plan or Member 1's FastAPI Pydantic validator.
+  2. Build a config-driven `DimensionRegistry` in `frontend/src/config/dimensions.ts` that defaults to our 7 dimensions, maps each dimension to Member 1's `backendDimensionKey` and `SchemaType` (`n_back`, `stroop`, `ufov`, `mst`, `tower`, `matrix`, `relational`, `mental_rotation`), and provides 1-click presets in Judge Mode for **6 dimensions (Backend/Intake preset)**, **7 dimensions (Team Plan default)**, **3 dimensions (Minimal stress test)**, and **10 dimensions (Surprise generalization test)**.
+- **Choice**: **Option 2 (Bridged Config Registry with 3/6/7/10 presets)**. `[VERIFY: pending final team confirmation of canonical display labels]`.
+- **Why**: Satisfies Generalisation (10% of final score), guarantees zero 422 errors when posting telemetry to Member 1's `POST /v1/telemetry/event`, and prepares us for the Phase 2 surprise element.
+
+---
+
+## DEC-003: Temporary Product Brand Token
+- **Date**: 2026-10-24
+- **Context**: The team has not finalized the product name yet.
+- **Options**: Hardcode "AI4Brain" everywhere vs. centralize a single `PRODUCT_NAME` token in `frontend/src/config/brand.ts`.
+- **Choice**: Centralize `PRODUCT_NAME = "SynapseTwin"` `[ASSUMPTION]` in `frontend/src/config/brand.ts` with subtitle `"AI4Brain Cognitive Growth Agent"`.
+- **Why**: Updating one string in `brand.ts` updates all 19 pages, page titles, privacy exports, and headers in 2 seconds once the team decides.
+
+---
+
+## DEC-004: Package Manager & Node Version
+- **Date**: 2026-10-24
+- **Context**: Section 4 requires one package manager, `.nvmrc`, and a committed lockfile. Member 1's `assessment_engine/client/` already uses `npm` (`package-lock.json`).
+- **Options**: `npm` vs `pnpm` vs `yarn`.
+- **Choice**: **`npm` (`package-lock.json`)** + `frontend/.nvmrc` set to `24` (compatible with Node 20+ and matching local Node `v24.15.0`).
+- **Why**: Consistent with the existing repository conventions in `assessment_engine/client/` and works natively inside the local environment.
+
+---
+
+## DEC-005: Localization & Layer D Sequencing
+- **Date**: 2026-10-24
+- **Context**: Balancing Phase 1 `Must` pages against bonus features (Layer D voice/projections and secondary locales).
+- **Options**: Build i18n previews and Layer D early vs. gate them strictly behind `ui-m3-feature-freeze`.
+- **Choice**: **English-only UI copy** until all `Must` pages pass the 13-point Definition of Done, using **CSS logical properties** (`ms-*`, `me-*`, `ps-*`, `pe-*`, `text-start`, `border-inline-start`) from Day 1 so RTL (Arabic) requires zero layout rewrites later. Layer D screens (`Page 19`) are built only after all `Must` pages pass DoD.
+- **Why**: Protects the 6 Hero pages and mandatory rubric proofs first.
