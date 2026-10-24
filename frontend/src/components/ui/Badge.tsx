@@ -34,9 +34,13 @@ export function Badge({
   className = '',
   ...rest
 }: BadgeProps) {
+  const allowWrap = className.includes('whitespace-normal')
+  const wrapClass = allowWrap
+    ? 'whitespace-normal max-w-full text-start leading-snug'
+    : 'whitespace-nowrap shrink-0 leading-none'
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill border text-xs font-medium leading-none whitespace-nowrap shrink-0 ${TONE_CLASSES[tone]} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill border text-xs font-medium ${wrapClass} ${TONE_CLASSES[tone]} ${className}`}
       {...rest}
     >
       {glyph && <span aria-hidden="true">{glyph}</span>}

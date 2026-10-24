@@ -5,7 +5,7 @@ import { lintCopyText } from '../utils/copyLinter'
 import { getDimensionsByPreset } from '../config/dimensions'
 import { App } from '../App'
 
-describe('Design System & Welcome Hero Unit Suite', () => {
+describe('Design System, Welcome & Onboarding Unit Suite', () => {
   it('verifies all 21 Light & Dark token pairs pass WCAG 2.1 thresholds', () => {
     const reports = evaluateDesignSystemContrast()
     expect(reports.length).toBeGreaterThanOrEqual(20)
@@ -60,6 +60,52 @@ describe('Design System & Welcome Hero Unit Suite', () => {
     expect(
       screen.getByText(/Active persona switched to Salma/i),
     ).toBeInTheDocument()
+  })
+
+  it('renders Page 02 Onboarding (/onboarding) and supports 3-step wizard, granular consent toggles, and Judge Fast-Track', async () => {
+    window.history.pushState({}, '', '/onboarding')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Configure your cognitive twin on your own terms/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Navigate to Step 2: Granular Telemetry Consent
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Continue to Step 2: Granular Consent/i,
+      }),
+    )
+    expect(
+      screen.getByRole('heading', {
+        name: /Granular Telemetry Consent & Mandatory Non-Biometric Lock/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Toggle Minimal Mode (Reject All Optional)
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Reject All Optional \(Minimal Mode\)/i,
+      }),
+    )
+    expect(
+      screen.getAllByText(/CONSENT-ST-2026-MINIMAL/i).length,
+    ).toBeGreaterThanOrEqual(1)
+
+    // Trigger Judge Fast-Track
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Judge Fast-Track: Safe Defaults & Go/i,
+      }),
+    )
+    expect(
+      screen.getAllByText(/CONSENT-ST-2026-FAST/i).length,
+    ).toBeGreaterThanOrEqual(1)
   })
 
   it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {

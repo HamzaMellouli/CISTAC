@@ -77,7 +77,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         className="sticky top-0 z-40 bg-surface border-b-2 border-border-strong px-4 py-2.5"
       >
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Link
               to="/"
               className="focus-ring rounded-sm flex items-center gap-2 text-ink no-underline"
@@ -155,6 +155,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
               >
                 Welcome
+              </Link>
+            )}
+
+            {location.pathname !== '/onboarding' && (
+              <Link
+                to="/onboarding"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                Onboarding
               </Link>
             )}
 
