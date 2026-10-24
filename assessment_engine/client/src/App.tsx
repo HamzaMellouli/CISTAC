@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { TrialRecorder } from './telemetry/tracker'
 import type { TaskPayload } from './telemetry/types'
 import { TaskRunner } from './tasks/TaskRunner'
 import { fetchNextTask, getUserId } from './tasks/taskSource'
+import type { VoiceProbe } from './voice/voiceProbe'
+import { VoiceToggle } from './voice/VoiceToggle'
 
 const userId = getUserId()
 const sessionId = crypto.randomUUID() // one per page load
@@ -16,6 +18,12 @@ type State =
 export default function App() {
   const [state, setState] = useState<State>({ kind: 'loading' })
   const [attempt, setAttempt] = useState(0)
+  const [voice, setVoice] = useState<VoiceProbe | null>(null) // opt-in, off on every page load
+  // Read when the next task's recorder is created, so toggling never rebuilds a running task.
+  const optedIn = useRef(false)
+  useLayoutEffect(() => {
+    optedIn.current = voice !== null
+  })
 
   useEffect(() => {
     let cancelled = false
@@ -27,7 +35,7 @@ export default function App() {
           session_id: sessionId,
           task_id: task.task_id,
           dimension: task.dimension,
-          voice_opt_in: false, // Task 12 wires the toggle
+          voice_opt_in: optedIn.current,
         })
         setState({ kind: 'running', task, recorder, n: attempt })
       },
@@ -45,10 +53,18 @@ export default function App() {
     setAttempt((a) => a + 1)
   }, [])
 
-  if (state.kind === 'loading') return <main aria-busy="true">Loading the next exercise…</main>
+  const toggle = <VoiceToggle value={voice} onChange={setVoice} />
+  if (state.kind === 'loading')
+    return (
+      <main aria-busy="true">
+        {toggle}
+        <p>Loading the next exercise…</p>
+      </main>
+    )
   if (state.kind === 'error')
     return (
       <main>
+        {toggle}
         <p role="alert">Could not load the next exercise ({state.message}).</p>
         <button type="button" onClick={next}>
           Try again
@@ -57,7 +73,8 @@ export default function App() {
     )
   return (
     <main>
-      <TaskRunner key={state.n} task={state.task} recorder={state.recorder} onDone={next} />
+      {toggle}
+      <TaskRunner key={state.n} task={state.task} recorder={state.recorder} onDone={next} voice={voice} />
     </main>
   )
 }

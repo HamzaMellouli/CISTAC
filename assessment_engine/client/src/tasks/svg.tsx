@@ -32,34 +32,37 @@ export function GlyphView({ glyph, size = 80 }: { glyph: Glyph; size?: number })
   )
 }
 
-export function PolyView({ poly, size = 160 }: { poly: Poly; size?: number }) {
-  const xs = poly.points.map((p) => p[0])
-  const ys = poly.points.map((p) => p[1])
+export function PolyView({ poly, size = 160, label = 'figure' }: { poly: Poly; size?: number; label?: string }) {
+  const { points } = poly
+  // Guards for bad payloads: no points frames a unit box at the origin; edges to missing points are dropped.
+  const xs = points.length ? points.map((p) => p[0]) : [0]
+  const ys = points.length ? points.map((p) => p[1]) : [0]
   const minX = Math.min(...xs)
   const minY = Math.min(...ys)
   const span = Math.max(Math.max(...xs) - minX, Math.max(...ys) - minY) || 1
   const pad = span * 0.1
   const stroke = span * 0.02
+  const edges = poly.edges.filter(([i, j]) => points[i] && points[j])
   return (
     <svg
       width={size}
       height={size}
       viewBox={`${minX - pad} ${minY - pad} ${span + 2 * pad} ${span + 2 * pad}`}
       role="img"
-      aria-label="figure"
+      aria-label={label}
     >
-      {poly.edges.map(([i, j], k) => (
+      {edges.map(([i, j], k) => (
         <line
           key={k}
-          x1={poly.points[i][0]}
-          y1={poly.points[i][1]}
-          x2={poly.points[j][0]}
-          y2={poly.points[j][1]}
+          x1={points[i][0]}
+          y1={points[i][1]}
+          x2={points[j][0]}
+          y2={points[j][1]}
           stroke="currentColor"
           strokeWidth={stroke}
         />
       ))}
-      {poly.points.map(([x, y], k) => (
+      {points.map(([x, y], k) => (
         <circle key={k} cx={x} cy={y} r={stroke * 2} fill="currentColor" />
       ))}
     </svg>
