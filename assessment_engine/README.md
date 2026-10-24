@@ -74,8 +74,8 @@ Field names follow the top-level README `x_t` list. The server appends `received
 |---|---|
 | `user_id`, `session_id` | anonymous per-browser UUID (localStorage `aura_uid`); one session UUID per page load. `[A-Za-z0-9_-]{1,64}` |
 | `task_id`, `trial_index`, `dimension` | from the task payload; `dimension` is one of the six above |
-| `score_norm` | 1/0 for correct/incorrect. Tower uses `l_min / l_user` |
-| `response_time_ms` | stimulus onset to committed response, or the trial window on timeout / non-response |
+| `score_norm` | 1/0 for correct/incorrect. Tower uses `min(1, l_min / l_user)`. Clamped to [0, 1] |
+| `response_time_ms` | stimulus onset to committed response, or the trial window on timeout / non-response; capped at 600000 |
 | `error_flag` | `true` when the trial was wrong |
 | `error_burst` | length of the current run of consecutive errors within the task (0 when correct) |
 | `hesitation_jitter` | population std-dev (ms) of intervals between input timestamps (keydown, pointerdown, pointermove throttled to 50 ms); 0 with fewer than 3 inputs |
@@ -86,8 +86,12 @@ Field names follow the top-level README `x_t` list. The server appends `received
 | `client_ts` | ISO timestamp when the trial finished |
 
 Events are buffered and flushed every 2 s (or at 20 events) without blocking the trial loop. On
-`pagehide` the buffer goes out via `sendBeacon`. Offline or 5xx: events stay buffered and retry; the
-buffer is capped at 500 and drops the oldest.
+`pagehide` or when the page becomes hidden, the buffer goes out via `sendBeacon`. Network errors,
+5xx, 408 and 429: events stay buffered and retry. Any other 4xx means the server will never accept
+that batch, so it is dropped with a `console.error`. The buffer is capped at 500 and drops the oldest.
+
+Delivery is at-least-once (a retried or beaconed batch may arrive twice); dedupe on
+`(session_id, trial_meta.item_id, trial_meta.stream)`.
 
 ### `trial_meta` by schema_type
 
@@ -101,8 +105,9 @@ buffer is capped at 500 and drops the oldest.
 | mst | `kind`, `delta`, `response` (`old`/`similar`/`new`, or `none` on timeout) |
 
 UFOV rounds the requested duration to whole display frames and logs the measured `shown_ms`; QUEST+
-is updated with `shown_ms`, not the requested value. Adaptive target accuracy is 0.85 (staircase
-for Relational, QUEST+ for UFOV).
+is updated with `shown_ms`, not the requested value. QUEST+ estimates the display-duration threshold
+(`quest_threshold_ms`); it picks the most informative duration each trial and does not hold accuracy
+at 85%. The 85% target applies to Relational's weighted staircase.
 
 ## Privacy
 
@@ -122,7 +127,8 @@ for Relational, QUEST+ for UFOV).
 3. **Payload contract** (Member 5): produce the `answer`s, `levels` ladders and Tower
    `optimal_moves`/`counter_intuitive` with your solvers. Answers in the payload are readable in
    devtools; fine for non-clinical self-training, move scoring server-side if that ever matters.
-4. **85% rule granularity**: per-trial adaptation for Relational and UFOV only. N-back `n` and lure
+4. **85% rule granularity**: per-trial 85% adaptation for Relational only; UFOV adapts per trial
+   too, but to estimate a duration threshold (QUEST+), not to hold 85%. N-back `n` and lure
    density can only change between blocks, so Member 5 adapts them from our telemetry. MST keeps a
    fixed spread of `delta` for the tuning curve.
 5. **Shared FastAPI app**: does Member 4 own `main.py`? Their delete route removes
