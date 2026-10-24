@@ -4,7 +4,8 @@ All notable UI, UX, design system, and documentation changes on `ui/main` follow
 
 ## [Unreleased] — Sprint Day 1 (2026-10-24)
 ### Added
-- `frontend/src/pages/DashboardPage.tsx`, `frontend/src/components/signature/ProjectionFanChart.tsx` (Signature #4), `frontend/src/components/signature/FatigueHeatmap.tsx`, and `frontend/e2e/dashboard.spec.ts`: Implemented and verified Page 06 (`Dashboard · HERO`, route `/dashboard`) with 5 verification screenshots (`docs/ui/screenshots/06-dashboard-*.png`).
+- `docs/ui/pages/05-profile-reveal.md`: Complete 11-section page specification for Page 05 (`Profile Reveal · HERO`, route `/profile-reveal`) and the Mascot Sprint (`<Mascot />` Signature #8).
+- `frontend/src/pages/DashboardPage.tsx`, `frontend/src/components/signature/ProjectionFanChart.tsx` (Signature #4), `frontend/src/components/signature/FatigueHeatmap.tsx`, and `frontend/e2e/dashboard.spec.ts`: Implemented and merged Page 06 (`Dashboard · HERO`, route `/dashboard`) into `ui/main` (`6612867`).
 - `docs/ui/pages/06-dashboard.md`: Complete 11-section page specification for Page 06 (`Dashboard · HERO`, route `/dashboard`).
 - `frontend/src/pages/OnboardingPage.tsx` & `frontend/e2e/onboarding.spec.ts`: Implemented and merged Page 02 (`Onboarding & Consent`, route `/onboarding`) into `ui/main` (`763968b`).
 - `frontend/src/pages/WelcomePage.tsx`: Implemented and merged Page 01 (`Welcome` · HERO) into `ui/main` (`a4c1646`).
