@@ -140,29 +140,35 @@
 ---
 
 ## Acceptance checklist (from the Definition of Done)
-- [ ] Matches this approved spec; any deviation logged in `DECISIONS.md`.
-- [ ] Only design tokens used (`npm run lint:tokens` exits 0).
-- [ ] All states (`live`, `early-snapshot`, `loading`, `empty`, `error`, `extreme-text`) implemented and screenshotted.
-- [ ] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
-- [ ] Complete keyboard navigation, `3px` focus ring, $\ge 44\text{ px}$ targets.
-- [ ] Reduced motion respected.
-- [ ] Color never carries meaning alone.
-- [ ] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
-- [ ] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
-- [ ] Code-split route (`React.lazy`).
-- [ ] Unit/component tests + Playwright `axe-core` check (`0` violations).
-- [ ] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
-- [ ] Docs, screenshots, `STATE.md` and commit are done.
+- [x] Matches this approved spec; any deviation logged in `DECISIONS.md`.
+- [x] Only design tokens used (`npm run lint:tokens` exits 0).
+- [x] All states (`live`, `early-snapshot`, `loading`, `empty`, `error`, `extreme-text`) implemented and screenshotted.
+- [x] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
+- [x] Complete keyboard navigation, `3px` focus ring, $\ge 44\text{ px}$ targets.
+- [x] Reduced motion respected.
+- [x] Color never carries meaning alone.
+- [x] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
+- [x] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
+- [x] Code-split route (`React.lazy` — `24.86 kB` chunk, `7.34 kB` gzipped).
+- [x] Unit/component tests + Playwright `axe-core` check (`0` violations).
+- [x] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
+- [x] Docs, screenshots, `STATE.md` and commit are done.
 
 ---
 
 ## Decisions and known issues
 - **Decisions**: Build **Signature #2 `<BrainTwinTimeTravel />`** as a modular, reusable component in `frontend/src/components/signature/BrainTwinTimeTravel.tsx` so it can be embedded on `/brain-twin` and referenced from `/design-system`.
+- **Critique Round 1 & 2 Polish**:
+  - Added an **Aggregate Twin Convergence (`Mean Δc`)** summary tile in the 2-column diff grid whenever `dimensions.length % 2 === 1` (`3` or `7` dimensions) so odd dimension counts form a balanced symmetric grid.
+  - Added the **Snapshot Milestone & QUEST+ Cadence** card in the right 5-column stack of Row 1 between `<UncertaintyRadar />` and `Cryptographic Snapshot Provenance & Audit` to eliminate vertical whitespace gaps at `1440 px`.
+  - Updated the preview-state button handlers so clicking any milestone chip (`#1`, `#4`, `#7`, `#11`, `#14`) or dragging the slider updates `selectedSnapIndex` freely without being overridden by a state `useEffect`.
 - **Known Issues**: None.
 
 ---
 
 ## Screenshots (paths) and commit hashes
-- `docs/ui/screenshots/08-brain-twin-1440.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/08-brain-twin-768.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/08-brain-twin-375.png` *(Pending Step 7 Visual QA)*
+- `docs/ui/screenshots/08-brain-twin-1440.png`
+- `docs/ui/screenshots/08-brain-twin-early-10dims-1440.png`
+- `docs/ui/screenshots/08-brain-twin-dark-1440.png`
+- `docs/ui/screenshots/08-brain-twin-768.png`
+- `docs/ui/screenshots/08-brain-twin-375.png`

@@ -8,6 +8,7 @@ const AssessmentHubPage = React.lazy(() => import('./pages/AssessmentHubPage'))
 const TaskRunnerPage = React.lazy(() => import('./pages/TaskRunnerPage'))
 const ProfileRevealPage = React.lazy(() => import('./pages/ProfileRevealPage'))
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'))
+const BrainTwinPage = React.lazy(() => import('./pages/BrainTwinPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
 
 function RouteLoadingSkeleton() {
@@ -44,6 +45,7 @@ export function App() {
             <Route path="/task/:dimId" element={<TaskRunnerPage />} />
             <Route path="/profile-reveal" element={<ProfileRevealPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/brain-twin" element={<BrainTwinPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

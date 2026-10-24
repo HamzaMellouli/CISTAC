@@ -4,6 +4,7 @@ All notable UI, UX, design system, and documentation changes on `ui/main` follow
 
 ## [Unreleased] — Sprint Day 1 (2026-10-24)
 ### Added
+- `frontend/src/components/signature/BrainTwinTimeTravel.tsx`, `frontend/src/pages/BrainTwinPage.tsx`, and `frontend/e2e/brainTwin.spec.ts`: Implemented Page 08 (`Brain Twin & Historical Timeline · HERO`, route `/brain-twin`) and Signature #2 `<BrainTwinTimeTravel />` (14-snapshot scrubber, `Snap A vs Snap B` side-by-side diff comparator across 3/6/7/8/10 dimensions, 2D SAT-JEPA prototype manifold SVG, and SHA-256 provenance inspector) with 5 screenshots in `docs/ui/screenshots/08-brain-twin-*.png`.
 - `docs/ui/pages/08-brain-twin.md`: Complete 11-section page specification for Page 08 (`Brain Twin & Historical Timeline · HERO`, route `/brain-twin`) and Signature #2 `<BrainTwinTimeTravel />`.
 
 ## [`ui-m2-core-pages`] — 2026-10-24
