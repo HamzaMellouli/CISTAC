@@ -122,29 +122,37 @@
 ---
 
 ## Acceptance checklist (from the Definition of Done)
-- [ ] Matches this approved spec; any deviation logged in `DECISIONS.md`.
-- [ ] Only design tokens used (`npm run lint:tokens` exits 0).
-- [ ] All states (`steady-improver`, `noisy-low-confidence`, `edge-missing-dim`, `new-user`, `loading`, `error`, `extreme-text`) implemented and screenshotted.
-- [ ] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
-- [ ] Complete keyboard navigation, `3px` focus ring, logical tab order, $\ge 44\text{ px}$ targets.
-- [ ] Reduced motion respected (static SVG mascot + instant transitions).
-- [ ] Color never carries meaning alone.
-- [ ] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
-- [ ] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
-- [ ] Code-split route (`React.lazy`).
-- [ ] Unit/component tests + Playwright `axe-core` check (`0` violations).
-- [ ] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
-- [ ] Docs, screenshots, `STATE.md` and commit are done.
+- [x] Matches this approved spec; any deviation logged in `DECISIONS.md`.
+- [x] Only design tokens used (`npm run lint:tokens` exits 0).
+- [x] All states (`steady-improver`, `noisy-low-confidence`, `edge-missing-dim`, `new-user`, `loading`, `error`, `extreme-text`) implemented and screenshotted.
+- [x] Contrast computed via `check-contrast.mjs` ($\ge 4.5:1$ text, $\ge 3.0:1$ UI/marks).
+- [x] Complete keyboard navigation, `3px` focus ring, logical tab order, $\ge 44\text{ px}$ targets.
+- [x] Reduced motion respected (static SVG mascot + instant transitions).
+- [x] Color never carries meaning alone.
+- [x] Copy passes `npm run lint:copy` with zero clinical or guilt terms.
+- [x] Zero CLS, zero horizontal scroll at `375 px`, survives `200%` zoom.
+- [x] Code-split route (`React.lazy` — `ProfileRevealPage` chunk `20.28 kB`, `5.77 kB` gzipped; `Mascot` chunk `5.05 kB`, `1.67 kB` gzipped).
+- [x] Unit/component tests (`8/8` pass in `designSystem.test.tsx`) + Playwright `axe-core` check (`0` violations across Light, Dark, and 10-Dim Hatched states).
+- [x] Works seamlessly with 3, 6, 7, 8, and 10 dimensions.
+- [x] Docs, screenshots, `STATE.md` and commit are done.
 
 ---
 
 ## Decisions and known issues
-- **Decisions**: Build **Signature #8 (`<Mascot />`)** in `frontend/src/components/signature/Mascot.tsx` ($\le 15\text{ KB}$ inline SVG across all 5 states) and wire it into `ProfileRevealPage.tsx`, `WelcomePage.tsx`, `DashboardPage.tsx`, and `DesignSystemPage.tsx`.
+- **Decisions**: Built **Signature #8 (`<Mascot />`)** in `frontend/src/components/signature/Mascot.tsx` (`5.05 kB` JS / `1.67 kB` gzipped across all 5 states: `idle`, `hello`, `thinking`, `celebrate`, `rest`) and wired it into `ProfileRevealPage.tsx`, `WelcomePage.tsx`, `DashboardPage.tsx`, and `DesignSystemPage.tsx`.
+- **Critique Round 1 (Picky Designer)**:
+  1. Added the **Baseline Psychometric Convergence** (`QUEST+ 85% Staircase · Solid Dims · Hatched Dims · Next Block`) card to the right 5-column stack of `/profile-reveal` so the 7:5 desktop columns align cleanly at the bottom edge.
+  2. Verified `0` horizontal overflow at `375 px` and `768 px`.
+- **Critique Round 2 (Hostile Juror)**:
+  1. Added `tabIndex={0}`, `role="region"`, and `aria-label="Snapshot provenance JSON payload"` to the scrollable `<pre>` snapshot inspector so keyboard-only users can scroll the JSON payload (`0` `axe-core` violations).
+  2. Verified explicit SAT-JEPA hysteresis session count (`1 / 3 Sessions (Unconfirmed)` for Salma vs `3 / 3 Sessions (Locked)` for Youssef).
 - **Known Issues**: None.
 
 ---
 
 ## Screenshots (paths) and commit hashes
-- `docs/ui/screenshots/05-profile-reveal-1440.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/05-profile-reveal-768.png` *(Pending Step 7 Visual QA)*
-- `docs/ui/screenshots/05-profile-reveal-375.png` *(Pending Step 7 Visual QA)*
+- `docs/ui/screenshots/05-profile-reveal-1440.png`
+- `docs/ui/screenshots/05-profile-reveal-768.png`
+- `docs/ui/screenshots/05-profile-reveal-375.png`
+- `docs/ui/screenshots/05-profile-reveal-10dims-hatched-1440.png`
+- `docs/ui/screenshots/05-profile-reveal-dark-1440.png`

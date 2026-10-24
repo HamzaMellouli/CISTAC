@@ -9,6 +9,7 @@ import { evaluateDesignSystemContrast } from '../utils/contrast'
 import { lintCopyText } from '../utils/copyLinter'
 import { UncertaintyRadar } from '../components/signature/UncertaintyRadar'
 import { WhyThisPanel } from '../components/signature/WhyThisPanel'
+import { Mascot } from '../components/signature/Mascot'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
@@ -831,6 +832,31 @@ export default function DesignSystemPage() {
                 <strong>Sanitized Output:</strong> {lintResult.sanitizedPreview}
               </p>
             </div>
+          )}
+        </div>
+      </Card>
+
+      {/* SECTION 06B: Signature #8 Mascot 5-State Companion Showcase */}
+      <Card as="section" id="sec-mascot" aria-labelledby="heading-mascot">
+        <h2
+          id="heading-mascot"
+          className="font-display text-2xl font-bold text-ink border-b border-border pb-3"
+        >
+          06B · Signature #8: 5-State Non-Clinical Mascot Companion
+        </h2>
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {(['idle', 'hello', 'thinking', 'celebrate', 'rest'] as const).map(
+            (st) => (
+              <div
+                key={st}
+                className="rounded-md border-2 border-border bg-surface-raised p-3 flex flex-col items-center text-center gap-2"
+              >
+                <Mascot state={st} size="md" />
+                <Badge tone="neutral" glyph="✦">
+                  {st}
+                </Badge>
+              </div>
+            ),
           )}
         </div>
       </Card>
