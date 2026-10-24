@@ -1,13 +1,30 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Component, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
 import { TrialRecorder } from './telemetry/tracker'
 import type { TaskPayload } from './telemetry/types'
 import { TaskRunner } from './tasks/TaskRunner'
-import { fetchNextTask, getUserId } from './tasks/taskSource'
+import { fetchNextTask, getUserId, newId } from './tasks/taskSource'
 import type { VoiceProbe } from './voice/voiceProbe'
 import { VoiceToggle } from './voice/VoiceToggle'
 
-const userId = getUserId()
-const sessionId = crypto.randomUUID() // one per page load
+// Created on first use rather than at import, so an id failure can never crash module load.
+let ids: { userId: string; sessionId: string } | undefined
+const sessionIds = () => (ids ??= { userId: getUserId(), sessionId: newId() }) // one session per page load
+
+// A task whose params make it throw while rendering is logged and skipped instead of blanking the app.
+class SkipOnError extends Component<{ taskId: string; onSkip: () => void; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+  componentDidCatch(err: unknown) {
+    console.error(`task ${this.props.taskId} failed to render; skipping`, err)
+    this.props.onSkip()
+  }
+  render() {
+    return this.state.failed ? null : this.props.children
+  }
+}
 
 type State =
   | { kind: 'loading' }
@@ -31,6 +48,7 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false
+    const { userId, sessionId } = sessionIds()
     fetchNextTask(userId, attempt).then(
       (task) => {
         if (cancelled) return
@@ -78,7 +96,9 @@ export default function App() {
   return (
     <main>
       {toggle}
-      <TaskRunner key={state.n} task={state.task} recorder={state.recorder} onDone={next} voice={voice} />
+      <SkipOnError key={state.n} taskId={state.task.task_id} onSkip={next}>
+        <TaskRunner task={state.task} recorder={state.recorder} onDone={next} voice={voice} />
+      </SkipOnError>
     </main>
   )
 }

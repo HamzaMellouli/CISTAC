@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
 import fixtures from './fixtures.json'
-import { fetchNextTask, getUserId } from './taskSource'
+import { fetchNextTask, getUserId, newId } from './taskSource'
 import type {
   MatrixParams,
   MstParams,
@@ -58,7 +58,51 @@ describe('fetchNextTask', () => {
     await expect(fetchNextTask('u1', 0, fetchFn, false)).rejects.toThrow('500')
   })
 
+  test.each([
+    ['unknown schema_type', { schema_type: 'bogus' }],
+    ['unknown dimension', { dimension: 'iq' }],
+    ['task_id with a space', { task_id: 'a b' }],
+    ['task_id over 48 chars', { task_id: 'x'.repeat(49) }],
+    ['empty task_id', { task_id: '' }],
+    ['null params', { params: null }],
+    ['string params', { params: 'x' }],
+  ])('a payload with %s rejects', async (_name, bad) => {
+    const fetchFn = async () => okResponse({ ...tasks[0], ...bad })
+    await expect(fetchNextTask('u1', 0, fetchFn, false)).rejects.toThrow(/invalid task payload/)
+  })
+
+  test('a non-object body rejects', async () => {
+    await expect(fetchNextTask('u1', 0, async () => okResponse(null), false)).rejects.toThrow(/invalid task payload/)
+  })
+
+  test('a 48-char task_id with : . - is accepted', async () => {
+    const task_id = 'm5:v1.2-' + 'a'.repeat(40)
+    const fetchFn = async () => okResponse({ ...tasks[0], task_id })
+    expect((await fetchNextTask('u1', 0, fetchFn, false)).task_id).toBe(task_id)
+  })
+
   afterEach(() => vi.unstubAllEnvs())
+})
+
+describe('newId', () => {
+  afterEach(() => vi.unstubAllGlobals())
+
+  test('uses crypto.randomUUID when available', () => {
+    expect(newId()).toMatch(/^[0-9a-f-]{36}$/)
+  })
+
+  test('falls back to getRandomValues outside secure contexts (no randomUUID)', () => {
+    const real = globalThis.crypto
+    vi.stubGlobal('crypto', { getRandomValues: real.getRandomValues.bind(real) })
+    const a = newId()
+    expect(a).toMatch(/^[0-9a-f]{32}$/)
+    expect(newId()).not.toBe(a)
+  })
+
+  test('falls back to Math.random without Web Crypto', () => {
+    vi.stubGlobal('crypto', undefined)
+    expect(newId()).toMatch(/^[0-9a-f]{32}$/)
+  })
 })
 
 describe('getUserId', () => {
@@ -72,6 +116,25 @@ describe('getUserId', () => {
     expect(id).toMatch(/^[0-9a-f-]{36}$/)
     expect(localStorage.getItem('aura_uid')).toBe(id)
     expect(getUserId()).toBe(id)
+  })
+
+  test('an invalid stored id is replaced', () => {
+    for (const bad of ['../etc', 'x'.repeat(65), '']) {
+      localStorage.setItem('aura_uid', bad)
+      const id = getUserId()
+      expect(id).toMatch(/^[0-9a-f-]{36}$/)
+      expect(localStorage.getItem('aura_uid')).toBe(id)
+    }
+  })
+
+  test('works without crypto.randomUUID', () => {
+    const real = globalThis.crypto
+    vi.stubGlobal('crypto', { getRandomValues: real.getRandomValues.bind(real) })
+    try {
+      expect(getUserId()).toMatch(/^[0-9a-f]{32}$/)
+    } finally {
+      vi.unstubAllGlobals()
+    }
   })
 
   test('returns a fresh id when storage throws', () => {
