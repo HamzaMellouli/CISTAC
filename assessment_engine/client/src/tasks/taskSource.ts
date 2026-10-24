@@ -3,18 +3,16 @@ import fixtures from './fixtures.json'
 
 type FetchFn = (url: string) => Promise<Response>
 
-let mockIndex = 0
-
-// GET /v1/tasks/next (Member 5). With VITE_MOCK_TASKS=1 it cycles through local fixtures instead.
+// GET /v1/tasks/next (Member 5). With VITE_MOCK_TASKS=1 it returns fixtures[seq % length] instead;
+// `seq` is the caller's task counter, so a repeated call (StrictMode's double effect) gets the same task.
 export async function fetchNextTask(
   userId: string,
+  seq = 0,
   fetchFn: FetchFn = (url) => fetch(url),
   mock = import.meta.env.VITE_MOCK_TASKS === '1',
 ): Promise<TaskPayload> {
   if (mock) {
-    const task = fixtures[mockIndex % fixtures.length] as TaskPayload
-    mockIndex++
-    return task
+    return fixtures[seq % fixtures.length] as TaskPayload
   }
   const res = await fetchFn(`/v1/tasks/next?user_id=${encodeURIComponent(userId)}`)
   if (!res.ok) throw new Error(`GET /v1/tasks/next failed: HTTP ${res.status}`)

@@ -31,7 +31,7 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false
-    fetchNextTask(userId).then(
+    fetchNextTask(userId, attempt).then(
       (task) => {
         if (cancelled) return
         const recorder = new TrialRecorder({

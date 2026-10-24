@@ -21,40 +21,41 @@ function okResponse(body: unknown): Response {
 }
 
 describe('fetchNextTask', () => {
-  test('mock mode cycles fixtures and wraps around', async () => {
+  test('mock mode picks fixtures[seq % length], so a repeated seq returns the same fixture', async () => {
     const fetchFn = vi.fn()
     const seen: string[] = []
-    for (let i = 0; i <= tasks.length; i++) seen.push((await fetchNextTask('u1', fetchFn, true)).task_id)
+    for (let i = 0; i <= tasks.length; i++) seen.push((await fetchNextTask('u1', i, fetchFn, true)).task_id)
     expect(fetchFn).not.toHaveBeenCalled()
-    // The cycle position is module state, so compare relative to wherever it started.
-    expect(new Set(seen.slice(0, tasks.length))).toEqual(new Set(tasks.map((t) => t.task_id)))
-    expect(seen[tasks.length]).toBe(seen[0])
+    expect(seen.slice(0, tasks.length)).toEqual(tasks.map((t) => t.task_id))
+    expect(seen[tasks.length]).toBe(tasks[0].task_id)
+    expect((await fetchNextTask('u1', 3, fetchFn, true)).task_id).toBe(tasks[3].task_id)
+    expect((await fetchNextTask('u1', 3, fetchFn, true)).task_id).toBe(tasks[3].task_id)
   })
 
   test('VITE_MOCK_TASKS=1 selects mock mode by default', async () => {
     vi.stubEnv('VITE_MOCK_TASKS', '1')
     const fetchFn = vi.fn()
-    await fetchNextTask('u1', fetchFn)
+    await fetchNextTask('u1', 0, fetchFn)
     expect(fetchFn).not.toHaveBeenCalled()
   })
 
   test('real mode hits /v1/tasks/next with the user id', async () => {
     vi.stubEnv('VITE_MOCK_TASKS', '')
     const fetchFn = vi.fn(async (_url: string) => okResponse(tasks[0]))
-    const task = await fetchNextTask('u1', fetchFn)
+    const task = await fetchNextTask('u1', 0, fetchFn)
     expect(fetchFn).toHaveBeenCalledWith('/v1/tasks/next?user_id=u1')
     expect(task).toEqual(tasks[0])
   })
 
   test('user id is URL-encoded', async () => {
     const fetchFn = vi.fn(async (_url: string) => okResponse(tasks[0]))
-    await fetchNextTask('a b&c', fetchFn, false)
+    await fetchNextTask('a b&c', 0, fetchFn, false)
     expect(fetchFn).toHaveBeenCalledWith('/v1/tasks/next?user_id=a%20b%26c')
   })
 
   test('a 500 rejects', async () => {
     const fetchFn = async () => new Response('boom', { status: 500 })
-    await expect(fetchNextTask('u1', fetchFn, false)).rejects.toThrow('500')
+    await expect(fetchNextTask('u1', 0, fetchFn, false)).rejects.toThrow('500')
   })
 
   afterEach(() => vi.unstubAllEnvs())

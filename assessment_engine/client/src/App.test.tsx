@@ -19,7 +19,9 @@ test('a fetch error shows a message and retry loads the task', async () => {
   await userEvent.click(await screen.findByRole('button', { name: /try again/i }))
   expect(await screen.findByText(/Unsupported task/)).toBeTruthy()
   expect(fetchNextTask).toHaveBeenCalledTimes(2)
-  expect(fetchNextTask).toHaveBeenCalledWith('u1')
+  // The task counter is the mock sequence number: first load is 0, the retry is 1.
+  expect(fetchNextTask).toHaveBeenNthCalledWith(1, 'u1', 0)
+  expect(fetchNextTask).toHaveBeenNthCalledWith(2, 'u1', 1)
 })
 
 test('unmounting App with the voice probe on stops the probe (mic released)', async () => {

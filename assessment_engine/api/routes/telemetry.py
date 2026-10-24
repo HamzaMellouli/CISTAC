@@ -54,11 +54,19 @@ Batch = Annotated[list[TelemetryEvent], Field(max_length=100)]
 
 router = APIRouter()
 
+# routes/ -> api/ -> assessment_engine/ -> repo root, whose data/raw/* is gitignored.
+REPO_ROOT = Path(__file__).resolve().parents[3]
+
+
+def telemetry_dir() -> Path:
+    env = os.environ.get("TELEMETRY_DIR")
+    return Path(env) if env else REPO_ROOT / "data" / "raw" / "telemetry"
+
 
 @router.post("/v1/telemetry/event", status_code=202)
 async def ingest(body: TelemetryEvent | Batch) -> dict[str, int]:
     events = body if isinstance(body, list) else [body]
-    out_dir = Path(os.environ.get("TELEMETRY_DIR", "data/raw/telemetry"))
+    out_dir = telemetry_dir()
     out_dir.mkdir(parents=True, exist_ok=True)
     received_at = datetime.now(timezone.utc).isoformat()
     # ponytail: sync appends inside an async handler are serialized on the event loop, so lines

@@ -17,12 +17,11 @@ API (Python 3.13):
 ```bash
 cd assessment_engine/api
 python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # .venv/bin/pip on macOS/Linux
-TELEMETRY_DIR=../../data/raw/telemetry .venv/Scripts/python -m uvicorn main:app --port 8000
+.venv/Scripts/python -m uvicorn main:app --port 8000
 ```
 
-`TELEMETRY_DIR` defaults to `data/raw/telemetry` **relative to the working directory**. Point it at
-the repo-root `data/raw/telemetry` (gitignored) as above, or at a scratch folder for testing, so
-telemetry never lands inside `assessment_engine/api/`.
+Events go to the repo-root `data/raw/telemetry/` (gitignored), whatever the working directory.
+Set `TELEMETRY_DIR` to override it, e.g. a scratch folder for testing.
 
 Client (Node 24):
 
@@ -30,10 +29,10 @@ Client (Node 24):
 cd assessment_engine/client
 npm install
 npm run dev                      # http://localhost:5173, proxies /v1 to :8000
-VITE_MOCK_TASKS=1 npm run dev    # mock mode: cycle through src/tasks/fixtures.json instead of GET /v1/tasks/next
+VITE_MOCK_TASKS=1 npm run dev    # mock mode: task n is fixtures.json[n % 8], starting at N-back; no GET /v1/tasks/next
 ```
 
-PowerShell: `$env:VITE_MOCK_TASKS='1'; npm run dev` and `$env:TELEMETRY_DIR='..\..\data\raw\telemetry'`.
+PowerShell: `$env:VITE_MOCK_TASKS='1'; npm run dev` and `$env:TELEMETRY_DIR='C:\path\to\scratch'`.
 
 Tests and checks:
 

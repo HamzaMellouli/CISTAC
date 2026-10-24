@@ -52,3 +52,4 @@ out/
 *.swp
 *.swo
 .DS_Store
+.gstack/
