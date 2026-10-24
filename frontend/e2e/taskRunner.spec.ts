@@ -1,0 +1,110 @@
+import { test, expect } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const SCREENSHOT_DIR = path.resolve(__dirname, '../../docs/ui/screenshots')
+
+test.describe('Page 04: Task Runner (/task/:dimId) Hero Visual QA & A11y', () => {
+  test('passes axe-core accessibility, 375/768/1440px responsive layout, Tab-Blur Auto-Pause, and 3-to-10 dimension checks', async ({
+    page,
+  }) => {
+    // 1. Desktop 1440px Light (Playful Lab — Active Timed Trial + Live Telemetry Stream)
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/task/episodic_pattern_separation', {
+      waitUntil: 'networkidle',
+    })
+
+    await expect(
+      page.getByRole('heading', {
+        name: /Mnemonic Similarity Task/i,
+      }),
+    ).toBeVisible()
+
+    const a11yRunning = await new AxeBuilder({ page }).analyze()
+    expect(a11yRunning.violations).toEqual([])
+
+    await page.screenshot({
+      path: path.join(SCREENSHOT_DIR, '04-task-runner-1440.png'),
+      fullPage: true,
+    })
+
+    // 2. Test Tab-Blur Auto-Pause + Post-Block Completion Summary in 10-Dims Mode
+    await page.getByRole('button', { name: /10 Dims \(Stress\)/i }).click()
+    await page
+      .getByRole('button', { name: /Simulate Tab-Blur Pause/i })
+      .click()
+
+    await expect(
+      page.getByRole('heading', {
+        name: /Trial Auto-Paused — Focus Left Window/i,
+      }),
+    ).toBeVisible()
+
+    const a11yPaused = await new AxeBuilder({ page }).analyze()
+    expect(a11yPaused.violations).toEqual([])
+
+    // Switch to Post-Block Summary (Mascot Celebrate + WhyThisPanel)
+    await page
+      .getByRole('button', { name: /4 · ✓ Block Summary/i })
+      .click()
+
+    const a11ySummary = await new AxeBuilder({ page }).analyze()
+    expect(a11ySummary.violations).toEqual([])
+
+    await page.screenshot({
+      path: path.join(
+        SCREENSHOT_DIR,
+        '04-task-runner-completed-10dims-1440.png',
+      ),
+      fullPage: true,
+    })
+
+    // 3. Dark Theme (Night Lab) @ 1440px (Switch back to Active Trial on Stroop IC)
+    await page.getByRole('button', { name: /■ IC/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+
+    const a11yDark = await new AxeBuilder({ page }).analyze()
+    expect(a11yDark.violations).toEqual([])
+
+    await page.screenshot({
+      path: path.join(SCREENSHOT_DIR, '04-task-runner-dark-1440.png'),
+      fullPage: true,
+    })
+
+    // Reset back to Light + 7 Dims + EP Active Trial for Tablet & Mobile checks
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /7 Dims \(Default\)/i }).click()
+    await page.getByRole('button', { name: /⬢ EP/i }).click()
+
+    // 4. Tablet 768px
+    await page.setViewportSize({ width: 768, height: 1024 })
+    const overflow768 = await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth <=
+        document.documentElement.clientWidth,
+    )
+    expect(overflow768).toBe(true)
+
+    await page.screenshot({
+      path: path.join(SCREENSHOT_DIR, '04-task-runner-768.png'),
+      fullPage: true,
+    })
+
+    // 5. Mobile 375px
+    await page.setViewportSize({ width: 375, height: 812 })
+    const overflow375 = await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth <=
+        document.documentElement.clientWidth,
+    )
+    expect(overflow375).toBe(true)
+
+    await page.screenshot({
+      path: path.join(SCREENSHOT_DIR, '04-task-runner-375.png'),
+      fullPage: true,
+    })
+  })
+})

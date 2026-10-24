@@ -5,6 +5,7 @@ import { AppShell } from './components/layout/AppShell'
 const WelcomePage = React.lazy(() => import('./pages/WelcomePage'))
 const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'))
 const AssessmentHubPage = React.lazy(() => import('./pages/AssessmentHubPage'))
+const TaskRunnerPage = React.lazy(() => import('./pages/TaskRunnerPage'))
 const ProfileRevealPage = React.lazy(() => import('./pages/ProfileRevealPage'))
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
@@ -34,6 +35,13 @@ export function App() {
             <Route path="/" element={<WelcomePage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/assessment" element={<AssessmentHubPage />} />
+            <Route
+              path="/task"
+              element={
+                <Navigate to="/task/episodic_pattern_separation" replace />
+              }
+            />
+            <Route path="/task/:dimId" element={<TaskRunnerPage />} />
             <Route path="/profile-reveal" element={<ProfileRevealPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />

@@ -176,6 +176,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Link>
             )}
 
+            {!location.pathname.startsWith('/task') && (
+              <Link
+                to="/task/episodic_pattern_separation"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                Task Runner
+              </Link>
+            )}
+
             {location.pathname !== '/profile-reveal' && (
               <Link
                 to="/profile-reveal"

@@ -4,7 +4,9 @@ All notable UI, UX, design system, and documentation changes on `ui/main` follow
 
 ## [Unreleased] — Sprint Day 1 (2026-10-24)
 ### Added
-- `frontend/src/pages/AssessmentHubPage.tsx` & `frontend/e2e/assessmentHub.spec.ts`: Implemented and verified Page 03 (`Assessment Hub`, route `/assessment`) with 5 verification screenshots (`docs/ui/screenshots/03-assessment-hub-*.png`).
+- `frontend/src/pages/TaskRunnerPage.tsx` & `frontend/e2e/taskRunner.spec.ts`: Implemented Page 04 (`Task Runner · HERO`, route `/task/:dimId`) with 4-trial psychometric stimuli across all task schemas, Zero-Distraction Lock (`<Mascot />` auto-hide during timed trials), Tab-Blur / `visibilitychange` Auto-Pause Guard, live `POST /v1/telemetry/event` JSON stream, and 5 verification screenshots in `docs/ui/screenshots/04-task-runner-*.png`.
+- `docs/ui/pages/04-task-runner.md`: Complete 11-section page specification for Page 04 (`Task Runner · HERO`, route `/task/:dimId`).
+- `frontend/src/pages/AssessmentHubPage.tsx` & `frontend/e2e/assessmentHub.spec.ts`: Implemented and merged Page 03 (`Assessment Hub`, route `/assessment`) into `ui/main` (`2ab8f50`).
 - `docs/ui/pages/03-assessment-hub.md`: Complete 11-section page specification for Page 03 (`Assessment Hub`, route `/assessment`).
 - `frontend/src/pages/ProfileRevealPage.tsx`, `frontend/src/components/signature/Mascot.tsx` (Signature #8), and `frontend/e2e/profileReveal.spec.ts`: Implemented and merged Page 05 (`Profile Reveal · HERO`, route `/profile-reveal`) and `<Mascot />` into `ui/main` (`fdb1ff9`).
 - `docs/ui/pages/05-profile-reveal.md`: Complete 11-section page specification for Page 05 (`Profile Reveal · HERO`, route `/profile-reveal`) and the Mascot Sprint (`<Mascot />` Signature #8).
