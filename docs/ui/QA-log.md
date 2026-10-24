@@ -43,7 +43,7 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npm run lint:copy`**: `PASS` — 0 clinical diagnostic or punitive guilt phrases in UI copy or mock fixtures.
 - **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark semantic and Okabe-Ito dimension pairs pass WCAG 2.1 thresholds.
 - **`npm test` (Vitest)**: `PASS` — 4/4 unit & component tests passing (`designSystem.test.tsx`).
-- **`npm run build` (`tsc -b && vite build`)**: `PASS` — 0 TypeScript errors; `DesignSystemPage` code-split at `32.26 kB` (`8.42 kB` gzipped).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — 0 TypeScript errors; `DesignSystemPage` code-split at `32.30 kB` (`8.44 kB` gzipped).
 - **`npm run qa:e2e` (Playwright + `@axe-core/playwright`)**: `PASS` — 0 `axe-core` violations in Light and Dark themes; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 6 verification screenshots saved to `docs/ui/screenshots/`.
 
 ---
@@ -53,8 +53,19 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `WelcomePage.tsx`, `AppShell.tsx`, and `Badge.tsx`.
 - **`npm run lint:copy`**: `PASS` — 0 clinical or guilt terms in Welcome hero, 4-pillar cards, or 3-persona launcher fixtures.
 - **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
-- **`npm test` (Vitest)**: `PASS` — 5/5 tests pass in `src/tests/designSystem.test.tsx` (including persona switching, preview state tabs, and 3-to-10 dimension generalisation on `/`).
-- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `WelcomePage` route chunk is `16.08 kB` (`5.07 kB` gzipped); total initial JS is well under the `< 200 KB` gzipped budget.
+- **`npm test` (Vitest)**: `PASS` — 5/5 tests pass in `src/tests/designSystem.test.tsx`.
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `WelcomePage` route chunk is `16.12 kB` (`5.09 kB` gzipped).
 - **`npx playwright test e2e/welcome.spec.ts`**: `PASS` — 0 `axe-core` violations in Playful Lab (Light) and Night Lab (Dark); 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/01-welcome-*.png`.
-- **Critique Round 1 (Picky Designer)**: Fixed circular `@theme` variable declarations in `tokens.css`, added `whitespace-nowrap shrink-0` to `Badge.tsx`, and stretched the 7:5 hero columns so bottom edges align at `1440 px`.
-- **Critique Round 2 (Hostile Juror)**: Added the **Live Engine & Telemetry Contract Architecture** proof strip (`QUEST+ / 85%`, `SAT-JEPA Δc`, `95% ±CI Bands`, `0 Biometrics`) inside the left Hero card so evaluators see algorithmic rigor immediately at `0:00`.
+
+---
+
+## 5. Page 02 (`/onboarding` · `Onboarding & Consent`) Automated QA & Critique Log (2026-10-24)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `OnboardingPage.tsx` and `useAppStore.ts`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical or guilt terms across all 3 onboarding steps and validation banners.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 6/6 unit & component tests pass (`src/tests/designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `OnboardingPage` route chunk is `25.37 kB` (`6.77 kB` gzipped).
+- **`npx playwright test e2e/onboarding.spec.ts`**: `PASS` — 0 `axe-core` violations across Step Wizard, All-Steps Expanded, 10-Dimension Stress Mode, and Dark Theme; 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/02-onboarding-*.png`.
+- **Critique Round 1 (Picky Designer)**: Added the **Active Calibration Blueprint** summary box in Step 1 to balance the 8:4 desktop columns, and updated `Badge.tsx` + `<pre>` wrapping so long dimension names and JSON lines wrap cleanly at `375 px`.
+- **Critique Round 2 (Hostile Juror)**: Added explicit **Bound Backend Contracts** (`POST /v1/telemetry/event`, `GET /v1/tasks/next`, `DELETE /v1/user/telemetry`) below the live JSON payload inspector.

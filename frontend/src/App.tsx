@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 
 const WelcomePage = React.lazy(() => import('./pages/WelcomePage'))
+const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
 
 function RouteLoadingSkeleton() {
@@ -28,6 +29,7 @@ export function App() {
         <Suspense fallback={<RouteLoadingSkeleton />}>
           <Routes>
             <Route path="/" element={<WelcomePage />} />
+            <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
