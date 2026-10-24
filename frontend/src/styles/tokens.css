@@ -1,5 +1,40 @@
 @import "tailwindcss";
 
+@theme {
+  --color-canvas: #FFF8EE;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #F7EFE2;
+  --color-ink: #1F1B3B;
+  --color-ink-muted: #5B5675;
+  --color-border: #8C86A0;
+  --color-border-strong: #1F1B3B;
+  --color-brand: #0F766E;
+  --color-brand-hover: #115E59;
+  --color-brand-subtle: #ECFDF9;
+  --color-brand-ink: #FFFFFF;
+  --color-reward: #FFC83D;
+  --color-reward-ink: #1F1B3B;
+  --color-accent: #FF6B6B;
+  --color-accent-ink: #1F1B3B;
+  --color-success: #15803D;
+  --color-success-subtle: #DCFCE7;
+  --color-warning: #B45309;
+  --color-warning-subtle: #FEF3C7;
+  --color-danger: #C62828;
+  --color-danger-subtle: #FEE2E2;
+  --color-info: #0369A1;
+  --color-info-subtle: #E0F2FE;
+
+  --font-display: 'Fredoka', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Lexend', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-pill: 9999px;
+}
+
 :root,
 [data-theme="light"] {
   /* OKLCH 10-step Warm Paper & Ink Neutral Ramp */
@@ -155,101 +190,72 @@
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.45);
 }
 
-@theme {
-  --color-canvas: var(--color-canvas);
-  --color-surface: var(--color-surface);
-  --color-surface-raised: var(--color-surface-raised);
-  --color-ink: var(--color-ink);
-  --color-ink-muted: var(--color-ink-muted);
-  --color-border: var(--color-border);
-  --color-border-strong: var(--color-border-strong);
-  --color-brand: var(--color-brand);
-  --color-brand-hover: var(--color-brand-hover);
-  --color-brand-subtle: var(--color-brand-subtle);
-  --color-brand-ink: var(--color-brand-ink);
-  --color-reward: var(--color-reward);
-  --color-reward-ink: var(--color-reward-ink);
-  --color-accent: var(--color-accent);
-  --color-accent-ink: var(--color-accent-ink);
-  --color-success: var(--color-success);
-  --color-success-subtle: var(--color-success-subtle);
-  --color-warning: var(--color-warning);
-  --color-warning-subtle: var(--color-warning-subtle);
-  --color-danger: var(--color-danger);
-  --color-danger-subtle: var(--color-danger-subtle);
-  --color-info: var(--color-info);
-  --color-info-subtle: var(--color-info-subtle);
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-  --font-display: var(--font-display);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
+  html,
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-base);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
 
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
-  --radius-pill: var(--radius-pill);
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+  }
 }
 
-/* Base Document Reset */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
 
-html,
-body {
-  background-color: var(--color-canvas);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  line-height: var(--leading-base);
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
+  .font-mono-tabular {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
 
-h1,
-h2,
-h3,
-h4,
-.font-display {
-  font-family: var(--font-display);
-}
+  /* Tactile Surface & Button Primitives */
+  .tactile-card {
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+  }
 
-.font-mono-tabular {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
+  .tactile-btn {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--color-border-strong);
+    box-shadow: var(--shadow-tactile);
+    transition-property: transform, background-color, box-shadow, border-color;
+    transition-duration: var(--duration-fast);
+    transition-timing-function: var(--ease-out);
+  }
 
-/* Tactile Surface & Button Primitives */
-.tactile-card {
-  background-color: var(--color-surface);
-  border: 2px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-}
+  .tactile-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: var(--shadow-tactile-active);
+  }
 
-.tactile-btn {
-  min-height: 2.75rem;
-  min-width: 2.75rem;
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-border-strong);
-  box-shadow: var(--shadow-tactile);
-  transition-property: transform, background-color, box-shadow, border-color;
-  transition-duration: var(--duration-fast);
-  transition-timing-function: var(--ease-out);
-}
-
-.tactile-btn:active:not(:disabled) {
-  transform: translateY(2px);
-  box-shadow: var(--shadow-tactile-active);
-}
-
-.tactile-btn:focus-visible,
-.focus-ring:focus-visible {
-  outline: 3px solid var(--color-brand);
-  outline-offset: 2px;
+  .tactile-btn:focus-visible,
+  .focus-ring:focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 2px;
+  }
 }
 
 /* Reduced Motion & Timed-Trial Zero-Distraction Lock */

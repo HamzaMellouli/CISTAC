@@ -4,7 +4,12 @@ All notable UI, UX, design system, and documentation changes on `ui/main` follow
 
 ## [Unreleased] — Sprint Day 1 (2026-10-24)
 ### Added
-- `docs/ui/pages/01-welcome.md`: Complete 11-section page specification for Page 01 (`Welcome` · HERO) ready for Gate 1 review.
+- `frontend/src/pages/WelcomePage.tsx`: Implemented Page 01 (`Welcome` · HERO) on `/`, featuring the 7:5 asymmetric split hero, live interactive `<UncertaintyRadar />` + `<WhyThisPanel />` with 7-state preview switcher, Live Engine & Telemetry Contract Architecture strip (`QUEST+ / 85%`, `SAT-JEPA Δc`, `95% ±CI Bands`, `0 Biometrics`), 4-Pillar challenge overview, and 1-click 3-Persona Demo Launcher (*Youssef · Steady Improver*, *Salma · Irregular Schedule*, *Nour · First-Time Learner*).
+- `frontend/e2e/welcome.spec.ts` & `docs/ui/screenshots/01-welcome-*.png`: Added Playwright visual QA + `@axe-core/playwright` accessibility verification across `375px`, `768px`, and `1440px` viewports in both Playful Lab (Light) and Night Lab (Dark) themes.
+- `docs/ui/pages/01-welcome.md`: Completed all 11 sections, Step 7 Picky Designer & Hostile Juror critique logs, and 13-point Definition of Done checklist.
+
+### Fixed
+- `frontend/src/styles/tokens.css`: Resolved circular `@theme` CSS variable self-reference in Tailwind CSS v4 and layered base/component rules under `@layer base` and `@layer components` so utility classes cascade deterministically.
 
 ## [`ui-m1-design-system`] — 2026-10-24
 ### Added
