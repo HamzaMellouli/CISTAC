@@ -64,6 +64,19 @@ describe('TrialRecorder', () => {
     expect(e.keystroke_latency_ms).toBeNull()
   })
 
+  test('response_time_ms is capped at 600000 and score_norm clamped into [0, 1]', () => {
+    const c = clock()
+    const r = new TrialRecorder(ctx, c.now)
+    r.start(0)
+    c.set(700_000)
+    expect(r.finish({ correct: true, score: 1.4 })).toMatchObject({ response_time_ms: 600_000, score_norm: 1 })
+    r.start(1)
+    expect(r.finish({ correct: false, score: -0.2, windowMs: 900_000 })).toMatchObject({
+      response_time_ms: 600_000,
+      score_norm: 0,
+    })
+  })
+
   test('score override and meta merge', () => {
     const r = new TrialRecorder(ctx, clock().now)
     r.start(0)

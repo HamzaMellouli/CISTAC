@@ -9,6 +9,8 @@ type TrialCtx = {
   voice_opt_in: boolean
 }
 
+const MAX_RT_MS = 600_000 // server response_time_ms upper bound
+
 type TrialResult = {
   correct: boolean
   score?: number
@@ -55,8 +57,9 @@ export class TrialRecorder {
       task_id: this.ctx.task_id,
       trial_index: t.index,
       dimension: this.ctx.dimension,
-      score_norm: r.score ?? (r.correct ? 1 : 0),
-      response_time_ms: r.windowMs ?? this.now() - t.start,
+      // Clamped to the server's bounds so one out-of-range value cannot get a whole batch rejected.
+      score_norm: Math.min(1, Math.max(0, r.score ?? (r.correct ? 1 : 0))),
+      response_time_ms: Math.min(MAX_RT_MS, r.windowMs ?? this.now() - t.start),
       error_flag: !r.correct,
       error_burst: this.burst,
       hesitation_jitter: hesitationJitter(t.inputs),
