@@ -26,7 +26,8 @@ class TelemetryEvent(BaseModel):
 
     user_id: Id
     session_id: Id
-    task_id: Annotated[str, StringConstraints(min_length=1, max_length=128)]
+    # 48 so the client item_id `${task_id}:${trial_index}` always fits the 64-char meta string limit.
+    task_id: Annotated[str, StringConstraints(min_length=1, max_length=48)]
     trial_index: Annotated[int, Field(ge=0)]
     dimension: Dimension
     score_norm: Annotated[float, Field(ge=0, le=1)]

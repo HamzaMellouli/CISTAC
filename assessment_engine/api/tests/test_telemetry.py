@@ -146,3 +146,13 @@ def test_telemetry_dir_env_overrides(monkeypatch, tmp_path):
 
     monkeypatch.setenv("TELEMETRY_DIR", str(tmp_path))
     assert telemetry_dir() == tmp_path
+
+
+def test_max_task_id_with_item_id_fits_meta_limit(client):
+    tid = "t" * 48
+    assert post(client, task_id=tid, trial_meta={"item_id": f"{tid}:99999"}).status_code == 202
+
+
+def test_task_id_over_48_rejected(client, tmp_path):
+    assert post(client, task_id="t" * 49).status_code == 422
+    assert list(tmp_path.iterdir()) == []
