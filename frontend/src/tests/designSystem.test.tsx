@@ -493,6 +493,64 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
     ).toBeInTheDocument()
   })
 
+  it('renders Page 11 Goals & Habit Contracts (/goals) with Zero-Guilt Streak Protection, Bayesian ETA simulator, and contract cards', async () => {
+    window.history.pushState({}, '', '/goals')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Goals & Habit Contracts Studio/i,
+        level: 1,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Verify Habit Streak Hero
+    expect(screen.getByText(/Continuous Habit Continuity Engine/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/Days Protected/i).length).toBeGreaterThanOrEqual(1)
+    expect(screen.getByText(/Rest Days Honored/i)).toBeInTheDocument()
+
+    // Verify seeded contract exists
+    expect(screen.getByText(/Dual-Stream N-Back Capacity Stretch/i)).toBeInTheDocument()
+
+    // Test Rest Day toggle on contract
+    const restBtns = screen.getAllByRole('button', {
+      name: /Schedule Rest Day \(Zero Penalty\)/i,
+    })
+    expect(restBtns.length).toBeGreaterThan(0)
+    fireEvent.click(restBtns[0]!)
+    expect(screen.getAllByText(/Rest Day Active · Streak Safe/i).length).toBeGreaterThanOrEqual(2)
+
+    // Test Milestone simulation
+    const milestoneBtns = screen.getAllByRole('button', {
+      name: /Simulate Milestone \(\+15%\)/i,
+    })
+    expect(milestoneBtns.length).toBeGreaterThan(0)
+    fireEvent.click(milestoneBtns[0]!)
+
+    // Expand Accessible Contracts Table Region
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Show Contracts Table/i,
+      }),
+    )
+    expect(
+      screen.getByRole('table', {
+        name: /Habit Contracts and Bayesian ETAs Table/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Test Goal Creator form submit
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Commit to Habit Contract/i,
+      }),
+    )
+    expect(screen.getByText(/Habit contract committed for/i)).toBeInTheDocument()
+  })
+
   it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {
     window.history.pushState({}, '', '/design-system')
     render(<App />)

@@ -12,6 +12,7 @@ const DimensionDetailPage = React.lazy(
   () => import('./pages/DimensionDetailPage'),
 )
 const PlanPage = React.lazy(() => import('./pages/PlanPage'))
+const GoalsPage = React.lazy(() => import('./pages/GoalsPage'))
 const BrainTwinPage = React.lazy(() => import('./pages/BrainTwinPage'))
 const AiCoachPage = React.lazy(() => import('./pages/AiCoachPage'))
 const CollaborationScorePage = React.lazy(
@@ -62,6 +63,7 @@ export function App() {
               element={<DimensionDetailPage />}
             />
             <Route path="/plan" element={<PlanPage />} />
+            <Route path="/goals" element={<GoalsPage />} />
             <Route path="/collaboration" element={<CollaborationScorePage />} />
             <Route path="/brain-twin" element={<BrainTwinPage />} />
             <Route path="/coach" element={<AiCoachPage />} />

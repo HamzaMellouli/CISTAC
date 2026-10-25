@@ -4,6 +4,7 @@ import type {
   DimensionConfig,
   DimensionEstimate,
   FatigueHeatmapCell,
+  HabitContract,
   TrajectoryPoint,
   WhyThisTrail,
 } from '../../contracts'
@@ -520,3 +521,74 @@ export function buildFatigueHeatmap(persona: PersonaId): FatigueHeatmapCell[] {
 
   return cells
 }
+
+export const SAMPLE_HABIT_CONTRACTS: HabitContract[] = [
+  {
+    id: 'contract-wm-1',
+    dimensionId: 'working_memory',
+    dimensionName: 'Working Memory (Updating)',
+    objectiveType: 'capacity',
+    title: 'Dual-Stream N-Back Capacity Stretch',
+    targetDeltaPct: 10,
+    currentProgressPct: 62,
+    baselineScorePct: 68,
+    currentScorePct: 74,
+    etaDaysRange: [18, 24],
+    confidencePct: 84,
+    weeklyCommitment: '3 micro-sessions / wk (90s block)',
+    scheduledRestDay: 'Sunday (Consolidation)',
+    streakDays: 18,
+    status: 'active',
+    rationale:
+      'Bayesian QUEST+ tracks steady +0.55% theta gain per micro-block; response-time jitter is low across morning peak slots.',
+  },
+  {
+    id: 'contract-cf-2',
+    dimensionId: 'cognitive_flexibility',
+    dimensionName: 'Cognitive Flexibility (Set-Shifting)',
+    objectiveType: 'stability',
+    title: 'Task-Switching Response Stability',
+    targetDeltaPct: 8,
+    currentProgressPct: 80,
+    baselineScorePct: 62,
+    currentScorePct: 71,
+    etaDaysRange: [12, 16],
+    confidencePct: 88,
+    weeklyCommitment: '2 micro-sessions / wk (Afternoon)',
+    scheduledRestDay: 'Wednesday & Sunday',
+    streakDays: 14,
+    status: 'active',
+    rationale:
+      'Variance reduction priority: reducing reaction-time hesitation during high-switch-cost color-word trials.',
+  },
+  {
+    id: 'contract-ep-3',
+    dimensionId: 'episodic_pattern_separation',
+    dimensionName: 'Episodic Pattern Separation',
+    objectiveType: 'maintenance',
+    title: 'Mnemonic Discrimination Pacing',
+    targetDeltaPct: 12,
+    currentProgressPct: 45,
+    baselineScorePct: 54,
+    currentScorePct: 63,
+    etaDaysRange: [21, 28],
+    confidencePct: 66,
+    weeklyCommitment: 'Proactive Recovery Active · Zero Penalty',
+    scheduledRestDay: 'Today (Memory Consolidation)',
+    streakDays: 9,
+    status: 'pacing_rest',
+    rationale:
+      'Fatigue signals detected in session 4. Rest day engaged to solidify memory consolidation while preserving your 9-day streak.',
+  },
+]
+
+export function calculateBayesianEta(
+  targetDelta: number,
+  learningRate = 0.52,
+  varianceSigma = 2.4,
+): [number, number] {
+  const meanDays = Math.max(5, Math.round(targetDelta / (learningRate * 0.95)))
+  const halfBand = Math.max(2, Math.round(varianceSigma * 1.28))
+  return [Math.max(3, meanDays - halfBand), meanDays + halfBand]
+}
+
