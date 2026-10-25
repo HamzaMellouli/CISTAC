@@ -1,6 +1,6 @@
 # UI Sprint State (`docs/ui/STATE.md`)
 
-**2026-10-25 03:32 (UTC+1)** | **Branch:** `ui/page-16-judge-mode` | **Last merge on `ui/main`:** `53fe497` (Page 13 Merged)
+**2026-10-25 09:30 (UTC+1)** | **Branch:** `ui/page-17-system` | **Last merge on `ui/main`:** `256a93d` (Page 16 Merged)
 
 ## Done: pages, with commit or tag
 - **Design Direction Sprint**: Locked **Playful Lab** (Light) + **Night Lab** (Dark) + **Fredoka / Lexend / JetBrains Mono** (`DEC-006`).
@@ -16,22 +16,22 @@
 - **Wave 3 Pages In Progress**:
   - **Page 11 — Goals & Habit Contracts (`/goals`)**: Merged into `ui/main` (`312f194`).
   - **Page 13 — Privacy Center & Audit Log (`/privacy`) · Signature #6 `<PrivacyCenter />`**: Merged into `ui/main` (`53fe497`).
-  - **Page 16 — Demo & Judge Mode (`/judge-mode`) · Signature #7 `<JudgeModeDock />`**: At **Gate 2 (Step 4 Verification & Approval)**. Built `JudgeModeDock.tsx` and `JudgeModePage.tsx`, 18/18 vitest tests pass, 6 Playwright screenshots saved, 0 axe-core violations, 0 overflow. Awaiting your `"Gate 2 OK"`.
+  - **Page 16 — Demo & Judge Mode (`/judge-mode`) · Signature #7 `<JudgeModeDock />`**: Merged into `ui/main` (`256a93d`).
 
 ## In progress: page, and the stage of the loop
-- **Page 16 — Demo & Judge Mode (`/judge-mode`) · Signature #7 `<JudgeModeDock />`**: At **Gate 2 (Step 4 Verification & Approval)** on branch `ui/page-16-judge-mode`.
+- **Page 17 — System States & Error Boundaries (`/system/*`)**: At **Gate 1 (Step 2 Spec Approval)** on branch `ui/page-17-system`. Written [`pages/17-system.md`](./pages/17-system.md). Awaiting your `"Gate 1 OK"` to build.
 
 ## Decisions today (links to DECISIONS.md)
 - [DEC-001](./DECISIONS.md#dec-001-repository-directory-boundary-frontend--docsui-vs-existing-repo-folders) through [DEC-006](./DECISIONS.md#dec-006-design-direction--typography-lock-playful-lab--fredokalexendjetbrains-mono).
 
 ## Open questions: for teammates, for me
-- **For You (Gate 2 — Page 16 Demo & Judge Mode)**: Review implementation, automated QA outputs, and 6 Playwright screenshots (`docs/ui/screenshots/16-judge-mode-*.png`), and reply **"Gate 2 OK"** to merge into `ui/main`.
+- **For You (Gate 1 — Page 17 System States & Error Boundaries)**: Review [`pages/17-system.md`](./pages/17-system.md) and reply **"Gate 1 OK"** to begin implementation.
 - **For Teammates (Mon 26/10 Sync)**: `[REQ-BE-01]` to `[REQ-BE-04]` in [`contracts.md`](./contracts.md).
 
 ## Next 3 steps
-1. Receive Gate 2 approval for **Page 16 (`Demo & Judge Mode`, route `/judge-mode`)**, merge `ui/page-16-judge-mode` into `ui/main` (`--no-ff`), and push to `origin`.
-2. Author spec for **Page 17 (`System Pages: 404, Offline, Error Boundaries`, `/system/*`)** and present Gate 1 to achieve **Milestone `ui-m3-feature-freeze`**.
-3. Implement Page 17, merge to `ui/main`, tag milestone `ui-m3-feature-freeze`, and advance to Wave 4 pages.
+1. Receive Gate 1 approval for **Page 17 (`System States: 404, Offline, Error Boundaries`, route `/system/*`)**.
+2. Implement `ErrorBoundary.tsx` and `SystemPage.tsx`, wire catch-all 404 route in `App.tsx`, run QA checks and 5 Playwright screenshots, and present Gate 2 to achieve **Milestone `ui-m3-feature-freeze`**.
+3. Advance to Wave 4 pages: Page 14 (`Settings & Accessibility`), Page 15 (`How It Works & Limits`), and Page 19 (`Layer D Bonus`).
 
 ## Known issues
 - None.
