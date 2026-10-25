@@ -24,6 +24,7 @@ const JudgeModePage = React.lazy(() => import('./pages/JudgeModePage'))
 const SystemPage = React.lazy(() => import('./pages/SystemPage'))
 const SettingsPage = React.lazy(() => import('./pages/SettingsPage'))
 const MethodologyPage = React.lazy(() => import('./pages/MethodologyPage'))
+const LayerDPage = React.lazy(() => import('./pages/LayerDPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
 
 function RouteLoadingSkeleton() {
@@ -83,6 +84,7 @@ export function App() {
               <Route path="/system-error" element={<SystemPage defaultTab="error" />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/methodology" element={<MethodologyPage />} />
+              <Route path="/layer-d" element={<LayerDPage />} />
               <Route path="/design-system" element={<DesignSystemPage />} />
               <Route path="*" element={<SystemPage defaultTab="404" />} />
             </Routes>

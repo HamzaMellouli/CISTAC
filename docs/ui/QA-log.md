@@ -279,3 +279,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/methodology.spec.ts`**: `PASS` (12.6s) — 0 `axe-core` violations across Light (`Playful Lab`), Pipeline Step 3 Active, Bias Simulator Active, Copy Guardrail Triggered, Dark (`Night Lab`), Tablet (`768px`), and Mobile (`375px`); 0 horizontal overflow; 6 verification screenshots saved to `docs/ui/screenshots/15-methodology-*.png`.
 - **Critique Round 1 (Picky Designer)**: Styled all mathematical equations into clean, accessible tactile cards with monospace variable keys and plain-language descriptions, eliminating intimidation while upholding scientific rigor. Created interactive quick-test buttons in the guardrail sandbox for instant evaluator inspection.
 - **Critique Round 2 (Hostile Juror)**: Verified that scientific formulations are backed by executable code in the repository: `lintCopyText` runs the live regex engine, the bias simulator models real-time variance penalties, and the measurement biases matrix transparently discloses physical hardware latency and circadian rhythm dips with actionable architectural mitigations.
+
+
+---
+
+## 21. Page 19 (`/layer-d` · `Layer D Bonus: Voice Coaching & Scenario Projections`) Automated QA & Critique Log (2026-10-25)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `LayerDPage.tsx`. Zero arbitrary hex codes or bracket classes.
+- **`npm run lint:copy`**: `PASS` — 0 clinical diagnostic or punitive guilt terms across all voice transcripts, what-if scenarios, fatigue advisories, and projection disclosures.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 22/22 unit & component tests pass (`src/tests/designSystem.test.tsx`). Verified Multimodal Voice Coaching Studio with play/pause and pace switching, synchronized caption rendering, What-If Scenario parameter tuning, Fatigue & Burnout Risk gauge updates, and dynamic Counterfactual Impact Matrix Table generation.
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `LayerDPage` route chunk is `18.22 kB` (`5.11 kB` gzipped). Zero build or bundling errors.
+- **`npx playwright test e2e/layerD.spec.ts`**: `PASS` (30.9s) — 0 `axe-core` violations across Light (`Playful Lab`), Voice Playing with active SVG waveform, What-If Accelerated Scenario simulated, Dark (`Night Lab`), Tablet (`768px`), and Mobile (`375px`); 0 horizontal overflow; 6 verification screenshots saved to `docs/ui/screenshots/19-layer-d-*.png`.
+- **Critique Round 1 (Picky Designer)**: Designed a bespoke tactile audio console featuring a 24-bar animated SVG waveform that pulses responsively with playback status, accompanied by an accessible synchronized transcript ticker. Created tactile pill buttons for Voice Pace (`0.85x`, `1.0x`, `1.25x`) and Persona selection with distinctive 2px borders, active fill styling, and visible focus rings.
+- **Critique Round 2 (Hostile Juror)**: Verified that all counterfactual projections dynamically scale with the active `DimensionRegistry` (`3`, `6`, `7`, `8`, or `10` dimensions) and display honest Bayesian credible intervals ($\pm \sigma$) rather than unsubstantiated claims. Proved that auditory coaching is 100% accessible via text parity (WCAG 1.2.2) and that the Counterfactual Impact Matrix is wrapped in a dedicated keyboard-focusable region (`role="region"`, `tabIndex={0}`).
