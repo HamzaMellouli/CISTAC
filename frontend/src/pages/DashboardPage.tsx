@@ -39,6 +39,11 @@ export default function DashboardPage() {
     return 'calibrated'
   })
 
+  // Progressive Disclosure Section Tab Filter ('all' by default for full DOM visibility and test suites)
+  const [dashboardTab, setDashboardTab] = useState<
+    'all' | 'overview' | 'dimensions' | 'habits'
+  >('all')
+
   const effectivePersona: PersonaId =
     viewState === 'low-confidence'
       ? 'noisy-low-confidence'
@@ -87,7 +92,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Top Command Center Header + KPI Summary Pills + State Switcher */}
-      <Card className="p-6 space-y-4 min-w-0">
+      <Card variant="hero" className="p-6 space-y-4 min-w-0">
         <div className="flex flex-wrap items-start justify-between gap-4 min-w-0">
           <div className="space-y-2 max-w-3xl min-w-0">
             <div className="flex flex-wrap items-center gap-2">
@@ -159,9 +164,9 @@ export default function DashboardPage() {
                 type="button"
                 aria-pressed={viewState === tab.id}
                 onClick={() => handleSelectViewState(tab.id)}
-                className={`focus-ring min-h-11 px-2.5 py-1 rounded-sm border text-xs font-semibold cursor-pointer ${
+                className={`focus-ring min-h-11 px-2.5 py-1 rounded-lg border text-xs font-semibold cursor-pointer transition-all ${
                   viewState === tab.id
-                    ? 'bg-brand text-brand-ink border-border-strong'
+                    ? 'bg-brand text-brand-ink border-border-strong shadow-sm'
                     : 'bg-surface-raised text-ink border-border hover:bg-canvas'
                 }`}
               >
@@ -176,6 +181,65 @@ export default function DashboardPage() {
           </span>
         </div>
       </Card>
+
+      {/* Progressive Disclosure Section Tab Filter */}
+      {(viewState === 'calibrated' ||
+        viewState === 'low-confidence' ||
+        viewState === 'partial') && (
+        <nav
+          aria-label="Dashboard view sections"
+          className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-surface-raised border border-border shadow-sm w-fit"
+        >
+          <button
+            type="button"
+            aria-pressed={dashboardTab === 'all'}
+            onClick={() => setDashboardTab('all')}
+            className={`focus-ring min-h-11 px-4 py-1.5 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
+              dashboardTab === 'all'
+                ? 'bg-brand text-brand-ink shadow-sm'
+                : 'bg-transparent text-ink hover:bg-canvas'
+            }`}
+          >
+            All (Full View)
+          </button>
+          <button
+            type="button"
+            aria-pressed={dashboardTab === 'overview'}
+            onClick={() => setDashboardTab('overview')}
+            className={`focus-ring min-h-11 px-4 py-1.5 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
+              dashboardTab === 'overview'
+                ? 'bg-brand text-brand-ink shadow-sm'
+                : 'bg-transparent text-ink hover:bg-canvas'
+            }`}
+          >
+            Overview &amp; Twin Charts
+          </button>
+          <button
+            type="button"
+            aria-pressed={dashboardTab === 'dimensions'}
+            onClick={() => setDashboardTab('dimensions')}
+            className={`focus-ring min-h-11 px-4 py-1.5 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
+              dashboardTab === 'dimensions'
+                ? 'bg-brand text-brand-ink shadow-sm'
+                : 'bg-transparent text-ink hover:bg-canvas'
+            }`}
+          >
+            {activeDimensions.length} Cognitive Dimensions
+          </button>
+          <button
+            type="button"
+            aria-pressed={dashboardTab === 'habits'}
+            onClick={() => setDashboardTab('habits')}
+            className={`focus-ring min-h-11 px-4 py-1.5 rounded-xl text-xs font-semibold cursor-pointer transition-all ${
+              dashboardTab === 'habits'
+                ? 'bg-brand text-brand-ink shadow-sm'
+                : 'bg-transparent text-ink hover:bg-canvas'
+            }`}
+          >
+            Habit Heatmap &amp; Collaboration
+          </button>
+        </nav>
+      )}
 
       {/* STATE: LOADING SKELETON */}
       {viewState === 'loading' && (
@@ -199,31 +263,30 @@ export default function DashboardPage() {
 
       {/* STATE: EMPTY (NEW LEARNER) */}
       {viewState === 'empty' && (
-        <Card className="p-8 text-center space-y-4">
-          <Badge tone="reward" glyph="★">
-            New Learner · 0 Trials Logged
-          </Badge>
+        <Card className="p-8 text-center space-y-4 max-w-2xl mx-auto">
+          <span className="inline-flex h-16 w-16 items-center justify-center rounded-pill bg-brand-subtle text-brand text-3xl font-bold">
+            🌱
+          </span>
           <h2 className="font-display text-2xl font-bold text-ink">
-            Your Brain Twin canvas is ready for its first 2-minute calibration
+            No Cognitive Sessions Logged Yet
           </h2>
-          <p className="text-sm text-ink-muted max-w-xl mx-auto">
-            Complete 3 quick micro-trials across each of the{' '}
-            {activeDimensions.length} configured cognitive dimensions to unlock
-            your Uncertainty Radar, 6-week trajectory fan, and AI Collaboration
-            Score.
+          <p className="text-sm text-ink-muted">
+            SynapseTwin requires at least one 2-minute baseline session before it
+            can construct your personalised epistemic twin. Your data remains
+            strictly local under our non-biometric lock.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="pt-2 flex justify-center gap-3">
             <Link
               to="/onboarding"
-              className="tactile-btn bg-brand text-brand-ink px-5 py-3 text-base font-semibold no-underline inline-flex items-center"
+              className="tactile-btn bg-brand text-brand-ink px-5 py-2.5 text-sm font-semibold no-underline inline-flex items-center"
             >
-              Start 2-Minute Quick Baseline →
+              Start 2-Minute Baseline →
             </Link>
             <Button
               variant="secondary"
               onClick={() => handleSelectViewState('calibrated')}
             >
-              Load Calibrated Demo Twin Instead
+              Load Demo Twin
             </Button>
           </div>
         </Card>
@@ -231,42 +294,42 @@ export default function DashboardPage() {
 
       {/* STATE: ERROR RECOVERY */}
       {viewState === 'error' && (
-        <Card
-          role="alert"
-          className="p-6 border-2 border-danger bg-danger-subtle space-y-3"
-        >
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="font-display text-xl font-bold text-ink">
-              ✕ Unable to Sync Dashboard Profile (`/v1/dashboard/profile`)
-            </h2>
-            <Badge tone="danger" glyph="!">
-              Network Timeout Simulated
-            </Badge>
-          </div>
-          <p className="text-sm text-ink">
-            Your local trial telemetry queue and most recent Brain Twin snapshot
-            remain intact. Click retry to restore the live dashboard view.
+        <Card className="p-8 text-center space-y-4 max-w-xl mx-auto border-2 border-danger bg-danger-subtle">
+          <span className="inline-flex h-16 w-16 items-center justify-center rounded-pill bg-danger text-surface text-3xl font-bold">
+            ⚠
+          </span>
+          <h2 className="font-display text-2xl font-bold text-ink">
+            Temporary Inference Lag Detected
+          </h2>
+          <p className="text-sm text-ink-muted">
+            The SAT-JEPA latent vector differential service timed out. Cached
+            deterministic values are displayed below. No local session data was
+            lost.
           </p>
-          <Button
-            variant="primary"
-            onClick={() => handleSelectViewState('calibrated')}
-          >
-            Retry Profile Sync
-          </Button>
+          <div className="pt-2 flex justify-center gap-3">
+            <Button
+              variant="primary"
+              onClick={() => handleSelectViewState('calibrated')}
+            >
+              Retry Connection
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => handleSelectViewState('calibrated')}
+            >
+              Use Deterministic Fallback
+            </Button>
+          </div>
         </Card>
       )}
 
-      {/* STATE: EXTREME VALUES STRESS TEST */}
+      {/* STATE: EXTREME VALUES / STRESS TESTING */}
       {viewState === 'extreme-text' && (
-        <Card className="p-6 space-y-3 min-w-0">
-          <Badge tone="info" glyph="◈">
-            High-Magnitude &amp; Long-Label Stress Test
-          </Badge>
-          <h2 className="font-display text-xl font-bold text-ink break-words">
-            Multi-Modal Executive Interference &amp; Visuospatial Relational
-            Pattern Separation Composite Index
+        <Card className="p-6 space-y-2 border-2 border-border-strong bg-warning-subtle">
+          <h2 className="font-display text-lg font-bold text-ink">
+            Stress Test: Extreme Score Extremes &amp; Long Strings
           </h2>
-          <p className="font-mono-tabular text-2xl font-bold text-ink">
+          <p className="font-mono-tabular text-xs text-ink">
             99.9% ± 0.1% · 142,850 Trials · Mean RT: 19,420 ms · Jitter: 0.4 ms
           </p>
           <p className="text-xs text-ink-muted">
@@ -282,288 +345,295 @@ export default function DashboardPage() {
         viewState === 'partial') && (
         <>
           {/* ROW 1 (5:7 Asymmetric Split): Uncertainty Radar + Companion Slot vs. Projection Fan + Coach Spotlight */}
-          <section
-            aria-labelledby="dashboard-row1-heading"
-            className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
-          >
-            <h2 id="dashboard-row1-heading" className="sr-only">
-              Primary Brain Twin Radar and Growth Trajectory Fan
-            </h2>
-            {/* Left 5 Cols: Signature #1 Uncertainty Radar + SAT-JEPA Latent State + Mascot Companion Guide Slot */}
-            <div className="lg:col-span-5 min-w-0 flex flex-col justify-between gap-4">
-              <UncertaintyRadar
-                dimensions={activeDimensions}
-                estimates={estimates}
-                title="Multi-Dimensional Brain Twin Radar"
-              />
+          {(dashboardTab === 'all' || dashboardTab === 'overview') && (
+            <section
+              aria-labelledby="dashboard-row1-heading"
+              className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
+            >
+              <h2 id="dashboard-row1-heading" className="sr-only">
+                Primary Brain Twin Radar and Growth Trajectory Fan
+              </h2>
+              {/* Left 5 Cols: Signature #1 Uncertainty Radar + SAT-JEPA Latent State + Mascot Companion Guide Slot */}
+              <div className="lg:col-span-5 min-w-0 flex flex-col justify-between gap-4">
+                <UncertaintyRadar
+                  dimensions={activeDimensions}
+                  estimates={estimates}
+                  title="Multi-Dimensional Brain Twin Radar"
+                />
 
-              {/* SAT-JEPA Latent State & Archetype Hysteresis Card */}
-              <Card className="p-4 space-y-2.5">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <strong className="font-display text-sm font-bold text-ink">
-                    SAT-JEPA Latent Twin State &amp; Hysteresis
-                  </strong>
-                  <Badge tone="info" glyph="◈">
-                    Cluster C5 · 3/3 Sessions Stable
-                  </Badge>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-xs font-mono-tabular">
-                  <div className="rounded-sm border border-border bg-canvas p-2">
-                    <span className="text-ink-muted block">Prototype Δc</span>
-                    <strong className="text-ink">+0.18 (Dual-Stream)</strong>
+                {/* SAT-JEPA Latent State & Archetype Hysteresis Card */}
+                <Card className="p-5 space-y-2.5">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <strong className="font-display text-sm font-bold text-ink">
+                      SAT-JEPA Latent Twin State &amp; Hysteresis
+                    </strong>
+                    <Badge tone="info" glyph="◈">
+                      Cluster C5 · 3/3 Sessions Stable
+                    </Badge>
                   </div>
-                  <div className="rounded-sm border border-border bg-canvas p-2">
-                    <span className="text-ink-muted block">Hysteresis Lock</span>
-                    <strong className="text-ink">Confirmed (4 Wks)</strong>
-                  </div>
-                </div>
-              </Card>
-
-              {/* Reserved Companion Guide Slot (Upgrades to <Mascot /> in Mascot Sprint) */}
-              {showMascot && (
-                <Card
-                  data-mascot-slot="dashboard-companion"
-                  className="p-4 bg-surface-raised flex items-start gap-3.5"
-                >
-                  <div
-                    aria-hidden="true"
-                    className="h-12 w-12 shrink-0 rounded-md border-2 border-border-strong bg-reward text-reward-ink flex items-center justify-center font-display text-lg font-bold"
-                  >
-                    ✦
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <strong className="font-display text-sm font-bold text-ink">
-                        Companion Guide ·{' '}
-                        {viewState === 'low-confidence'
-                          ? 'State: Rest & Calibrate'
-                          : 'State: Encouraging Progress'}
-                      </strong>
-                      <Badge
-                        tone={
-                          viewState === 'low-confidence' ? 'warning' : 'brand'
-                        }
-                        glyph={viewState === 'low-confidence' ? '◐' : '●'}
-                      >
-                        {viewState === 'low-confidence'
-                          ? 'Rest-First Pacing'
-                          : 'Ready for +1 Level'}
-                      </Badge>
+                  <div className="grid grid-cols-2 gap-2 text-xs font-mono-tabular">
+                    <div className="rounded-xl border border-border bg-canvas p-2.5">
+                      <span className="text-ink-muted block">Prototype Δc</span>
+                      <strong className="text-ink">+0.18 (Dual-Stream)</strong>
                     </div>
-                    <p className="text-xs text-ink-muted">
-                      {viewState === 'low-confidence'
-                        ? '“Four of your dimensions have wide hatched intervals (±16%) from late-evening blocks. A relaxed 2-minute morning session will cut that uncertainty in half!”'
-                        : '“Your Working Memory and Attention confidence bands narrowed to ±5% this week. Two quick lure trials in Episodic Separation will graduate its hatched band to solid!”'}
-                    </p>
+                    <div className="rounded-xl border border-border bg-canvas p-2.5">
+                      <span className="text-ink-muted block">Hysteresis Lock</span>
+                      <strong className="text-ink">Confirmed (4 Wks)</strong>
+                    </div>
                   </div>
                 </Card>
-              )}
-            </div>
 
-            {/* Right 7 Cols: Signature #4 Projection Fan Chart + Signature #3 WhyThisPanel Coach Spotlight */}
-            <div className="lg:col-span-7 min-w-0 flex flex-col justify-between gap-4">
-              <ProjectionFanChart
-                dimensions={activeDimensions}
-                persona={effectivePersona}
-              />
-
-              <WhyThisPanel
-                trail={SAMPLE_WHY_THIS_TRAIL}
-                title="Today's Priority AI Coach Recommendation (5-Part Reasoning Trail)"
-                defaultExpanded={true}
-              />
-            </div>
-          </section>
-
-          {/* ROW 2: ADAPTIVE COGNITIVE DIMENSION CARDS GRID (3 / 6 / 7 / 8 / 10 Dimensions) */}
-          <section
-            aria-labelledby="dimension-cards-heading"
-            className="space-y-4"
-          >
-            <div className="flex flex-wrap items-end justify-between gap-2">
-              <div>
-                <h2
-                  id="dimension-cards-heading"
-                  className="font-display text-2xl font-bold text-ink"
-                >
-                  Configured Cognitive Dimensions ({activeDimensions.length}{' '}
-                  Active)
-                </h2>
-                <p className="text-sm text-ink-muted">
-                  Each card pairs an colorblind-safe Okabe-Ito token, unique
-                  vertex glyph, 95% confidence interval, and reaction-time
-                  telemetry.
-                </p>
-              </div>
-              <Badge tone="neutral" glyph="◈">
-                Generalises dynamically across 3 · 6 · 7 · 8 · 10 dimensions
-              </Badge>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {activeDimensions.map((dim, idx) => {
-                const est = estimates[idx]
-                const isUnassessed = !est || est.scorePct === null
-                const halfBand = isUnassessed
-                  ? 0
-                  : Math.round((est.ciUpperPct - est.ciLowerPct) / 2)
-
-                return (
+                {/* Reserved Companion Guide Slot */}
+                {showMascot && (
                   <Card
-                    key={dim.id}
-                    as="article"
-                    className="p-4 flex flex-col justify-between gap-3"
+                    data-mascot-slot="dashboard-companion"
+                    className="p-5 bg-surface-raised flex items-start gap-3.5"
                   >
-                    <div className="space-y-2">
-                      <div className="flex flex-wrap items-center justify-between gap-1.5">
-                        <Badge tone="neutral" glyph={dim.markerGlyph}>
-                          {dim.code} · Slot {dim.slotIndex}
+                    <div
+                      aria-hidden="true"
+                      className="h-12 w-12 shrink-0 rounded-xl border border-border-strong bg-reward text-reward-ink flex items-center justify-center font-display text-lg font-bold shadow-sm"
+                    >
+                      ✦
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <strong className="font-display text-sm font-bold text-ink">
+                          Companion Guide ·{' '}
+                          {viewState === 'low-confidence'
+                            ? 'State: Rest & Calibrate'
+                            : 'State: Encouraging Progress'}
+                        </strong>
+                        <Badge
+                          tone={
+                            viewState === 'low-confidence' ? 'warning' : 'brand'
+                          }
+                          glyph={viewState === 'low-confidence' ? '◐' : '●'}
+                        >
+                          {viewState === 'low-confidence'
+                            ? 'Rest-First Pacing'
+                            : 'Ready for +1 Level'}
                         </Badge>
-                        {isUnassessed ? (
-                          <Badge tone="warning" glyph="○">
-                            Unassessed (0 trials)
-                          </Badge>
-                        ) : est.isLowConfidence ? (
-                          <Badge tone="low-confidence" glyph="▨">
-                            Hatched ({Math.round(est.confidence * 100)}% Conf)
-                          </Badge>
-                        ) : (
-                          <Badge tone="brand" glyph="●">
-                            Calibrated ({Math.round(est.confidence * 100)}%)
-                          </Badge>
-                        )}
                       </div>
-
-                      <h3 className="font-display text-base font-bold text-ink">
-                        {dim.name}
-                      </h3>
                       <p className="text-xs text-ink-muted">
-                        {dim.shortDescription}
+                        {viewState === 'low-confidence'
+                          ? '“Four of your dimensions have wide hatched intervals (±16%) from late-evening blocks. A relaxed 2-minute morning session will cut that uncertainty in half!”'
+                          : '“Your Working Memory and Attention confidence bands narrowed to ±5% this week. Two quick lure trials in Episodic Separation will graduate its hatched band to solid!”'}
                       </p>
                     </div>
-
-                    <div className="pt-3 border-t border-border space-y-2">
-                      {isUnassessed ? (
-                        <div className="space-y-1">
-                          <span className="font-mono-tabular text-lg font-bold text-ink-muted block">
-                            — % ± — %
-                          </span>
-                          <span className="text-xs text-ink-muted block">
-                            Run 3 baseline trials to unlock estimate
-                          </span>
-                        </div>
-                      ) : (
-                        <>
-                          <div className="flex items-baseline justify-between gap-2">
-                            <span className="font-mono-tabular text-2xl font-bold text-ink">
-                              {est.scorePct}%{' '}
-                              <span className="text-sm font-semibold text-ink-muted">
-                                ± {halfBand}%
-                              </span>
-                            </span>
-                            <span className="font-mono-tabular text-xs font-bold text-ink">
-                              {est.trendDeltaPct >= 0
-                                ? `↑ +${est.trendDeltaPct}%`
-                                : `↓ ${est.trendDeltaPct}%`}
-                            </span>
-                          </div>
-                          <div className="flex flex-wrap items-center justify-between gap-1 text-xs font-mono-tabular text-ink-muted">
-                            <span>RT: {est.meanRtMs}ms</span>
-                            <span>Jitter: {est.hesitationJitterMs}ms</span>
-                            <span>n={est.sampleSize}</span>
-                          </div>
-                        </>
-                      )}
-                    </div>
                   </Card>
-                )
-              })}
-            </div>
-          </section>
-
-          {/* ROW 3 (7:5 Split): Session Fatigue Heatmap + 0–100 AI Collaboration Score Breakdown */}
-          <section
-            aria-labelledby="dashboard-row3-heading"
-            className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
-          >
-            <h2 id="dashboard-row3-heading" className="sr-only">
-              Session Fatigue Heatmap and AI Collaboration Score
-            </h2>
-            <div className="lg:col-span-7">
-              <FatigueHeatmap persona={effectivePersona} />
-            </div>
-
-            <Card className="lg:col-span-5 p-5 flex flex-col justify-between gap-4">
-              <div className="space-y-3">
-                <div className="flex flex-wrap items-start justify-between gap-2 border-b border-border pb-3">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-display text-lg font-bold text-ink">
-                        0–100 AI Collaboration Score
-                      </h3>
-                      <Badge tone="reward" glyph="★">
-                        {SAMPLE_COLLABORATION_SCORE.totalScore} ± 4 / 100
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-ink-muted">
-                      Dynamic 5-dimension rubric tracking how critically and
-                      autonomously you collaborate with the AI Coach.
-                    </p>
-                  </div>
-                  <Badge tone="neutral" glyph="◈">
-                    {SAMPLE_COLLABORATION_SCORE.statusBadge}
-                  </Badge>
-                </div>
-
-                {/* 5 Sub-Score Bars */}
-                <div className="space-y-2.5">
-                  {SAMPLE_COLLABORATION_SCORE.subScores.map((sub) => (
-                    <div key={sub.key} className="space-y-1">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-ink">
-                          {sub.label}{' '}
-                          <span className="text-ink-muted font-mono-tabular">
-                            ({sub.activeDynamicWeightPct}% weight)
-                          </span>
-                        </span>
-                        <span className="font-mono-tabular font-bold text-ink">
-                          {sub.score} / 100
-                        </span>
-                      </div>
-                      <div className="h-2.5 w-full rounded-pill bg-surface-raised border border-border overflow-hidden">
-                        <div
-                          className="h-full bg-brand"
-                          style={{ width: `${sub.score}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                )}
               </div>
 
-              {/* Active Weekly Goal & Formula Proof Footer */}
-              <div className="space-y-3 pt-3 border-t border-border">
-                <div className="rounded-md border border-border bg-canvas p-3 space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <strong className="font-display font-bold text-ink">
-                      🎯 Active Weekly Goal: Narrow EP Band to ≤ ±8%
-                    </strong>
-                    <span className="font-mono-tabular font-bold text-ink">
-                      4 / 6 Blocks
-                    </span>
-                  </div>
-                  <p className="text-xs text-ink-muted m-0">
-                    2 morning Mnemonic Similarity blocks remaining this week (no
-                    punitive streaks).
+              {/* Right 7 Cols: Signature #4 Projection Fan Chart + Signature #3 WhyThisPanel Coach Spotlight */}
+              <div className="lg:col-span-7 min-w-0 flex flex-col justify-between gap-4">
+                <ProjectionFanChart
+                  dimensions={activeDimensions}
+                  persona={effectivePersona}
+                />
+
+                <WhyThisPanel
+                  trail={SAMPLE_WHY_THIS_TRAIL}
+                  title="Today's Priority AI Coach Recommendation (5-Part Reasoning Trail)"
+                  showSummaryUpfront={true}
+                  defaultExpanded={false}
+                />
+              </div>
+            </section>
+          )}
+
+          {/* ROW 2: ADAPTIVE COGNITIVE DIMENSION CARDS GRID (3 / 6 / 7 / 8 / 10 Dimensions) */}
+          {(dashboardTab === 'all' || dashboardTab === 'dimensions') && (
+            <section
+              aria-labelledby="dimension-cards-heading"
+              className="space-y-4"
+            >
+              <div className="flex flex-wrap items-end justify-between gap-2">
+                <div>
+                  <h2
+                    id="dimension-cards-heading"
+                    className="font-display text-2xl font-bold text-ink"
+                  >
+                    Configured Cognitive Dimensions ({activeDimensions.length}{' '}
+                    Active)
+                  </h2>
+                  <p className="text-sm text-ink-muted">
+                    Each card pairs an colorblind-safe Okabe-Ito token, unique
+                    vertex glyph, 95% confidence interval, and reaction-time
+                    telemetry.
                   </p>
                 </div>
-
-                <p className="font-mono-tabular text-xs text-ink-muted m-0">
-                  {SAMPLE_COLLABORATION_SCORE.formulaDisplay}
-                </p>
+                <Badge tone="neutral" glyph="◈">
+                  Generalises dynamically across 3 · 6 · 7 · 8 · 10 dimensions
+                </Badge>
               </div>
-            </Card>
-          </section>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {activeDimensions.map((dim, idx) => {
+                  const est = estimates[idx]
+                  const isUnassessed = !est || est.scorePct === null
+                  const halfBand = isUnassessed
+                    ? 0
+                    : Math.round((est.ciUpperPct - est.ciLowerPct) / 2)
+
+                  return (
+                    <Card
+                      key={dim.id}
+                      as="article"
+                      className="p-5 flex flex-col justify-between gap-3"
+                    >
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap items-center justify-between gap-1.5">
+                          <Badge tone="neutral" glyph={dim.markerGlyph}>
+                            {dim.code} · Slot {dim.slotIndex}
+                          </Badge>
+                          {isUnassessed ? (
+                            <Badge tone="warning" glyph="○">
+                              Unassessed (0 trials)
+                            </Badge>
+                          ) : est.isLowConfidence ? (
+                            <Badge tone="low-confidence" glyph="▨">
+                              Hatched ({Math.round(est.confidence * 100)}% Conf)
+                            </Badge>
+                          ) : (
+                            <Badge tone="brand" glyph="●">
+                              Calibrated ({Math.round(est.confidence * 100)}%)
+                            </Badge>
+                          )}
+                        </div>
+
+                        <h3 className="font-display text-base font-bold text-ink">
+                          {dim.name}
+                        </h3>
+                        <p className="text-xs text-ink-muted">
+                          {dim.shortDescription}
+                        </p>
+                      </div>
+
+                      <div className="pt-3 border-t border-border space-y-2">
+                        {isUnassessed ? (
+                          <div className="space-y-1">
+                            <span className="font-mono-tabular text-lg font-bold text-ink-muted block">
+                              — % ± — %
+                            </span>
+                            <span className="text-xs text-ink-muted block">
+                              Run 3 baseline trials to unlock estimate
+                            </span>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="flex items-baseline justify-between gap-2">
+                              <span className="font-mono-tabular text-2xl font-bold text-ink">
+                                {est.scorePct}%{' '}
+                                <span className="text-sm font-semibold text-ink-muted">
+                                  ± {halfBand}%
+                                </span>
+                              </span>
+                              <span className="font-mono-tabular text-xs font-bold text-ink">
+                                {est.trendDeltaPct >= 0
+                                  ? `↑ +${est.trendDeltaPct}%`
+                                  : `↓ ${est.trendDeltaPct}%`}
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap items-center justify-between gap-1 text-xs font-mono-tabular text-ink-muted">
+                              <span>RT: {est.meanRtMs}ms</span>
+                              <span>Jitter: {est.hesitationJitterMs}ms</span>
+                              <span>n={est.sampleSize}</span>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </Card>
+                  )
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ROW 3 (7:5 Split): Session Fatigue Heatmap + 0–100 AI Collaboration Score Breakdown */}
+          {(dashboardTab === 'all' || dashboardTab === 'habits') && (
+            <section
+              aria-labelledby="dashboard-row3-heading"
+              className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
+            >
+              <h2 id="dashboard-row3-heading" className="sr-only">
+                Session Fatigue Heatmap and AI Collaboration Score
+              </h2>
+              <div className="lg:col-span-7">
+                <FatigueHeatmap persona={effectivePersona} />
+              </div>
+
+              <Card className="lg:col-span-5 p-5 flex flex-col justify-between gap-4">
+                <div className="space-y-3">
+                  <div className="flex flex-wrap items-start justify-between gap-2 border-b border-border pb-3">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="font-display text-lg font-bold text-ink">
+                          0–100 AI Collaboration Score
+                        </h3>
+                        <Badge tone="reward" glyph="★">
+                          {SAMPLE_COLLABORATION_SCORE.totalScore} ± 4 / 100
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-ink-muted">
+                        Dynamic 5-dimension rubric tracking how critically and
+                        autonomously you collaborate with the AI Coach.
+                      </p>
+                    </div>
+                    <Badge tone="neutral" glyph="◈">
+                      {SAMPLE_COLLABORATION_SCORE.statusBadge}
+                    </Badge>
+                  </div>
+
+                  {/* 5 Sub-Score Bars */}
+                  <div className="space-y-2.5">
+                    {SAMPLE_COLLABORATION_SCORE.subScores.map((sub) => (
+                      <div key={sub.key} className="space-y-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-semibold text-ink">
+                            {sub.label}{' '}
+                            <span className="text-ink-muted font-mono-tabular">
+                              ({sub.activeDynamicWeightPct}% weight)
+                            </span>
+                          </span>
+                          <span className="font-mono-tabular font-bold text-ink">
+                            {sub.score} / 100
+                          </span>
+                        </div>
+                        <div className="h-2.5 w-full rounded-pill bg-surface-raised border border-border overflow-hidden">
+                          <div
+                            className="h-full bg-brand"
+                            style={{ width: `${sub.score}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Active Weekly Goal & Formula Proof Footer */}
+                <div className="space-y-3 pt-3 border-t border-border">
+                  <div className="rounded-xl border border-border bg-canvas p-3 space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <strong className="font-display font-bold text-ink">
+                        🎯 Active Weekly Goal: Narrow EP Band to ≤ ±8%
+                      </strong>
+                      <span className="font-mono-tabular font-bold text-ink">
+                        4 / 6 Blocks
+                      </span>
+                    </div>
+                    <p className="text-xs text-ink-muted m-0">
+                      2 morning Mnemonic Similarity blocks remaining this week (no
+                      punitive streaks).
+                    </p>
+                  </div>
+
+                  <p className="font-mono-tabular text-xs text-ink-muted m-0">
+                    {SAMPLE_COLLABORATION_SCORE.formulaDisplay}
+                  </p>
+                </div>
+              </Card>
+            </section>
+          )}
         </>
       )}
     </div>

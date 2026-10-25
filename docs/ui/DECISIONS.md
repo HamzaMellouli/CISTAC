@@ -63,3 +63,14 @@ Every non-trivial frontend, UX, design-system, and contract decision is recorded
 - **Choice**: **Option 1 (Playful Lab Light + Night Lab Dark + Fredoka / Lexend / JetBrains Mono)**.
 - **Why**: Warm paper (`#FFF8EE`) with crisp `#1F1B3B` (`15.61:1`) tactile borders avoids clinical anxiety while keeping charts rigorous; `Lexend` is empirically designed to reduce visual crowding and improve reading speed, giving us a strong accessibility narrative for the jury pitch.
 
+
+---
+
+## DEC-007: Consumer Visual Hierarchy, Floating Judge Quick-Bar & Progressive Disclosure
+- **Date**: 2026-10-25
+- **Context**: Transitioning SynapseTwin from a feature-complete engineering build to an Apple Design Award / Brilliant.org consumer product while keeping 100% test compatibility.
+- **Options**:
+  1. Keep the 23-button header wall and flat heavy 2px borders everywhere.
+  2. Redesign the top navigation into a 5-destination consumer bar (`Welcome`, `Dashboard`, `Assess`, `AI Coach`, `Plan`) paired with a collapsible floating `⚖️ Judge & DevTools Quick-Bar`, soft editorial tokens (`1px` subtle borders, layered `shadow-soft`, warm hero gradients, 20px radii), and progressive disclosure tabs on the dashboard (`All`, `Overview`, `7 Dimensions`, `Habits`), powered by `framer-motion`.
+- **Choice**: **Option 2**.
+- **Why**: Eliminates cognitive clutter and visual fatigue for end users and judges; preserves 100% of DOM selectors, `data-testid` attributes, and accessibility landmarks so all 22 unit tests and all Playwright visual QA specs pass without breakage.

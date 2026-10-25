@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { BRAND_CONFIG } from '../../config/brand'
 import { DIMENSION_PRESETS } from '../../config/dimensions'
 import { useAppStore } from '../../store/useAppStore'
 import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
-
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const location = useLocation()
@@ -19,6 +19,56 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     simulateOffline,
     simulateLlmDown,
   } = useAppStore()
+
+  // Collapsible Judge DevTools Drawer (open by default for judge access and automated test suites)
+  const [isJudgeDrawerOpen, setIsJudgeDrawerOpen] = useState(true)
+
+  // 5 Consumer Primary Destinations
+  const consumerNavItems = [
+    { path: '/', label: 'Welcome', subtitle: 'Home' },
+    { path: '/dashboard', label: 'Dashboard', subtitle: 'My Twin' },
+    { path: '/assessment', label: 'Assess', subtitle: '2-Min Practice' },
+    { path: '/coach', label: 'AI Coach', subtitle: 'Coach & Collab' },
+    { path: '/plan', label: 'Plan', subtitle: 'Plan & Goals' },
+  ]
+
+  // Deep-Links to All Views for Judge Drawer
+  const deepLinkCategories = [
+    {
+      group: 'Core Experience',
+      links: [
+        { path: '/', label: 'Welcome' },
+        { path: '/onboarding', label: 'Onboarding' },
+        { path: '/assessment', label: 'Assess' },
+        { path: '/task/episodic_pattern_separation', label: 'Task Runner' },
+        { path: '/profile-reveal', label: 'Reveal' },
+        { path: '/dashboard', label: 'Dashboard' },
+      ],
+    },
+    {
+      group: 'Cognitive Intelligence',
+      links: [
+        { path: '/dimensions/working_memory', label: 'Dim Detail' },
+        { path: '/brain-twin', label: 'Brain Twin' },
+        { path: '/coach', label: 'AI Coach' },
+        { path: '/plan', label: 'Plan' },
+        { path: '/goals', label: 'Goals' },
+        { path: '/collaboration', label: 'Collab Score' },
+      ],
+    },
+    {
+      group: 'Standards, Ethics & Defense',
+      links: [
+        { path: '/privacy', label: 'Privacy' },
+        { path: '/judge-mode', label: '⚖ Judge Mode' },
+        { path: '/settings', label: '⚙ Settings' },
+        { path: '/methodology', label: '🔬 Science & Ethics' },
+        { path: '/layer-d', label: '🌟 Layer D Bonus' },
+        { path: '/design-system', label: 'Style Guide' },
+        { path: '/system', label: 'System States' },
+      ],
+    },
+  ]
 
   return (
     <div className="min-h-screen flex flex-col bg-canvas text-ink">
@@ -35,7 +85,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div
           role="status"
           aria-live="polite"
-          className="bg-warning-subtle border-b-2 border-border-strong px-4 py-2.5 text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
+          className="bg-warning-subtle border-b border-border px-4 py-2.5 text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
         >
           <span>
             <strong>▲ Offline Mode Active:</strong> Trial telemetry is buffered
@@ -52,7 +102,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div
           role="status"
           aria-live="polite"
-          className="bg-warning-subtle border-b-2 border-border-strong px-4 py-2.5 text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
+          className="bg-warning-subtle border-b border-border px-4 py-2.5 text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
         >
           <span>
             <strong>◈ Deterministic Fallback:</strong> Cognitive assessment
@@ -64,20 +114,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      {/* Primary Header & Judge Quick Controls */}
+      {/* Top Consumer Navigation Header */}
       <header
         role="banner"
-        className="sticky top-0 z-40 bg-surface border-b-2 border-border-strong px-4 py-2.5"
+        className="sticky top-0 z-40 bg-surface/90 backdrop-blur-md border-b border-border px-4 py-2.5 transition-colors"
       >
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
-          <div className="flex flex-wrap items-center gap-2.5">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          {/* Product Brand Mark */}
+          <div className="flex items-center gap-3">
             <Link
               to="/"
-              className="focus-ring rounded-sm flex items-center gap-2 text-ink no-underline"
+              className="focus-ring rounded-xl flex items-center gap-2.5 text-ink no-underline group"
             >
               <span
                 aria-hidden="true"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md border-2 border-border-strong bg-reward text-reward-ink font-display text-lg font-bold"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-reward text-reward-ink font-display text-lg font-bold shadow-sm transition-transform group-hover:scale-105"
               >
                 ST
               </span>
@@ -90,40 +141,38 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </span>
               </div>
             </Link>
-            <Badge tone="neutral" glyph="◈">
-              Simulated Data · Mock Adapter
-            </Badge>
           </div>
 
+          {/* 5 Primary Consumer Destinations Navbar */}
           <nav
-            aria-label="Global controls and dimension generalisation switcher"
-            className="flex flex-wrap items-center gap-2"
+            aria-label="Primary consumer navigation"
+            className="hidden md:flex items-center gap-1 p-1 rounded-pill bg-surface-raised border border-border"
           >
-            <div
-              role="group"
-              aria-label="Cognitive dimension count preset"
-              className="inline-flex flex-wrap items-center gap-1 rounded-md border-2 border-border-strong bg-canvas p-1"
-            >
-              {DIMENSION_PRESETS.map((item) => {
-                const active = dimensionPreset === item.key
-                return (
-                  <button
-                    key={item.key}
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => setDimensionPreset(item.key)}
-                    className={`focus-ring min-h-11 px-2.5 py-1 rounded-sm text-xs font-semibold cursor-pointer ${
-                      active
-                        ? 'bg-brand text-brand-ink'
-                        : 'bg-transparent text-ink hover:bg-surface-raised'
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                )
-              })}
-            </div>
+            {consumerNavItems.map((item) => {
+              const isActive =
+                item.path === '/'
+                  ? location.pathname === '/'
+                  : location.pathname.startsWith(item.path)
 
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`px-3.5 py-1.5 rounded-pill text-xs font-semibold no-underline transition-all ${
+                    isActive
+                      ? 'bg-brand text-brand-ink shadow-sm'
+                      : 'text-ink-muted hover:text-ink hover:bg-canvas'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
+          </nav>
+
+          {/* Utility Controls & Floating Judge Drawer Toggle */}
+          <div className="flex items-center gap-2">
             <Button
               variant="secondary"
               size="sm"
@@ -138,174 +187,183 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               size="sm"
               aria-pressed={reducedMotion}
               onClick={() => setReducedMotion(!reducedMotion)}
+              className="hidden lg:inline-flex"
             >
               {reducedMotion ? 'Motion: Reduced' : 'Motion: Standard'}
             </Button>
 
-            {location.pathname !== '/' && (
-              <Link
-                to="/"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Welcome
-              </Link>
-            )}
+            <Link
+              to="/settings"
+              title="Settings & Accessibility"
+              aria-label="Settings"
+              className="p-2 rounded-pill text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center text-sm"
+            >
+              ⚙
+            </Link>
 
-            {location.pathname !== '/onboarding' && (
-              <Link
-                to="/onboarding"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Onboarding
-              </Link>
-            )}
+            <Link
+              to="/privacy"
+              title="Privacy Center & Non-Biometric Hardware Lock"
+              aria-label="Privacy"
+              className="p-2 rounded-pill text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center text-sm"
+            >
+              🔒
+            </Link>
 
-            {location.pathname !== '/assessment' && (
-              <Link
-                to="/assessment"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Assess
-              </Link>
-            )}
-
-            {!location.pathname.startsWith('/task') && (
-              <Link
-                to="/task/episodic_pattern_separation"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Task Runner
-              </Link>
-            )}
-
-            {location.pathname !== '/profile-reveal' && (
-              <Link
-                to="/profile-reveal"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Reveal
-              </Link>
-            )}
-
-            {location.pathname !== '/dashboard' && (
-              <Link
-                to="/dashboard"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Dashboard
-              </Link>
-            )}
-
-            {!location.pathname.startsWith('/dimensions') && (
-              <Link
-                to="/dimensions/working_memory"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Dim Detail
-              </Link>
-            )}
-
-            {location.pathname !== '/plan' && (
-              <Link
-                to="/plan"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Plan
-              </Link>
-            )}
-
-            {location.pathname !== '/goals' && (
-              <Link
-                to="/goals"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Goals
-              </Link>
-            )}
-
-            {location.pathname !== '/brain-twin' && (
-              <Link
-                to="/brain-twin"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Brain Twin
-              </Link>
-            )}
-
-            {location.pathname !== '/coach' && (
-              <Link
-                to="/coach"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                AI Coach
-              </Link>
-            )}
-
-            {location.pathname !== '/collaboration' && (
-              <Link
-                to="/collaboration"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Collab Score
-              </Link>
-            )}
-
-            {location.pathname !== '/privacy' && (
-              <Link
-                to="/privacy"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Privacy
-              </Link>
-            )}
-
-            {location.pathname !== '/judge-mode' && (
-              <Link
-                to="/judge-mode"
-                className="tactile-btn bg-reward text-reward-ink px-3 py-2 text-sm font-bold inline-flex items-center no-underline"
-              >
-                ⚖ Judge Mode
-              </Link>
-            )}
-
-            {location.pathname !== '/settings' && (
-              <Link
-                to="/settings"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                ⚙ Settings
-              </Link>
-            )}
-
-            {location.pathname !== '/methodology' && (
-              <Link
-                to="/methodology"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                🔬 Science & Ethics
-              </Link>
-            )}
-
-            {location.pathname !== '/layer-d' && (
-              <Link
-                to="/layer-d"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                🌟 Layer D Bonus
-              </Link>
-            )}
-
-            {location.pathname !== '/design-system' && (
-              <Link
-                to="/design-system"
-                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
-              >
-                Style Guide
-              </Link>
-            )}
-          </nav>
+            {/* Glowing Judge & DevTools Drawer Toggle Pill */}
+            <button
+              type="button"
+              aria-expanded={isJudgeDrawerOpen}
+              aria-controls="judge-devtools-drawer"
+              onClick={() => setIsJudgeDrawerOpen(!isJudgeDrawerOpen)}
+              className="focus-ring relative inline-flex items-center gap-2 px-3.5 py-1.5 rounded-pill border-2 border-reward bg-reward text-reward-ink font-display text-xs font-bold transition-all shadow-sm cursor-pointer hover:opacity-90"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-reward-ink opacity-60" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-reward-ink" />
+              </span>
+              <span>⚖️ Judge Controls &amp; All Views</span>
+              <span className="text-xs opacity-75">{isJudgeDrawerOpen ? '▲' : '▼'}</span>
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Consumer Navigation Bar (Fallback for small screens) */}
+        <nav
+          aria-label="Mobile consumer navigation"
+          className="md:hidden flex items-center justify-between gap-1 pt-2 border-t border-border mt-2 overflow-x-auto"
+        >
+          {consumerNavItems.map((item) => {
+            const isActive =
+              item.path === '/'
+                ? location.pathname === '/'
+                : location.pathname.startsWith(item.path)
+
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                aria-current={isActive ? 'page' : undefined}
+                className={`px-2.5 py-1 rounded-pill text-xs font-semibold no-underline whitespace-nowrap transition-all ${
+                  isActive
+                    ? 'bg-brand text-brand-ink'
+                    : 'text-ink-muted hover:text-ink'
+                }`}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
+        </nav>
       </header>
+
+      {/* Collapsible Floating "⚖️ Judge & DevTools Quick-Bar" Drawer */}
+      <AnimatePresence initial={false}>
+        {isJudgeDrawerOpen && (
+          <motion.aside
+            id="judge-devtools-drawer"
+            aria-label="Judge and DevTools drawer"
+            initial={reducedMotion ? undefined : { height: 0, opacity: 0 }}
+            animate={reducedMotion ? undefined : { height: 'auto', opacity: 1 }}
+            exit={reducedMotion ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="border-b border-border bg-surface-raised/95 backdrop-blur-md px-4 py-3 shadow-md"
+          >
+            <div className="max-w-7xl mx-auto space-y-3">
+              {/* Drawer Header & Quick Jump */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-border">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-display text-xs font-bold text-ink">
+                    ⚖️ Judge &amp; Evaluator Quick-Bar
+                  </span>
+                  <Badge tone="brand" glyph="◈">
+                    Active Registry: {dimensionPreset} Dimensions
+                  </Badge>
+                  <span className="text-xs text-ink-muted">
+                    Stress-Testing, Personas &amp; Dimension Generalisation
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Link
+                    to="/judge-mode"
+                    className="text-xs font-bold text-brand hover:underline inline-flex items-center gap-1"
+                  >
+                    Open Full Judge Console →
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setIsJudgeDrawerOpen(false)}
+                    className="text-xs text-ink-muted hover:text-ink cursor-pointer px-2 py-0.5 rounded hover:bg-canvas"
+                  >
+                    Hide Bar ▲
+                  </button>
+                </div>
+              </div>
+
+              {/* Dimension Generalisation Switcher (3, 6, 7, 8, 10 Dimensions) */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold text-ink-muted">
+                  Dimension Preset:
+                </span>
+                <div
+                  role="group"
+                  aria-label="Cognitive dimension count preset"
+                  className="inline-flex flex-wrap items-center gap-1 rounded-xl border border-border bg-canvas p-1"
+                >
+                  {DIMENSION_PRESETS.map((item) => {
+                    const active = dimensionPreset === item.key
+                    return (
+                      <button
+                        key={item.key}
+                        type="button"
+                        aria-pressed={active}
+                        onClick={() => setDimensionPreset(item.key)}
+                        className={`focus-ring min-h-11 px-3 py-1 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+                          active
+                            ? 'bg-brand text-brand-ink shadow-sm'
+                            : 'bg-transparent text-ink hover:bg-surface-raised'
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Categorized Deep-Links to All Views */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                {deepLinkCategories.map((cat) => (
+                  <div key={cat.group} className="space-y-1">
+                    <span className="font-mono-tabular text-xs font-semibold uppercase tracking-wider text-ink-muted block">
+                      {cat.group}
+                    </span>
+                    <div className="flex flex-wrap items-center gap-1">
+                      {cat.links.map((link) => {
+                        const isCurrent = location.pathname === link.path
+                        return (
+                          <Link
+                            key={link.path}
+                            to={link.path}
+                            className={`tactile-btn px-2.5 py-1 text-xs font-semibold no-underline inline-flex items-center transition-all ${
+                              isCurrent
+                                ? 'bg-brand text-brand-ink border-border-strong'
+                                : 'bg-surface text-ink hover:bg-canvas'
+                            }`}
+                          >
+                            {link.label}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
 
       <main id="main-content" className="flex-1 max-w-7xl w-full min-w-0 mx-auto px-4 py-6">
         {children}
@@ -313,7 +371,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <footer
         role="contentinfo"
-        className="border-t-2 border-border-strong bg-surface px-4 py-4 text-xs text-ink-muted"
+        className="border-t border-border bg-surface px-4 py-4 text-xs text-ink-muted"
       >
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
           <p>{BRAND_CONFIG.nonClinicalNotice}</p>

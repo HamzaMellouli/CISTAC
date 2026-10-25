@@ -2,7 +2,14 @@
 
 All notable UI, UX, design system, and documentation changes on `ui/main` follow Conventional Commits.
 
-## [Unreleased] — Sprint Day 2 (2026-10-25)
+## [Unreleased] — Aesthetic Upgrade Sprint (2026-10-25)
+### Added
+- `frontend/src/components/layout/AppShell.tsx`: Redesigned top navigation into a consumer-grade 5-destination navbar (`Welcome`, `Dashboard`, `Assess`, `AI Coach`, `Plan`) paired with a collapsible, floating `⚖️ Judge & DevTools Quick-Bar` dock featuring animated height expansion/collapse (`framer-motion`), 3–10 dimension preset switcher, and organized deep-links to all 19 views.
+- `frontend/src/styles/tokens.css` & `frontend/src/components/ui/Card.tsx`: Introduced soft editorial tokens (`--border-card-subtle`, `--shadow-soft`, `--shadow-hero`, `--bg-card-gradient`, `--bg-hero-gradient`, `--radius-xl`), replacing heavy 2px container borders with refined 1px subtle boundaries, layered elevations, 20px border radius, and generous 24px padding.
+- `frontend/src/pages/DashboardPage.tsx`: Implemented progressive disclosure view-filter segmented controls (`All (Full View)`, `Overview & Twin Charts`, `7 Cognitive Dimensions`, `Habit Heatmap & Collaboration`) and upfront digestible Priority Coach Recommendation summary card with smooth 5-part reasoning trail drawer (`WhyThisPanel.tsx`).
+- `docs/ui/DECISIONS.md`: Logged `DEC-007` (Consumer Visual Hierarchy, Floating Judge Quick-Bar & Progressive Disclosure).
+
+## [ui-v1.0-phase1] — Sprint Day 2 (2026-10-25)
 ### Added
 - `frontend/src/pages/LayerDPage.tsx`, `frontend/e2e/layerD.spec.ts`, and `docs/ui/screenshots/19-layer-d-*.png`: Implemented Page 19 (`Layer D Bonus: Voice Coaching & Scenario Projections`, route `/layer-d`) completing the 4-layer cognitive architecture. Features Conversational Multimodal Voice Coaching Studio with 24-bar animated SVG waveform, voice pace selection (`0.85x`, `1.0x`, `1.25x`), persona switcher, synchronized live captions (WCAG 1.2.2), Counterfactual "What-If" Scenario Simulator with intensity, sleep, and rest day controls, Cognitive Fatigue & Burnout Risk forecast gauge, and accessible Counterfactual Impact Matrix Table (`role="region"` with `tabIndex={0}`) scaling dynamically with active dimension presets (3, 6, 7, 8, 10 dims).
 - `docs/ui/pages/19-layer-d.md`: Complete 11-section page specification for Page 19 (`Layer D Bonus: Voice Coaching & Scenario Projections`, route `/layer-d`).
