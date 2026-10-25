@@ -200,20 +200,19 @@
 ---
 
 ## 10. Definition of Done Checklist (10 Items)
-- [ ] **DoD 01**: Author [`PrivacyCenter.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/components/signature/PrivacyCenter.tsx) and [`PrivacyPage.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/pages/PrivacyPage.tsx) matching design tokens and 12-column desktop / 1-column mobile layouts.
-- [ ] **DoD 02**: Prominently display Non-Biometric Hardware Lock Banner with physical disconnection guarantee.
-- [ ] **DoD 03**: Render granular consent controls with equal-prominence "Reject All Optional" and "Restore Defaults" buttons.
-- [ ] **DoD 04**: Implement "What the AI Sees" live telemetry JSON inspector updating dynamically when toggles change.
-- [ ] **DoD 05**: Implement Cryptographic Consent Receipt with SHA-256 fingerprint and audit status.
-- [ ] **DoD 06**: Implement self-service GDPR Article 20 data archive export (`.json` download).
-- [ ] **DoD 07**: Implement self-service GDPR Article 17 data purge with 2-step confirmation modal and Deletion Certificate.
-- [ ] **DoD 08**: Render accessible chronological audit log table (`role="region"` with `tabIndex={0}`) with event filters.
-- [ ] **DoD 09**: Wire route `/privacy` into `App.tsx` and navigation in `AppShell.tsx`.
-- [ ] **DoD 10**: Pass all QA checks (`npm run qa:checks`) with 0 errors, 0 `axe-core` violations, 0 overflow, and 5 Playwright screenshots saved to `docs/ui/screenshots/13-privacy-*.png`.
+- [x] **DoD 01**: Author [`PrivacyCenter.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/components/signature/PrivacyCenter.tsx) and [`PrivacyPage.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/pages/PrivacyPage.tsx) matching design tokens and 12-column desktop / 1-column mobile layouts.
+- [x] **DoD 02**: Prominently display Non-Biometric Hardware Lock Banner with physical disconnection guarantee.
+- [x] **DoD 03**: Render granular consent controls with equal-prominence "Reject All Optional" and "Restore Defaults" buttons.
+- [x] **DoD 04**: Implement "What the AI Sees" live telemetry JSON inspector updating dynamically when toggles change.
+- [x] **DoD 05**: Implement Cryptographic Consent Receipt with SHA-256 fingerprint and audit status.
+- [x] **DoD 06**: Implement self-service GDPR Article 20 data archive export (`.json` download).
+- [x] **DoD 07**: Implement self-service GDPR Article 17 data purge with 2-step confirmation modal and Deletion Certificate.
+- [x] **DoD 08**: Render accessible chronological audit log table (`role="region"` with `tabIndex={0}`) with event filters.
+- [x] **DoD 09**: Wire route `/privacy` into `App.tsx` and navigation in `AppShell.tsx`.
+- [x] **DoD 10**: Pass all QA checks (`npm run qa:checks`) with 0 errors, 0 `axe-core` violations, 0 overflow, and 5 Playwright screenshots saved to `docs/ui/screenshots/13-privacy-*.png`.
 
 ---
 
 ## 11. Design Critique Self-Review (Rounds 1 & 2)
-*(To be completed during implementation and verification)*
-- **Round 1 (Picky Designer)**: Align JSON inspector height and consent control card heights on 1440px desktop grid; verify monospace font hierarchy and copy button feedback transitions.
-- **Round 2 (Hostile Juror)**: Verify that non-biometric mode is non-negotiable and cannot be unchecked in the UI; verify that "Purge All Data" cleanly clears profile cache without console errors.
+- **Round 1 (Picky Designer)**: Eliminated arbitrary pixel values (`text-[11px]`) in favor of standard `text-xs` design tokens, aligned card heights on the 1440px 12-column grid, and guaranteed smooth visual hierarchy with Fredoka headings, Lexend body copy, and JetBrains Mono code inspection.
+- **Round 2 (Hostile Juror)**: Verified that non-biometric mode is permanently hardware-locked and physically disengaged in code with no camera or audio access; verified that "Reject All Optional" has equal prominence with positive consent controls conforming to EDPB guidelines; and confirmed that the 2-step right-to-erasure purge generates an authoritative cryptographic Deletion Certificate with 0 `axe-core` violations.

@@ -1,6 +1,6 @@
 # UI Sprint State (`docs/ui/STATE.md`)
 
-**2026-10-25 02:20 (UTC+1)** | **Branch:** `ui/page-13-privacy` | **Last merge on `ui/main`:** `312f194` (Page 11 Merged)
+**2026-10-25 02:35 (UTC+1)** | **Branch:** `ui/page-13-privacy` | **Last merge on `ui/main`:** `312f194` (Page 11 Merged)
 
 ## Done: pages, with commit or tag
 - **Design Direction Sprint**: Locked **Playful Lab** (Light) + **Night Lab** (Dark) + **Fredoka / Lexend / JetBrains Mono** (`DEC-006`).
@@ -15,21 +15,22 @@
   - **Page 12 — AI Collaboration Score (`/collaboration`) · Signature #5 `<CollaborationScoreCard />`**: Merged into `ui/main` (`8285d49`).
 - **Wave 3 Pages In Progress**:
   - **Page 11 — Goals & Habit Contracts (`/goals`)**: Merged into `ui/main` (`312f194`).
+  - **Page 13 — Privacy Center & Audit Log (`/privacy`) · Signature #6 `<PrivacyCenter />`**: Built and verified on branch `ui/page-13-privacy`. At **Gate 2 (Step 7 Review)**.
 
 ## In progress: page, and the stage of the loop
-- **Page 13 — Privacy Center & Audit Log (`/privacy`) · Signature #6 `<PrivacyCenter />`**: At **Gate 1 (Step 2 Spec Approval)**. Written [`pages/13-privacy.md`](./pages/13-privacy.md). Awaiting your `"Gate 1 OK"` to build on branch `ui/page-13-privacy`.
+- **Page 13 — Privacy Center & Audit Log (`/privacy`) · Signature #6 `<PrivacyCenter />`**: Ready for Gate 2 review and merge into `ui/main`.
 
 ## Decisions today (links to DECISIONS.md)
 - [DEC-001](./DECISIONS.md#dec-001-repository-directory-boundary-frontend--docsui-vs-existing-repo-folders) through [DEC-006](./DECISIONS.md#dec-006-design-direction--typography-lock-playful-lab--fredokalexendjetbrains-mono).
 
 ## Open questions: for teammates, for me
-- **For You (Gate 1 — Page 13 Privacy Center & Audit Log)**: Review [`pages/13-privacy.md`](./pages/13-privacy.md) and reply **"Gate 1 OK"**.
+- **For You (Gate 2 — Page 13 Privacy Center & Audit Log)**: Review implementation, screenshots (`docs/ui/screenshots/13-privacy-*.png`), and reply **"Gate 2 OK"** to merge into `ui/main`.
 - **For Teammates (Mon 26/10 Sync)**: `[REQ-BE-01]` to `[REQ-BE-04]` in [`contracts.md`](./contracts.md).
 
 ## Next 3 steps
-1. Receive Gate 1 approval for **Page 13 (`Privacy Center & Audit Log`, route `/privacy` — Signature #6 `<PrivacyCenter />`)**.
-2. Build `PrivacyCenter.tsx` and `PrivacyPage.tsx` with Live "What the AI Sees" Inspector, Cryptographic Consent Receipt, GDPR Data Subject Rights (JSON export and 2-step erasure modal), and audit log table; run QA checks and 5 Playwright screenshots; present Gate 2.
-3. Advance to **Page 16 (`Demo & Judge Mode`, route `/judge-mode` — Signature #7 `<JudgeModeDock />`)**.
+1. Merge `ui/page-13-privacy` into `ui/main` upon receiving **"Gate 2 OK"** and push to `origin`.
+2. Advance to **Page 16 (`Demo & Judge Mode`, route `/judge-mode` — Signature #7 `<JudgeModeDock />`)**: branch `ui/page-16-judge-mode`, write spec, and present Gate 1.
+3. Advance to **Page 17 (`System Pages: 404, Offline, Error Boundaries`, `/system/*`)** to achieve **Milestone `ui-m3-feature-freeze`**.
 
 ## Known issues
 - None.

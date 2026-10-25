@@ -18,6 +18,7 @@ const AiCoachPage = React.lazy(() => import('./pages/AiCoachPage'))
 const CollaborationScorePage = React.lazy(
   () => import('./pages/CollaborationScorePage'),
 )
+const PrivacyPage = React.lazy(() => import('./pages/PrivacyPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
 
 function RouteLoadingSkeleton() {
@@ -65,6 +66,7 @@ export function App() {
             <Route path="/plan" element={<PlanPage />} />
             <Route path="/goals" element={<GoalsPage />} />
             <Route path="/collaboration" element={<CollaborationScorePage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/brain-twin" element={<BrainTwinPage />} />
             <Route path="/coach" element={<AiCoachPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
