@@ -186,20 +186,40 @@ Page 15 establishes **SynapseTwin's Scientific & Ethical Declaration**:
 
 ## 9. Definition of Done Checklist (10 Items)
 
-- [ ] **DoD 01**: Author [`MethodologyPage.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/pages/MethodologyPage.tsx) matching design tokens and semantic classes.
-- [ ] **DoD 02**: Render 4-Stage Cognitive Computation Pipeline with interactive stage selection.
-- [ ] **DoD 03**: Render mathematical formulation section with formulas for Bayesian estimation, Archetype Hysteresis, and SAT-JEPA $\Delta c$.
-- [ ] **DoD 04**: Render Interactive Bias & Uncertainty Simulator with real-time confidence band calculation.
-- [ ] **DoD 05**: Render 4-Pillar Ethical Charter detailing Non-Clinical Guarantee, Non-Biometric Lock, Zero-Guilt, and Sovereign Data Rights.
-- [ ] **DoD 06**: Render Live Non-Clinical Copy Guardrail Sandbox powered by `lintCopyText`.
-- [ ] **DoD 07**: Render Accessible Measurement Biases & Confounders Reference Table (`role="region"` with `tabIndex={0}`).
-- [ ] **DoD 08**: Wire route `/methodology` in [`App.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/App.tsx) and navigation link in [`AppShell.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/components/layout/AppShell.tsx).
-- [ ] **DoD 09**: Append 21st unit test in [`frontend/src/tests/designSystem.test.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/tests/designSystem.test.tsx).
-- [ ] **DoD 10**: Create Playwright E2E suite [`frontend/e2e/methodology.spec.ts`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/e2e/methodology.spec.ts), verify 0 `axe-core` violations, 0 horizontal overflow, and save 6 screenshots to `docs/ui/screenshots/15-methodology-*.png`.
+- [x] **DoD 01**: Author [`MethodologyPage.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/pages/MethodologyPage.tsx) matching design tokens and semantic classes.
+- [x] **DoD 02**: Render 4-Stage Cognitive Computation Pipeline with interactive stage selection.
+- [x] **DoD 03**: Render mathematical formulation section with formulas for Bayesian estimation, Archetype Hysteresis, and SAT-JEPA $\Delta c$.
+- [x] **DoD 04**: Render Interactive Bias & Uncertainty Simulator with real-time confidence band calculation.
+- [x] **DoD 05**: Render 4-Pillar Ethical Charter detailing Non-Clinical Guarantee, Non-Biometric Lock, Zero-Guilt, and Sovereign Data Rights.
+- [x] **DoD 06**: Render Live Non-Clinical Copy Guardrail Sandbox powered by `lintCopyText`.
+- [x] **DoD 07**: Render Accessible Measurement Biases & Confounders Reference Table (`role="region"` with `tabIndex={0}`).
+- [x] **DoD 08**: Wire route `/methodology` in [`App.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/App.tsx) and navigation link in [`AppShell.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/components/layout/AppShell.tsx).
+- [x] **DoD 09**: Append 21st unit test in [`frontend/src/tests/designSystem.test.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/tests/designSystem.test.tsx).
+- [x] **DoD 10**: Create Playwright E2E suite [`frontend/e2e/methodology.spec.ts`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/e2e/methodology.spec.ts), verify 0 `axe-core` violations, 0 horizontal overflow, and save 6 screenshots to `docs/ui/screenshots/15-methodology-*.png`.
 
 ---
 
 ## 10. Design Critique Self-Review (Rounds 1 & 2)
 
-- **Round 1 (Picky Designer)**: Ensure complex mathematical formulas are presented in clean, legible typography blocks with monospace variables rather than unstyled or intimidating code snippets.
-- **Round 2 (Hostile Juror)**: Confirm that the scientific claims are backed by actionable, verifiable code in the repository (e.g. `copyLinter.ts`, `UncertaintyRadar.tsx`, `ProjectionFanChart.tsx`) rather than theoretical hand-waving.
+- **Round 1 (Picky Designer)**:
+  - *Observation*: Mathematical formulas rendered as raw code can look harsh and alienating to neurodivergent learners.
+  - *Correction Applied*: Formatted each psychometric equation into elevated tactile cards with monospace variable keys, narrative plain-language explanations, and clear mathematical notation.
+  - *Observation*: The copy guardrail tester needed to demonstrate live interception without cluttering the screen.
+  - *Correction Applied*: Created 3 instant test buttons (Clinical Test, Guilt Test, Valid Test) with live colored badges and highlighted violation tags.
+- **Round 2 (Hostile Juror)**:
+  - *Question*: "Is this methodology page merely static philosophy, or is it directly connected to live executable logic?"
+  - *Evidence*: The page imports and runs the actual `lintCopyText` regex and dictionary engine live, and the Interactive Bias Simulator implements real-time variance calculations matching the Bayesian model.
+  - *Question*: "How do you ensure non-biometric compliance?"
+  - *Evidence*: Documented under Pillar 2 and verified in telemetry payload schemas: no MediaDevices API or audio streams are instantiated anywhere in the repository.
+
+---
+
+## 11. Verification Evidence & Screenshots
+
+All 6 screenshots captured and verified:
+1. `15-methodology-desktop-overview.png` — Full desktop 1440px overview in Playful Lab Light theme showing pipeline, math cards, charter, and biases matrix.
+2. `15-methodology-pipeline-step.png` — Interactive stage 3 (Bayesian Twin Updating) selected with active formula and telemetry signature.
+3. `15-methodology-bias-simulator.png` — Afternoon Slump and 180 ms input jitter simulated with widened credible interval ($\pm 9.4\%$).
+4. `15-methodology-guardrail-sandbox.png` — Copy guardrail sandbox with clinical and punitive terms intercepted in real time.
+5. `15-methodology-night-lab.png` — Night Lab Dark mode (`data-theme="dark"`) verified with 0 `axe-core` violations.
+6. `15-methodology-mobile.png` — Mobile 375px responsive layout with zero horizontal overflow.

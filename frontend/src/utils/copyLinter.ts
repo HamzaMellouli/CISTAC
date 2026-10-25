@@ -127,3 +127,9 @@ export function lintCopyText(input: string): CopyLintResult {
 
 export const SAMPLE_GUARDRAIL_INTERCEPTION_INPUT =
   'Patient shows working-memory deficit and broke your 4-day streak after a slow block.'
+
+export const SAMPLE_CLINICAL_DEMO_INPUT =
+  'Patient shows attentional deficit and symptom patterns during memory evaluation.'
+
+export const SAMPLE_GUILT_DEMO_INPUT =
+  'You broke your 7-day streak! You failed to complete your session.'
