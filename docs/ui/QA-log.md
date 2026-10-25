@@ -198,3 +198,16 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 
 
 
+
+---
+
+## 15. Page 11 (`/goals` · `Goals & Habit Contracts`) Automated QA & Critique Log (2026-10-25)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `HabitContractCard.tsx` and `GoalsPage.tsx`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical diagnostic or guilt terms across all contract descriptions, streak protection rules, and Bayesian ETA confidence labels.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 16/16 unit & component tests pass (`src/tests/designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `GoalsPage` route chunk is `20.46 kB` (`5.60 kB` gzipped).
+- **`npx playwright test e2e/goals.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Rest-Protected Streak Filter (`rest-protected`), and Dark (`Night Lab` + 10-Dimension Stress + Interactive Tuner + Contracts Table); 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/11-goals-*.png`.
+- **Critique Round 1 (Picky Designer)**: Avoided raw LaTeX braces `{ \tau }` in JSX prose that collided with JSX template expressions, using styled `<code className="font-mono text-ink">σ_τ</code>` tokens to maintain strict TypeScript build integrity and responsive typographic rhythm.
+- **Critique Round 2 (Hostile Juror)**: Ensured non-clinical Zero-Guilt Streak Protection explicitly highlights that intentional rest days preserve consistency rather than resetting streaks to zero, backed by an accessible screen-reader table alternative (`role="region"` with `tabIndex={0}`) for full keyboard parity.

@@ -174,3 +174,25 @@ export interface CopyLintResult {
   violations: CopyLintViolation[]
   sanitizedPreview: string
 }
+
+export type GoalObjectiveType = 'capacity' | 'stability' | 'maintenance'
+
+export interface HabitContract {
+  id: string
+  dimensionId: string
+  dimensionName: string
+  objectiveType: GoalObjectiveType
+  title: string
+  targetDeltaPct: number
+  currentProgressPct: number
+  baselineScorePct: number
+  currentScorePct: number
+  etaDaysRange: [number, number]
+  confidencePct: number
+  weeklyCommitment: string
+  scheduledRestDay: string
+  streakDays: number
+  status: 'active' | 'pacing_rest' | 'completed'
+  rationale: string
+}
+

@@ -182,20 +182,24 @@ export interface HabitContract {
 
 ---
 
-## 9. Two Rounds of Design Critique Plan
-- **Round 1 (Spacing & Mobile Card Stacking)**: Verify that progress bars, ETA badges, and commitment chips stack cleanly on 375px without horizontal clipping.
-- **Round 2 (Jury & Metacognitive Defensibility)**: Ensure that the Bayesian Credible Interval nature of ETAs ($\hat{\tau} \pm \sigma_{\tau}$) and the non-punitive rest clause are unmistakable to any reviewer.
+## 9. Two Rounds of Design Critique Plan & Outcome
+- **Round 1 (Mobile Card Stacking & Touch Targets)**:
+  - *Critique*: On 375px viewports, the streak counter pill and Bayesian ETA interval cards required wrapped flex structures to prevent horizontal clipping.
+  - *Fix*: Structured `HabitContractCard.tsx` with responsive `flex-col sm:flex-row` and `min-h-11` touch targets, verifying 0 horizontal overflow across 375px, 768px, and 1440px.
+- **Round 2 (Jury & Metacognitive Defensibility)**:
+  - *Critique*: The mathematical formula card and Bayesian credible interval badge required explicit clarification that measurement noise ($\sigma_{\tau}$) expands ETAs during high-fatigue sessions.
+  - *Fix*: Added the **Bayesian Epistemic ETA Model** math card ($\hat{\tau} = \Delta\theta / (\Delta c \cdot \eta_{\text{session}})$) and paired it with `<WhyThisPanel />` counterfactual reasoning and zero-penalty streak protection.
 
 ---
 
 ## 10. DoD (Definition of Done) Checklist
-- [ ] Spec approved at **Gate 1**.
-- [ ] Author `frontend/src/components/goals/HabitContractCard.tsx`.
-- [ ] Build `frontend/src/pages/GoalsPage.tsx` with habit contracts, ETA simulator, rest protection toggle, and accessible table region.
-- [ ] Wire `/goals` route into `App.tsx` and navigation in `AppShell.tsx`.
-- [ ] Add unit tests in `frontend/src/tests/designSystem.test.tsx`.
-- [ ] Author Playwright E2E test in `frontend/e2e/goals.spec.ts`.
-- [ ] Run `npm run qa:checks` (lint tokens, lint copy, check contrast, unit tests, build) $\rightarrow$ 0 errors.
-- [ ] Run Playwright suite and generate 5 screenshots with 0 `axe-core` violations and 0 horizontal overflow.
-- [ ] Log critiques in `docs/ui/QA-log.md` and update `STATE.md`, `CHANGELOG.md`, `JUDGES-UI.md`.
-- [ ] Present **Gate 2** to the user.
+- [x] Spec approved at **Gate 1**.
+- [x] Author `frontend/src/components/goals/HabitContractCard.tsx`.
+- [x] Build `frontend/src/pages/GoalsPage.tsx` with habit contracts, ETA simulator, rest protection toggle, and accessible table region.
+- [x] Wire `/goals` route into `App.tsx` and navigation in `AppShell.tsx`.
+- [x] Add unit tests in `frontend/src/tests/designSystem.test.tsx` (16/16 passing).
+- [x] Author Playwright E2E test in `frontend/e2e/goals.spec.ts`.
+- [x] Run `npm run qa:checks` (lint tokens, lint copy, check contrast, unit tests, build) $\rightarrow$ 0 errors.
+- [x] Run Playwright suite and generate 5 screenshots with 0 `axe-core` violations and 0 horizontal overflow.
+- [x] Log critiques in `docs/ui/QA-log.md` and update `STATE.md`, `CHANGELOG.md`, `JUDGES-UI.md`.
+- [x] Present **Gate 2** to the user.
