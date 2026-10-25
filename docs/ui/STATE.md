@@ -1,6 +1,6 @@
 # UI Sprint State (`docs/ui/STATE.md`)
 
-**2026-10-25 10:52 (UTC+1)** | **Branch:** `ui/page-19-layer-d` | **Last merge on `ui/main`:** `f8f278d` (Page 15 Merged)
+**2026-10-25 11:06 (UTC+1)** | **Branch:** `ui/page-19-layer-d` | **Last merge on `ui/main`:** `f8f278d` (Page 15 Merged)
 
 ## Done: pages, with commit or tag
 - **Design Direction Sprint**: Locked **Playful Lab** (Light) + **Night Lab** (Dark) + **Fredoka / Lexend / JetBrains Mono** (`DEC-006`).
@@ -23,19 +23,19 @@
   - **Page 15 — Methodology, Limits & Ethics (`/methodology`)**: Merged into `ui/main` (`f8f278d`).
 
 ## In progress: page, and the stage of the loop
-- **Page 19 — Layer D Bonus: Voice Coaching & Scenario Projections (`/layer-d`)**: At **Gate 1 (Step 2 Spec Approval)** on branch `ui/page-19-layer-d`. Written [`pages/19-layer-d.md`](./pages/19-layer-d.md). Awaiting user `"Gate 1 OK"` to build.
+- **Page 19 — Layer D Bonus: Voice Coaching & Scenario Projections (`/layer-d`)**: At **Gate 2 (Step 7 Review)** on branch `ui/page-19-layer-d`. All 10 DoD items satisfied, 22/22 Vitest passing, Playwright E2E passing (0 `axe-core` violations), 6 screenshots captured, and full QA checks passing. Awaiting user `"Gate 2 OK"`.
 
 ## Decisions today (links to DECISIONS.md)
 - [DEC-001](./DECISIONS.md#dec-001-repository-directory-boundary-frontend--docsui-vs-existing-repo-folders) through [DEC-006](./DECISIONS.md#dec-006-design-direction--typography-lock-playful-lab--fredokalexendjetbrains-mono).
 
 ## Open questions: for teammates, for me
-- **For You (Gate 1 — Page 19 Layer D Bonus: Voice Coaching & Scenario Projections)**: Review [`pages/19-layer-d.md`](./pages/19-layer-d.md) and reply **"Gate 1 OK"** to begin implementation.
+- **For You (Gate 2 — Page 19 Layer D Bonus: Voice Coaching & Scenario Projections)**: Review [`pages/19-layer-d.md`](./pages/19-layer-d.md), verify the 6 screenshots in `docs/ui/screenshots/19-layer-d-*.png`, and reply **"Gate 2 OK"** to merge into `ui/main` and tag the final production milestone **`ui-v1.0-phase1`**.
 - **For Teammates (Mon 26/10 Sync)**: `[REQ-BE-01]` to `[REQ-BE-04]` in [`contracts.md`](./contracts.md).
 
 ## Next 3 steps
-1. Receive **Gate 1 OK** for Page 19 (`Layer D Bonus: Voice Coaching & Scenario Projections`, `/layer-d`).
-2. Implement `LayerDPage.tsx`, wire route `/layer-d`, add unit test #22, run QA checks and 6 Playwright screenshots, and present Gate 2.
-3. Merge `ui/page-19-layer-d` into `ui/main` and tag final Phase 1 submission release **`ui-v1.0-phase1`**.
+1. Receive **Gate 2 OK** for Page 19 (`Layer D Bonus: Voice Coaching & Scenario Projections`, `/layer-d`).
+2. Merge `ui/page-19-layer-d` into `ui/main` (`--no-ff`).
+3. Create and push final milestone release tag **`ui-v1.0-phase1`** to `origin`.
 
 ## Known issues
 - None.

@@ -886,4 +886,54 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
     expect(screen.getByRole('cell', { name: /Hardware Latency & Bluetooth Jitter/i })).toBeInTheDocument()
     expect(screen.getByText(/Circadian Rhythm Alertness Dip/i)).toBeInTheDocument()
   })
+
+  it('renders Page 19 Layer D (/layer-d) with multimodal voice studio, what-if scenario simulator, and fatigue risk gauge', async () => {
+    window.history.pushState({}, '', '/layer-d')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Layer D: Voice Coaching & Scenario Projections/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // 1. Verify Voice Coaching Studio
+    expect(screen.getByText(/Conversational Voice Coaching Studio/i)).toBeInTheDocument()
+    const playBtn = screen.getByRole('button', { name: /Play Voice Brief/i })
+    fireEvent.click(playBtn)
+    expect(screen.getByRole('button', { name: /Pause Voice Brief/i })).toBeInTheDocument()
+
+    // 2. Change speech pace
+    const paceBtn = screen.getByRole('radio', { name: /1.25x/i })
+    fireEvent.click(paceBtn)
+    expect(paceBtn).toHaveAttribute('aria-checked', 'true')
+
+    // 3. Verify Live Transcript
+    expect(screen.getByText(/Synchronized Accessible Transcript:/i)).toBeInTheDocument()
+
+    // 4. Test Counterfactual Scenario Tuner
+    const acceleratedBtn = screen.getByRole('radio', { name: /Accelerated/i })
+    fireEvent.click(acceleratedBtn)
+    expect(acceleratedBtn).toHaveAttribute('aria-checked', 'true')
+
+    const sleepBtn = screen.getByRole('radio', { name: /9.0 Hours/i })
+    fireEvent.click(sleepBtn)
+    expect(sleepBtn).toHaveAttribute('aria-checked', 'true')
+
+    // 5. Verify Fatigue / Burnout Risk Forecast
+    expect(screen.getByText(/Cognitive Fatigue & Burnout Risk Forecast/i)).toBeInTheDocument()
+
+    // 6. Test Reset Button
+    const resetBtn = screen.getByRole('button', { name: /Reset/i })
+    fireEvent.click(resetBtn)
+    expect(screen.getByText(/What-If scenario parameters restored to default baseline/i)).toBeInTheDocument()
+
+    // 7. Verify Multidimensional Counterfactual Impact Matrix Table
+    const tableRegion = screen.getByRole('region', { name: /Counterfactual Impact Table/i })
+    expect(tableRegion).toHaveAttribute('tabIndex', '0')
+    expect(screen.getByRole('cell', { name: /Working Memory/i })).toBeInTheDocument()
+  })
 });
