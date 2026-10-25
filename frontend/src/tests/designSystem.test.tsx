@@ -551,6 +551,86 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
     expect(screen.getByText(/Habit contract committed for/i)).toBeInTheDocument()
   })
 
+  it('renders Page 13 Privacy Center (/privacy) with Hardware Lock banner, Granular Consent controls, Live JSON Inspector, and Purge Modal', async () => {
+    window.history.pushState({}, '', '/privacy')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Privacy Center & Sovereign Audit Log/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Non-Biometric Hardware Lock Banner
+    expect(
+      screen.getByText(/Non-Biometric Hardware Lock Active/i),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(/Physically Disconnected/i),
+    ).toBeInTheDocument()
+
+    // Test Reject All Optional button
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Reject All Optional/i,
+      }),
+    )
+    expect(screen.getAllByText(/Revoked/i).length).toBeGreaterThanOrEqual(2)
+
+    // Test Restore Defaults button
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Restore Defaults/i,
+      }),
+    )
+    expect(screen.getAllByText(/Active/i).length).toBeGreaterThanOrEqual(2)
+
+    // Verify "What the AI Sees" Inspector code region
+    expect(
+      screen.getByRole('region', {
+        name: /Live Telemetry JSON payload code view/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Verify Chronological Audit Log Table
+    expect(
+      screen.getByRole('region', {
+        name: /Chronological Audit Event Log Table/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Test Right to Erasure / Purge All Data modal flow
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Purge All Data/i,
+      }),
+    )
+    expect(
+      screen.getByRole('heading', {
+        name: /Confirm Irrevocable Data Purge/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Acknowledge checkbox and confirm purge
+    const ackCheckbox = screen.getByRole('checkbox')
+    fireEvent.click(ackCheckbox)
+    expect(ackCheckbox).toBeChecked()
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Permanently Purge All Data/i,
+      }),
+    )
+
+    // Expect Deletion Certificate issued
+    expect(
+      screen.getByText(/Cryptographic Deletion Certificate Issued/i),
+    ).toBeInTheDocument()
+  })
+
   it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {
     window.history.pushState({}, '', '/design-system')
     render(<App />)
