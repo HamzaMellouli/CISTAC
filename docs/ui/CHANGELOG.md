@@ -2,9 +2,11 @@
 
 All notable UI, UX, design system, and documentation changes on `ui/main` follow Conventional Commits.
 
-## [Unreleased] — Sprint Day 1 (2026-10-24)
+## [Unreleased] — Sprint Day 2 (2026-10-25)
 ### Added
-- `frontend/src/pages/PlanPage.tsx`, `frontend/e2e/plan.spec.ts`, and `docs/ui/screenshots/10-plan-*.png`: Implemented Page 10 (`Plan & Adaptive Exercises`, route `/plan`) featuring the 7-day schedule ribbon with circadian peak matching, daily micro-block exercise cards, proactive rest day with streak-protection, SAT-JEPA $\Delta c$ information-gain priority matrix, interactive 5-level difficulty staircase simulator, and embedded 5-part `<WhyThisPanel />` curriculum synthesis.
+- `frontend/src/components/signature/CollaborationScoreCard.tsx`, `frontend/src/pages/CollaborationScorePage.tsx`, `frontend/e2e/collaboration.spec.ts`, and `docs/ui/screenshots/12-collaboration-*.png`: Implemented Page 12 (`AI Collaboration Score Deep-Dive`, route `/collaboration`) featuring **Signature #5 `<CollaborationScoreCard />`**, mandatory `"Design proposal, not validated"` badge, dynamic archetype weighting ($w_i(s_t)$), interactive 5-action telemetry simulator, 6-week longitudinal growth curve with accessible table region, and 5 sub-dimension evidence audit trails.
+- `docs/ui/pages/12-collaboration.md`: Complete 11-section page specification for Page 12 (`AI Collaboration Score`, route `/collaboration`).
+- `frontend/src/pages/PlanPage.tsx`, `frontend/e2e/plan.spec.ts`, and `docs/ui/screenshots/10-plan-*.png`: Implemented and merged Page 10 (`Plan & Adaptive Exercises`, route `/plan`) into `ui/main` (`ea1bd66`).
 - `docs/ui/pages/10-plan.md`: Complete 11-section page specification for Page 10 (`Plan & Adaptive Exercises`, route `/plan`).
 - `frontend/src/pages/DimensionDetailPage.tsx`, `frontend/src/components/signature/ProjectionFanChart.tsx`, and `frontend/e2e/dimensionDetail.spec.ts`: Implemented and merged Page 07 (`Dimension Detail`, route `/dimensions/:dimId`) into `ui/main` (`d54f2ad`).
 - `docs/ui/pages/07-dimension-detail.md`: Complete 11-section page specification for Page 07 (`Dimension Detail`, route `/dimensions/:dimId`).

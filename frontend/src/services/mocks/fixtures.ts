@@ -169,6 +169,175 @@ export const SAMPLE_COLLABORATION_SCORE: CollaborationScorePayload = {
   whyThis: SAMPLE_WHY_THIS_TRAIL,
 }
 
+export interface CollabHistoryPoint {
+  weekKey: string
+  weekLabel: string
+  score: number
+  ciLower: number
+  ciUpper: number
+  actionsCount: number
+}
+
+export const COLLABORATION_LONGITUDINAL_HISTORY: CollabHistoryPoint[] = [
+  { weekKey: 'W1', weekLabel: 'Week 1 (Baseline)', score: 64, ciLower: 56, ciUpper: 72, actionsCount: 4 },
+  { weekKey: 'W2', weekLabel: 'Week 2', score: 68, ciLower: 61, ciUpper: 75, actionsCount: 9 },
+  { weekKey: 'W3', weekLabel: 'Week 3', score: 72, ciLower: 66, ciUpper: 78, actionsCount: 15 },
+  { weekKey: 'W4', weekLabel: 'Week 4', score: 76, ciLower: 71, ciUpper: 81, actionsCount: 21 },
+  { weekKey: 'W5', weekLabel: 'Week 5', score: 79, ciLower: 74, ciUpper: 84, actionsCount: 26 },
+  { weekKey: 'W6', weekLabel: 'Week 6 (Current)', score: 82, ciLower: 78, ciUpper: 86, actionsCount: 30 },
+]
+
+export function buildCollaborationScoreForPersona(
+  persona: PersonaId,
+): CollaborationScorePayload {
+  if (persona === 'noisy-low-confidence') {
+    return {
+      totalScore: 61,
+      ciRange: [52, 70],
+      statusBadge: 'Design proposal, not validated',
+      formulaDisplay:
+        'S_collab = 0.20·Clarification + 0.25·Verification + 0.20·Iteration + 0.20·Autonomy + 0.15·ResponsibleUse',
+      subScores: [
+        {
+          key: 'clarification',
+          label: 'Clarification',
+          defaultWeightPct: 20,
+          activeDynamicWeightPct: 24,
+          score: 62,
+          evidenceCount: 2,
+          recentEvents: ['Single question submitted on task duration'],
+          howToImprove: 'Inquire when confidence bands widen to guide the model.',
+        },
+        {
+          key: 'verification',
+          label: 'Critical Verification',
+          defaultWeightPct: 25,
+          activeDynamicWeightPct: 26,
+          score: 58,
+          evidenceCount: 3,
+          recentEvents: ['Inspected 1 why-this panel'],
+          howToImprove: 'Cross-check suggested staircase levels against your past trial speed.',
+        },
+        {
+          key: 'iteration',
+          label: 'Iteration',
+          defaultWeightPct: 20,
+          activeDynamicWeightPct: 20,
+          score: 60,
+          evidenceCount: 2,
+          recentEvents: ['Default weekly plan accepted without adjustments'],
+          howToImprove: 'Fine-tune session frequency when fatigue signals appear.',
+        },
+        {
+          key: 'autonomy',
+          label: 'Autonomy',
+          defaultWeightPct: 20,
+          activeDynamicWeightPct: 15,
+          score: 54,
+          evidenceCount: 1,
+          recentEvents: ['Started 1 scheduled task'],
+          howToImprove: 'Launch a self-selected dimension drill.',
+        },
+        {
+          key: 'responsible_use',
+          label: 'Responsible Use',
+          defaultWeightPct: 15,
+          activeDynamicWeightPct: 15,
+          score: 75,
+          evidenceCount: 3,
+          recentEvents: ['Telemetry settings confirmed'],
+          howToImprove: 'Review rest recommendations after intense blocks.',
+        },
+      ],
+      whyThis: {
+        ...SAMPLE_WHY_THIS_TRAIL,
+        observedData: [
+          'High response-time variance across 2 recent sessions',
+          '3 total explainability panel audits in past 14 days',
+          'Epistemic uncertainty elevated (sigma = 0.22)',
+        ],
+        inference:
+          'Emerging collaborative profile with moderate telemetry density; verification habits developing.',
+        confidence: 0.64,
+      },
+    }
+  }
+
+  if (persona === 'new-user') {
+    return {
+      totalScore: 55,
+      ciRange: [44, 66],
+      statusBadge: 'Design proposal, not validated',
+      formulaDisplay:
+        'S_collab = 0.20·Clarification + 0.25·Verification + 0.20·Iteration + 0.20·Autonomy + 0.15·ResponsibleUse',
+      subScores: [
+        {
+          key: 'clarification',
+          label: 'Clarification',
+          defaultWeightPct: 20,
+          activeDynamicWeightPct: 20,
+          score: 50,
+          evidenceCount: 1,
+          recentEvents: ['Baseline orientation question'],
+          howToImprove: 'Ask questions as you explore different task paradigms.',
+        },
+        {
+          key: 'verification',
+          label: 'Critical Verification',
+          defaultWeightPct: 25,
+          activeDynamicWeightPct: 25,
+          score: 50,
+          evidenceCount: 1,
+          recentEvents: ['First explainability review completed'],
+          howToImprove: 'Review "Why This?" reasoning on future coach insights.',
+        },
+        {
+          key: 'iteration',
+          label: 'Iteration',
+          defaultWeightPct: 20,
+          activeDynamicWeightPct: 20,
+          score: 50,
+          evidenceCount: 1,
+          recentEvents: ['Baseline calibration logged'],
+          howToImprove: 'Adjust pacing after completing your first weekly micro-block.',
+        },
+        {
+          key: 'autonomy',
+          label: 'Autonomy',
+          defaultWeightPct: 20,
+          activeDynamicWeightPct: 20,
+          score: 55,
+          evidenceCount: 1,
+          recentEvents: ['Self-selected starting dimension'],
+          howToImprove: 'Explore unprompted practice drills.',
+        },
+        {
+          key: 'responsible_use',
+          label: 'Responsible Use',
+          defaultWeightPct: 15,
+          activeDynamicWeightPct: 15,
+          score: 72,
+          evidenceCount: 2,
+          recentEvents: ['Privacy preferences and non-biometric lock saved'],
+          howToImprove: 'Maintain healthy break rhythms between assessment blocks.',
+        },
+      ],
+      whyThis: {
+        ...SAMPLE_WHY_THIS_TRAIL,
+        observedData: [
+          'First onboarding baseline completed',
+          'Initial telemetry lock confirmed',
+        ],
+        inference:
+          'Baseline collaboration state established; requires additional interactive sessions to narrow confidence interval.',
+        confidence: 0.52,
+      },
+    }
+  }
+
+  return SAMPLE_COLLABORATION_SCORE
+}
+
 export function buildSnapshotsForDimensions(
   dimensions: readonly DimensionConfig[],
   persona: PersonaId,
