@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
+import { ErrorBoundary } from './components/layout/ErrorBoundary'
 
 const WelcomePage = React.lazy(() => import('./pages/WelcomePage'))
 const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'))
@@ -20,6 +21,7 @@ const CollaborationScorePage = React.lazy(
 )
 const PrivacyPage = React.lazy(() => import('./pages/PrivacyPage'))
 const JudgeModePage = React.lazy(() => import('./pages/JudgeModePage'))
+const SystemPage = React.lazy(() => import('./pages/SystemPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
 
 function RouteLoadingSkeleton() {
@@ -42,39 +44,46 @@ export function App() {
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
       <AppShell>
-        <Suspense fallback={<RouteLoadingSkeleton />}>
-          <Routes>
-            <Route path="/" element={<WelcomePage />} />
-            <Route path="/onboarding" element={<OnboardingPage />} />
-            <Route path="/assessment" element={<AssessmentHubPage />} />
-            <Route
-              path="/task"
-              element={
-                <Navigate to="/task/episodic_pattern_separation" replace />
-              }
-            />
-            <Route path="/task/:dimId" element={<TaskRunnerPage />} />
-            <Route path="/profile-reveal" element={<ProfileRevealPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route
-              path="/dimensions"
-              element={<Navigate to="/dimensions/working_memory" replace />}
-            />
-            <Route
-              path="/dimensions/:dimId"
-              element={<DimensionDetailPage />}
-            />
-            <Route path="/plan" element={<PlanPage />} />
-            <Route path="/goals" element={<GoalsPage />} />
-            <Route path="/collaboration" element={<CollaborationScorePage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/brain-twin" element={<BrainTwinPage />} />
-            <Route path="/coach" element={<AiCoachPage />} />
-            <Route path="/judge-mode" element={<JudgeModePage />} />
-            <Route path="/design-system" element={<DesignSystemPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<RouteLoadingSkeleton />}>
+            <Routes>
+              <Route path="/" element={<WelcomePage />} />
+              <Route path="/onboarding" element={<OnboardingPage />} />
+              <Route path="/assessment" element={<AssessmentHubPage />} />
+              <Route
+                path="/task"
+                element={
+                  <Navigate to="/task/episodic_pattern_separation" replace />
+                }
+              />
+              <Route path="/task/:dimId" element={<TaskRunnerPage />} />
+              <Route path="/profile-reveal" element={<ProfileRevealPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route
+                path="/dimensions"
+                element={<Navigate to="/dimensions/working_memory" replace />}
+              />
+              <Route
+                path="/dimensions/:dimId"
+                element={<DimensionDetailPage />}
+              />
+              <Route path="/plan" element={<PlanPage />} />
+              <Route path="/goals" element={<GoalsPage />} />
+              <Route path="/collaboration" element={<CollaborationScorePage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/brain-twin" element={<BrainTwinPage />} />
+              <Route path="/coach" element={<AiCoachPage />} />
+              <Route path="/judge-mode" element={<JudgeModePage />} />
+              <Route path="/system" element={<SystemPage defaultTab="404" />} />
+              <Route path="/system/:subView" element={<SystemPage />} />
+              <Route path="/404" element={<SystemPage defaultTab="404" />} />
+              <Route path="/offline" element={<SystemPage defaultTab="offline" />} />
+              <Route path="/system-error" element={<SystemPage defaultTab="error" />} />
+              <Route path="/design-system" element={<DesignSystemPage />} />
+              <Route path="*" element={<SystemPage defaultTab="404" />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </AppShell>
     </BrowserRouter>
   )
