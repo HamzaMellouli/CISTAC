@@ -277,6 +277,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Link>
             )}
 
+            {location.pathname !== '/methodology' && (
+              <Link
+                to="/methodology"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                🔬 Science & Ethics
+              </Link>
+            )}
+
             {location.pathname !== '/design-system' && (
               <Link
                 to="/design-system"

@@ -265,3 +265,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/settings.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Calm Sensory Mode engaged (`calm-sensory-mode`), Dark (`Night Lab`), High Zoom 130% (`high-zoom-130`), Tablet (`768px`), and Mobile (`375px`); 0 horizontal overflow; 6 verification screenshots saved to `docs/ui/screenshots/14-settings-*.png`.
 - **Critique Round 1 (Picky Designer)**: Replaced unstyled browser radio and checkbox inputs with high-contrast tactile cards and pill buttons featuring 2px borders, active fill styling, and visible focus rings. Validated that dynamic cognitive preview card adapts smoothly at 100%, 115%, and 130% zoom without text collision or horizontal overflow.
 - **Critique Round 2 (Hostile Juror)**: Proved immediate global cascade: theme, reduced motion, and text zoom directly manipulate `document.documentElement` attributes (`data-theme`, `data-reduced-motion`, `data-text-scale`) and synchronize with Zustand store slice, instantaneously propagating across all routes. Verified keyboard shortcuts reference table is wrapped in a dedicated keyboard-focusable region (`role="region"`, `tabIndex={0}`) with `<kbd>` tags and clear scope definitions.
+
+
+---
+
+## 20. Page 15 (`/methodology` · `Methodology, Limits & Ethics`) Automated QA & Critique Log (2026-10-25)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `MethodologyPage.tsx`. Zero hardcoded hex colors or arbitrary bracket values.
+- **`npm run lint:copy`**: `PASS` — 0 clinical diagnostic or punitive guilt terms across all explanations, mathematical formula labels, and ethical charter declarations. Sandbox test fixtures isolated in `copyLinter.ts`.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 21/21 unit & component tests pass (`src/tests/designSystem.test.tsx`). Verified 4-stage pipeline tabs, formula mathematical representations, interactive bias slider inputs with dynamic posterior band calculation, live copy linter sandbox, and accessible biases table.
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `MethodologyPage` route chunk is `24.17 kB` (`7.15 kB` gzipped). Zero build or bundling errors.
+- **`npx playwright test e2e/methodology.spec.ts`**: `PASS` (12.6s) — 0 `axe-core` violations across Light (`Playful Lab`), Pipeline Step 3 Active, Bias Simulator Active, Copy Guardrail Triggered, Dark (`Night Lab`), Tablet (`768px`), and Mobile (`375px`); 0 horizontal overflow; 6 verification screenshots saved to `docs/ui/screenshots/15-methodology-*.png`.
+- **Critique Round 1 (Picky Designer)**: Styled all mathematical equations into clean, accessible tactile cards with monospace variable keys and plain-language descriptions, eliminating intimidation while upholding scientific rigor. Created interactive quick-test buttons in the guardrail sandbox for instant evaluator inspection.
+- **Critique Round 2 (Hostile Juror)**: Verified that scientific formulations are backed by executable code in the repository: `lintCopyText` runs the live regex engine, the bias simulator models real-time variance penalties, and the measurement biases matrix transparently discloses physical hardware latency and circadian rhythm dips with actionable architectural mitigations.
