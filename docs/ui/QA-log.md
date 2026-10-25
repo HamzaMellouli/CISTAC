@@ -251,3 +251,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/system.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab` — 404 view), Offline Hub (`offline`), Error Boundary Catch (`error`), Dark (`Night Lab`), Tablet (`768px`), Mobile (`375px`), and Direct Unregistered Route navigation; 0 horizontal overflow; 6 verification screenshots saved to `docs/ui/screenshots/17-system-*.png`.
 - **Critique Round 1 (Picky Designer)**: Maintained visual serenity and non-intimidating warmth even during failure states. Replaced harsh red error screens with subtle semantic card elevation and companion `<Mascot state="rest" />`. Sanitized technical stack traces into collapsible `<details>` blocks for clean juror readability.
 - **Critique Round 2 (Hostile Juror)**: Proved complete subtree isolation via live simulated component crash test bench: throwing an unhandled exception inside a component leaves the top-level shell, navigation, and theme switches 100% functional. Verified real-time telemetry buffer queue visualization (advancing and flushing without data loss) and catch-all 404 routing across arbitrary URLs.
+
+
+---
+
+## 19. Page 14 (`/settings` · `Settings & Accessibility Controls`) Automated QA & Critique Log (2026-10-25)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `SettingsPage.tsx`. Eliminated hardcoded hex strings in favor of semantic names and converted arbitrary brackets to standard Tailwind `text-xs`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical diagnostic or punitive guilt terms across all sensory controls, study window boundaries, and rest day options.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 20/20 unit & component tests pass (`src/tests/designSystem.test.tsx`). Verified 5 settings categories, Calm Sensory Mode, Theme Switcher, Text Scaling (100%–130%), Protected Rest Days toggle, accessible Shortcuts Table, and 1-click Factory Reset.
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `SettingsPage` route chunk is `21.02 kB` (`5.25 kB` gzipped). Zero TypeScript or Vite bundling errors.
+- **`npx playwright test e2e/settings.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Calm Sensory Mode engaged (`calm-sensory-mode`), Dark (`Night Lab`), High Zoom 130% (`high-zoom-130`), Tablet (`768px`), and Mobile (`375px`); 0 horizontal overflow; 6 verification screenshots saved to `docs/ui/screenshots/14-settings-*.png`.
+- **Critique Round 1 (Picky Designer)**: Replaced unstyled browser radio and checkbox inputs with high-contrast tactile cards and pill buttons featuring 2px borders, active fill styling, and visible focus rings. Validated that dynamic cognitive preview card adapts smoothly at 100%, 115%, and 130% zoom without text collision or horizontal overflow.
+- **Critique Round 2 (Hostile Juror)**: Proved immediate global cascade: theme, reduced motion, and text zoom directly manipulate `document.documentElement` attributes (`data-theme`, `data-reduced-motion`, `data-text-scale`) and synchronize with Zustand store slice, instantaneously propagating across all routes. Verified keyboard shortcuts reference table is wrapped in a dedicated keyboard-focusable region (`role="region"`, `tabIndex={0}`) with `<kbd>` tags and clear scope definitions.

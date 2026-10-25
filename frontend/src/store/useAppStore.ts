@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { DimensionPresetKey } from '../config/dimensions'
 
 export type ThemeMode = 'light' | 'dark'
+export type TextScale = '100' | '115' | '130'
 export type PersonaId =
   | 'new-user'
   | 'steady-improver'
@@ -57,6 +58,20 @@ interface AppState {
   simulateOffline: boolean
   simulateLlmDown: boolean
   consentPreferences: ConsentPreferences
+  textScale: TextScale
+  enhancedGlyphs: boolean
+  soundEffects: boolean
+  blurAutoPause: boolean
+  studyWindow: string
+  restDays: string[]
+  setTextScale: (scale: TextScale) => void
+  setEnhancedGlyphs: (enhanced: boolean) => void
+  setSoundEffects: (sound: boolean) => void
+  setBlurAutoPause: (blur: boolean) => void
+  setStudyWindow: (window: string) => void
+  setRestDays: (days: string[]) => void
+  toggleRestDay: (day: string) => void
+  resetSettingsToDefault: () => void
   setTheme: (theme: ThemeMode) => void
   toggleTheme: () => void
   setReducedMotion: (reduced: boolean) => void
@@ -71,13 +86,14 @@ interface AppState {
   resetDemoState: () => void
 }
 
-function syncDocumentAttributes(theme: ThemeMode, reducedMotion: boolean) {
+function syncDocumentAttributes(theme: ThemeMode, reducedMotion: boolean, textScale: TextScale = '100') {
   if (typeof document !== 'undefined') {
     document.documentElement.setAttribute('data-theme', theme)
     document.documentElement.setAttribute(
       'data-reduced-motion',
       reducedMotion ? 'true' : 'false',
     )
+    document.documentElement.setAttribute('data-text-scale', textScale)
   }
 }
 
@@ -90,20 +106,57 @@ export const useAppStore = create<AppState>((set) => ({
   simulateOffline: false,
   simulateLlmDown: false,
   consentPreferences: DEFAULT_CONSENT_PREFERENCES,
+  textScale: '100',
+  enhancedGlyphs: true,
+  soundEffects: true,
+  blurAutoPause: true,
+  studyWindow: 'morning',
+  restDays: ['Wednesday', 'Sunday'],
+  setTextScale: (textScale) =>
+    set((state) => {
+      syncDocumentAttributes(state.theme, state.reducedMotion, textScale)
+      return { textScale }
+    }),
+  setEnhancedGlyphs: (enhancedGlyphs) => set({ enhancedGlyphs }),
+  setSoundEffects: (soundEffects) => set({ soundEffects }),
+  setBlurAutoPause: (blurAutoPause) => set({ blurAutoPause }),
+  setStudyWindow: (studyWindow) => set({ studyWindow }),
+  setRestDays: (restDays) => set({ restDays }),
+  toggleRestDay: (day) =>
+    set((state) => ({
+      restDays: state.restDays.includes(day)
+        ? state.restDays.filter((d) => d !== day)
+        : [...state.restDays, day],
+    })),
+  resetSettingsToDefault: () =>
+    set(() => {
+      syncDocumentAttributes('light', false, '100')
+      return {
+        theme: 'light',
+        reducedMotion: false,
+        dimensionPreset: '7',
+        textScale: '100',
+        enhancedGlyphs: true,
+        soundEffects: true,
+        blurAutoPause: true,
+        studyWindow: 'morning',
+        restDays: ['Wednesday', 'Sunday'],
+      }
+    }),
   setTheme: (theme) =>
     set((state) => {
-      syncDocumentAttributes(theme, state.reducedMotion)
+      syncDocumentAttributes(theme, state.reducedMotion, state.textScale)
       return { theme }
     }),
   toggleTheme: () =>
     set((state) => {
       const next: ThemeMode = state.theme === 'light' ? 'dark' : 'light'
-      syncDocumentAttributes(next, state.reducedMotion)
+      syncDocumentAttributes(next, state.reducedMotion, state.textScale)
       return { theme: next }
     }),
   setReducedMotion: (reducedMotion) =>
     set((state) => {
-      syncDocumentAttributes(state.theme, reducedMotion)
+      syncDocumentAttributes(state.theme, reducedMotion, state.textScale)
       return { reducedMotion }
     }),
   setDimensionPreset: (dimensionPreset) => set({ dimensionPreset }),
@@ -143,7 +196,7 @@ export const useAppStore = create<AppState>((set) => ({
     }),
   resetDemoState: () =>
     set(() => {
-      syncDocumentAttributes('light', false)
+      syncDocumentAttributes('light', false, '100')
       return {
         theme: 'light',
         reducedMotion: false,
@@ -153,6 +206,12 @@ export const useAppStore = create<AppState>((set) => ({
         simulateOffline: false,
         simulateLlmDown: false,
         consentPreferences: DEFAULT_CONSENT_PREFERENCES,
+        textScale: '100',
+        enhancedGlyphs: true,
+        soundEffects: true,
+        blurAutoPause: true,
+        studyWindow: 'morning',
+        restDays: ['Wednesday', 'Sunday'],
       }
     }),
 }))

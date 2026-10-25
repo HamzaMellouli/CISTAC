@@ -787,4 +787,55 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
       }),
     ).toBeInTheDocument()
   })
-})
+
+  it('renders Page 14 Settings (/settings) with sensory controls, zoom preview, rest days, and factory reset', async () => {
+    window.history.pushState({}, '', '/settings')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /Settings & Accessibility Controls/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // 1. Verify 5 setting categories
+    expect(screen.getByText(/1. Visual & Sensory Ergonomics/i)).toBeInTheDocument()
+    expect(screen.getByText(/2. Motion & Vestibular Comfort/i)).toBeInTheDocument()
+    expect(screen.getByText(/3. Auditory Feedback & Task Pacing/i)).toBeInTheDocument()
+    expect(screen.getByText(/4. Non-Punitive Habit & Study Boundaries/i)).toBeInTheDocument()
+    expect(screen.getByText(/5. Cognitive Dimension Pool Preset/i)).toBeInTheDocument()
+
+    // 2. Test Calm Sensory Mode
+    const calmBtn = screen.getByRole('button', { name: /Calm Sensory Mode/i })
+    fireEvent.click(calmBtn)
+    expect(screen.getByText(/Calm Sensory Mode engaged/i)).toBeInTheDocument()
+
+    // 3. Test Theme Selector
+    const darkThemeRadio = screen.getByRole('radio', { name: /Night Lab \(Dark\)/i })
+    fireEvent.click(darkThemeRadio)
+    expect(darkThemeRadio).toHaveAttribute('aria-checked', 'true')
+
+    // 4. Test Text Scale
+    const highZoomRadio = screen.getByRole('radio', { name: /130% \(High Zoom\)/i })
+    fireEvent.click(highZoomRadio)
+    expect(highZoomRadio).toHaveAttribute('aria-checked', 'true')
+
+    // 5. Test Rest Days Toggle
+    const fridayBtn = screen.getByRole('checkbox', { name: /Friday/i })
+    fireEvent.click(fridayBtn)
+    expect(fridayBtn).toHaveAttribute('aria-checked', 'true')
+
+    // 6. Test Keyboard Shortcuts Table Accessibility
+    const tableRegion = screen.getByRole('region', { name: /Keyboard Shortcuts Table/i })
+    expect(tableRegion).toHaveAttribute('tabIndex', '0')
+    expect(screen.getByText(/Select Probe Option 1/i)).toBeInTheDocument()
+
+    // 7. Test Factory Reset
+    const resetBtn = screen.getByRole('button', { name: /Reset All Preferences to Factory Defaults/i })
+    fireEvent.click(resetBtn)
+    expect(screen.getByText(/All settings and accessibility preferences restored to factory defaults/i)).toBeInTheDocument()
+  })
+});
