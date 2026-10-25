@@ -199,6 +199,20 @@ export const SIX_DIMENSION_PRESET: readonly DimensionConfig[] = [
 
 export type DimensionPresetKey = '3' | '6' | '7' | '8' | '10'
 
+export interface DimensionPresetOption {
+  key: DimensionPresetKey
+  label: string
+}
+
+export const DIMENSION_PRESETS: readonly DimensionPresetOption[] = [
+  { key: '3', label: '3 Dims' },
+  { key: '6', label: '6 Dims' },
+  { key: '7', label: '7 Dims (Default)' },
+  { key: '8', label: '8 Dims' },
+  { key: '10', label: '10 Dims (Stress)' },
+]
+
+
 export function getDimensionsByPreset(preset: DimensionPresetKey = '7'): DimensionConfig[] {
   switch (preset) {
     case '3':

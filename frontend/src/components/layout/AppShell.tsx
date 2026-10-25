@@ -1,17 +1,11 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { BRAND_CONFIG } from '../../config/brand'
-import type { DimensionPresetKey } from '../../config/dimensions'
+import { DIMENSION_PRESETS } from '../../config/dimensions'
 import { useAppStore } from '../../store/useAppStore'
 import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
 
-const DIMENSION_PRESETS: readonly { key: DimensionPresetKey; label: string }[] = [
-  { key: '3', label: '3 Dims' },
-  { key: '6', label: '6 Dims' },
-  { key: '7', label: '7 Dims (Default)' },
-  { key: '10', label: '10 Dims (Stress)' },
-]
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const location = useLocation()
@@ -58,15 +52,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div
           role="status"
           aria-live="polite"
-          className="bg-info-subtle border-b-2 border-border-strong px-4 py-2.5 text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
+          className="bg-warning-subtle border-b-2 border-border-strong px-4 py-2.5 text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
         >
           <span>
-            <strong>◆ AI Coach LLM Unavailable:</strong> Deterministic
-            SAT-JEPA rule engine is active so your explanations and adaptive
-            plan continue uninterrupted.
+            <strong>◈ Deterministic Fallback:</strong> Cognitive assessment
+            and scoring are operating via verified offline rule templates.
           </span>
-          <Badge tone="info" glyph="⚙">
-            Deterministic Fallback
+          <Badge tone="brand" glyph="◈">
+            Deterministic Engine
           </Badge>
         </div>
       )}
@@ -263,6 +256,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
               >
                 Privacy
+              </Link>
+            )}
+
+            {location.pathname !== '/judge-mode' && (
+              <Link
+                to="/judge-mode"
+                className="tactile-btn bg-reward text-reward-ink px-3 py-2 text-sm font-bold inline-flex items-center no-underline"
+              >
+                ⚖ Judge Mode
               </Link>
             )}
 

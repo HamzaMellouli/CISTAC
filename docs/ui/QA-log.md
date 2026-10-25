@@ -225,3 +225,17 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/privacy.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Single-Click Reject All Optional (`rejected-optional`), and Dark (`Night Lab` + 10-Dimension Stress + Purge Modal); 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/13-privacy-*.png`.
 - **Critique Round 1 (Picky Designer)**: Resolved WCAG 2.5.3 (Label in Name) by removing redundant divergent `aria-label` tags from buttons whose visible text (`Reject All Optional`, `Restore Defaults`, `Download Complete Archive (JSON)`, `Purge All Data & Telemetry`, `Copy JSON`) already provides an unambiguous accessible name.
 - **Critique Round 2 (Hostile Juror)**: Verified that the Non-Biometric Hardware Lock is prominent and non-negotiable, that single-click data portability export immediately produces a valid machine-readable JSON archive, and that the 2-step right-to-erasure purge flow generates a tamper-evident Deletion Certificate.
+
+---
+
+## 17. Page 16 (`/judge-mode` · `Competition Demo & Judge Mode` Signature #7) Automated QA & Critique Log (2026-10-25)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `JudgeModeDock.tsx` and `JudgeModePage.tsx`. Zero arbitrary bracket values.
+- **`npm run lint:copy`**: `PASS` — 0 clinical diagnostic or punitive guilt terms across all 6 competition persona profiles, 11 rubric criteria descriptions, fault switches, and explainability trails.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 18/18 unit & component tests pass (`src/tests/designSystem.test.tsx`). Verified persona switching, fault switches, 10-dimension generalisation, rubric proof table, and 1-click state reset.
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `JudgeModePage` route chunk is `22.40 kB` (`6.98 kB` gzipped).
+- **`npx playwright test e2e/judgeMode.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Seeded Persona Active (`persona`), Fault Injections & 10 Dimensions (`faults-10dims`), and Dark (`Night Lab` + 10 Dims); 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 6 verification screenshots saved to `docs/ui/screenshots/16-judge-mode-*.png`.
+- **Critique Round 1 (Picky Designer)**: Avoided embedding raw JSX component instances `<JudgeModeDock />` inside text badges; used JSX string literals `{"Signature #7 <JudgeModeDock />"}` to preserve component rendering boundaries. Standardized all button accessible names to match visible text without divergent labels (WCAG 2.5.3).
+- **Critique Round 2 (Hostile Juror)**: Grounded all 11 competition rubric criteria (Phase 1 60% + Phase 2 40%) in an interactive proof matrix table with direct "Inspect ->" jump links to executable screens. Verified that 6 seeded personas and live fault switches cascade instantly to all application routes without full page reloads.
+

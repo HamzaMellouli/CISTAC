@@ -177,20 +177,37 @@
 ---
 
 ## 10. Definition of Done Checklist (10 Items)
-- [ ] **DoD 01**: Author [`JudgeModeDock.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/components/signature/JudgeModeDock.tsx) and [`JudgeModePage.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/pages/JudgeModePage.tsx) matching design tokens.
-- [ ] **DoD 02**: Render 6 seeded persona switcher with 1-click state transition and badge updates.
-- [ ] **DoD 03**: Render Fault Injection & Stress Studio with offline mode and LLM-down toggles.
-- [ ] **DoD 04**: Render Dimension Generalisation switcher (3, 6, 7, 8, 10 dims).
-- [ ] **DoD 05**: Render Fast-Track Launcher for all 8 Signature Components.
-- [ ] **DoD 06**: Render interactive Jury Rubric-to-UI Proof Matrix table with 11 criteria and deep links.
-- [ ] **DoD 07**: Render 1-click Reset Demo State action with confirmation feedback.
-- [ ] **DoD 08**: Wire route `/judge-mode` into `App.tsx` and navigation in `AppShell.tsx`.
-- [ ] **DoD 09**: Add unit test in `designSystem.test.tsx` verifying persona switching, fault toggling, and rubric navigation.
-- [ ] **DoD 10**: Pass all QA checks (`npm run qa:checks`) with 0 errors, 0 `axe-core` violations, 0 overflow, and 5 Playwright screenshots saved to `docs/ui/screenshots/16-judge-mode-*.png`.
+- [x] **DoD 01**: Author [`JudgeModeDock.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/components/signature/JudgeModeDock.tsx) and [`JudgeModePage.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/pages/JudgeModePage.tsx) matching design tokens.
+- [x] **DoD 02**: Render 6 seeded persona switcher with 1-click state transition and badge updates.
+- [x] **DoD 03**: Render Fault Injection & Stress Studio with offline mode and LLM-down toggles.
+- [x] **DoD 04**: Render Dimension Generalisation switcher (3, 6, 7, 8, 10 dims).
+- [x] **DoD 05**: Render Fast-Track Launcher for all 8 Signature Components.
+- [x] **DoD 06**: Render interactive Jury Rubric-to-UI Proof Matrix table with 11 criteria and deep links.
+- [x] **DoD 07**: Render 1-click Reset Demo State action with confirmation feedback.
+- [x] **DoD 08**: Wire route `/judge-mode` into `App.tsx` and navigation in `AppShell.tsx`.
+- [x] **DoD 09**: Add unit test in `designSystem.test.tsx` verifying persona switching, fault toggling, and rubric navigation.
+- [x] **DoD 10**: Pass all QA checks (`npm run qa:checks`) with 0 errors, 0 `axe-core` violations, 0 overflow, and 5 Playwright screenshots saved to `docs/ui/screenshots/16-judge-mode-*.png`.
 
 ---
 
 ## 11. Design Critique Self-Review (Rounds 1 & 2)
-*(To be completed during implementation and verification)*
-- **Round 1 (Picky Designer)**: Ensure dock controls have clear visual grouping, tactile elevation, and no arbitrary Tailwind values.
-- **Round 2 (Hostile Juror)**: Confirm that switching personas immediately updates downstream components without page reload, and that 10-dimension stress test does not overflow on 375px mobile screens.
+### Round 1 (Picky Designer)
+- **Visual Grouping & Tactile Elevation**: Grouped dock controls into distinct tactile sections (Active Persona, Dimension Generalisation, Fault Injections, Appearance & Accessibility) using 2px border strokes and brand/canvas tints.
+- **Token Integrity**: Verified 0 arbitrary pixel/rem brackets in Tailwind utility classes; all colors map directly to semantic design tokens.
+- **Typography**: Display elements use `font-display` (Fredoka), body copy in `font-sans` (Lexend), and numbers/percentages in `font-mono` (JetBrains Mono).
+- **Interactive Feedback**: Instant toast feedback mounted on persona activation and state reset, clearing after 4 seconds.
+
+### Round 2 (Hostile Juror)
+- **Live Reactivity**: Verified that selecting Salma (Noisy & Low-Confidence) or Youssef (Steady Improver) in the dock immediately cascades to all 13 application routes and updates all uncertainty radar plots without full page reloads.
+- **Zero Horizontal Overflow on 375px Mobile**: Verified via Playwright that the 11-row rubric matrix is wrapped in a keyboard-scrollable `role="region"` with `tabIndex={0}`, eliminating viewport horizontal scroll (`scrollWidth === clientWidth`).
+- **Complete Rubric Accountability**: All 11 evaluation criteria (Phase 1 60% + Phase 2 40%) link directly to their corresponding screens with interactive "Inspect ->" jump links.
+
+---
+
+## 12. Verification & Screenshots
+- **1440px Desktop (Playful Lab)**: [`16-judge-mode-1440.png`](../screenshots/16-judge-mode-1440.png)
+- **Seeded Persona Active (Salma)**: [`16-judge-mode-persona.png`](../screenshots/16-judge-mode-persona.png)
+- **Fault Injections & 10 Dimensions Active**: [`16-judge-mode-faults-10dims.png`](../screenshots/16-judge-mode-faults-10dims.png)
+- **1440px Dark Mode (Night Lab)**: [`16-judge-mode-dark.png`](../screenshots/16-judge-mode-dark.png)
+- **768px Tablet Viewport**: [`16-judge-mode-768.png`](../screenshots/16-judge-mode-768.png)
+- **375px Mobile Viewport**: [`16-judge-mode-375.png`](../screenshots/16-judge-mode-375.png)
