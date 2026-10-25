@@ -1,6 +1,6 @@
 # UI Sprint State (`docs/ui/STATE.md`)
 
-**2026-10-25 11:06 (UTC+1)** | **Branch:** `ui/page-19-layer-d` | **Last merge on `ui/main`:** `f8f278d` (Page 15 Merged)
+**2026-10-25 11:15 (UTC+1)** | **Branch:** `ui/main` | **Milestone Release Tag:** [`ui-v1.0-phase1`](https://github.com/anwrG-p/ai4brain/releases/tag/ui-v1.0-phase1) | **Status:** 100% COMPLETE (19/19 Pages Shipped)
 
 ## Done: pages, with commit or tag
 - **Design Direction Sprint**: Locked **Playful Lab** (Light) + **Night Lab** (Dark) + **Fredoka / Lexend / JetBrains Mono** (`DEC-006`).
@@ -18,24 +18,24 @@
   - **Page 13 — Privacy Center & Audit Log (`/privacy`) · Signature #6 `<PrivacyCenter />`**: Merged into `ui/main` (`53fe497`).
   - **Page 16 — Demo & Judge Mode (`/judge-mode`) · Signature #7 `<JudgeModeDock />`**: Merged into `ui/main` (`256a93d`).
   - **Page 17 — System States & Error Boundaries (`/system/*`)**: Merged into `ui/main` (`9754f09`) and tagged milestone **`ui-m3-feature-freeze`**.
-- **Wave 4 Pages Merged**:
+- **Wave 4 Pages Merged (Final Production Release Milestone `ui-v1.0-phase1` @ `ea4f082`)**:
   - **Page 14 — Settings & Accessibility Controls (`/settings`)**: Merged into `ui/main` (`d412763`).
   - **Page 15 — Methodology, Limits & Ethics (`/methodology`)**: Merged into `ui/main` (`f8f278d`).
+  - **Page 19 — Layer D Bonus: Voice Coaching & Scenario Projections (`/layer-d`)**: Merged into `ui/main` (`ea4f082`) and tagged milestone **`ui-v1.0-phase1`**.
 
 ## In progress: page, and the stage of the loop
-- **Page 19 — Layer D Bonus: Voice Coaching & Scenario Projections (`/layer-d`)**: At **Gate 2 (Step 7 Review)** on branch `ui/page-19-layer-d`. All 10 DoD items satisfied, 22/22 Vitest passing, Playwright E2E passing (0 `axe-core` violations), 6 screenshots captured, and full QA checks passing. Awaiting user `"Gate 2 OK"`.
+- **Phase 1 Production Delivery**: **COMPLETE**. All 19 planned pages, all 8 signature components, 22/22 unit tests, Playwright visual QA suites, and documentation specs are fully implemented, verified, merged into `ui/main`, and pushed to `origin`.
 
 ## Decisions today (links to DECISIONS.md)
 - [DEC-001](./DECISIONS.md#dec-001-repository-directory-boundary-frontend--docsui-vs-existing-repo-folders) through [DEC-006](./DECISIONS.md#dec-006-design-direction--typography-lock-playful-lab--fredokalexendjetbrains-mono).
 
 ## Open questions: for teammates, for me
-- **For You (Gate 2 — Page 19 Layer D Bonus: Voice Coaching & Scenario Projections)**: Review [`pages/19-layer-d.md`](./pages/19-layer-d.md), verify the 6 screenshots in `docs/ui/screenshots/19-layer-d-*.png`, and reply **"Gate 2 OK"** to merge into `ui/main` and tag the final production milestone **`ui-v1.0-phase1`**.
-- **For Teammates (Mon 26/10 Sync)**: `[REQ-BE-01]` to `[REQ-BE-04]` in [`contracts.md`](./contracts.md).
+- **For Teammates (Mon 26/10 Sync)**: `[REQ-BE-01]` to `[REQ-BE-04]` in [`contracts.md`](./contracts.md) are fully documented with TypeScript interfaces and mock fixtures. Frontend is 100% ready for backend API integration.
 
-## Next 3 steps
-1. Receive **Gate 2 OK** for Page 19 (`Layer D Bonus: Voice Coaching & Scenario Projections`, `/layer-d`).
-2. Merge `ui/page-19-layer-d` into `ui/main` (`--no-ff`).
-3. Create and push final milestone release tag **`ui-v1.0-phase1`** to `origin`.
+## Next steps
+1. Team review and celebration of Phase 1 Frontend Production Milestone **`ui-v1.0-phase1`**.
+2. Preparation of the 5-minute competition demo video and pitch slide deck referencing [`JUDGES-UI.md`](./JUDGES-UI.md).
+3. Mon 26/10 backend integration sync using the frozen contracts in [`contracts.md`](./contracts.md).
 
 ## Known issues
 - None.
