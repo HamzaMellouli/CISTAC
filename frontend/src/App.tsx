@@ -22,6 +22,7 @@ const CollaborationScorePage = React.lazy(
 const PrivacyPage = React.lazy(() => import('./pages/PrivacyPage'))
 const JudgeModePage = React.lazy(() => import('./pages/JudgeModePage'))
 const SystemPage = React.lazy(() => import('./pages/SystemPage'))
+const SettingsPage = React.lazy(() => import('./pages/SettingsPage'))
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
 
 function RouteLoadingSkeleton() {
@@ -79,6 +80,7 @@ export function App() {
               <Route path="/404" element={<SystemPage defaultTab="404" />} />
               <Route path="/offline" element={<SystemPage defaultTab="offline" />} />
               <Route path="/system-error" element={<SystemPage defaultTab="error" />} />
+              <Route path="/settings" element={<SettingsPage />} />
               <Route path="/design-system" element={<DesignSystemPage />} />
               <Route path="*" element={<SystemPage defaultTab="404" />} />
             </Routes>

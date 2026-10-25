@@ -268,6 +268,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Link>
             )}
 
+            {location.pathname !== '/settings' && (
+              <Link
+                to="/settings"
+                className="tactile-btn bg-surface text-ink px-3 py-2 text-sm font-semibold inline-flex items-center no-underline"
+              >
+                ⚙ Settings
+              </Link>
+            )}
+
             {location.pathname !== '/design-system' && (
               <Link
                 to="/design-system"
