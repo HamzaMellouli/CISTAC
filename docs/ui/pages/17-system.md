@@ -231,21 +231,38 @@ Page 17 provides 3 dedicated system views accessible via tabs or URL params:
 
 ## 10. Definition of Done Checklist (10 Items)
 
-- [ ] **DoD 01**: Author [`ErrorBoundary.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/components/layout/ErrorBoundary.tsx) to catch unhandled React rendering errors.
-- [ ] **DoD 02**: Author [`SystemPage.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/pages/SystemPage.tsx) supporting 404, Offline, and Error Boundary sub-views.
-- [ ] **DoD 03**: Wire `/system`, `/system/404`, `/system/offline`, `/system/error`, and catch-all `*` in [`App.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/App.tsx).
-- [ ] **DoD 04**: Implement interactive 404 wayfinder with quick-jump navigation cards and companion Mascot.
-- [ ] **DoD 05**: Implement live Offline Resilience hub with telemetry queue counter, simulation controls, and sync animation.
-- [ ] **DoD 06**: Implement Error Boundary test bench with interactive simulated crash trigger and copy diagnostic JSON action.
-- [ ] **DoD 07**: Render keyboard-scrollable Diagnostic & Recovery Log Table (`role="region"` with `tabIndex={0}`).
-- [ ] **DoD 08**: Add unit test in `designSystem.test.tsx` verifying 404 navigation, offline queue simulation, and error boundary recovery.
-- [ ] **DoD 09**: Author Playwright E2E suite [`system.spec.ts`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/e2e/system.spec.ts) verifying all 3 viewports (375, 768, 1440 px), dark mode, and 0 `axe-core` violations.
-- [ ] **DoD 10**: Pass all QA checks (`npm run qa:checks`) with 0 errors, 0 overflow, and save 5 verification screenshots to `docs/ui/screenshots/17-system-*.png`.
+- [x] **DoD 01**: Author [`ErrorBoundary.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/components/layout/ErrorBoundary.tsx) to catch unhandled React rendering errors.
+- [x] **DoD 02**: Author [`SystemPage.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/pages/SystemPage.tsx) supporting 404, Offline, and Error Boundary sub-views.
+- [x] **DoD 03**: Wire `/system`, `/system/404`, `/system/offline`, `/system/error`, and catch-all `*` in [`App.tsx`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/src/App.tsx).
+- [x] **DoD 04**: Implement interactive 404 wayfinder with quick-jump navigation cards and companion Mascot.
+- [x] **DoD 05**: Implement live Offline Resilience hub with telemetry queue counter, simulation controls, and sync animation.
+- [x] **DoD 06**: Implement Error Boundary test bench with interactive simulated crash trigger and copy diagnostic JSON action.
+- [x] **DoD 07**: Render keyboard-scrollable Diagnostic & Recovery Log Table (`role="region"` with `tabIndex={0}`).
+- [x] **DoD 08**: Add unit test in `designSystem.test.tsx` verifying 404 navigation, offline queue simulation, and error boundary recovery.
+- [x] **DoD 09**: Author Playwright E2E suite [`system.spec.ts`](file:///c:/Users/Smida/Desktop/CISTAC/frontend/e2e/system.spec.ts) verifying all 3 viewports (375, 768, 1440 px), dark mode, and 0 `axe-core` violations.
+- [x] **DoD 10**: Pass all QA checks (`npm run qa:checks`) with 0 errors, 0 overflow, and save 5 verification screenshots to `docs/ui/screenshots/17-system-*.png`.
 
 ---
 
 ## 11. Design Critique Self-Review (Rounds 1 & 2)
 
-*(To be completed during implementation and verification)*
-- **Round 1 (Picky Designer)**: Ensure error states avoid brutalist or generic red-box aesthetics; maintain Playful Lab warmth and reassuring typographic rhythm.
-- **Round 2 (Hostile Juror)**: Confirm that unhandled routes and simulated crashes never cause a blank white screen, that offline telemetry buffering is clearly demonstrated with observable counters, and that users can always return to safety in a single click.
+### Round 1 (Picky Designer)
+- **Empathetic & Reassuring Visuals**: Eliminated harsh default red-box alerts in favor of gentle Playful Lab card elevation, warm ink typography, and the friendly geometric mascot in calm resting posture (`state="rest"`).
+- **Token Consistency**: All error and warning tints utilize semantic design tokens (`border-danger/30`, `bg-danger/10`, `bg-warning/10`, `bg-brand`) with zero hardcoded arbitrary pixel brackets.
+- **Accessible Typography**: Tabular diagnostic identifiers and event timestamps utilize `font-mono`, page titles use `font-display` (Fredoka), and narrative explanations use `font-sans` (Lexend).
+- **Collapsible Diagnostics**: Complex sanitized technical stack traces are neatly tucked inside an accessible `<details>` accordion so technical evaluators have full audit access without cluttering standard user guidance.
+
+### Round 2 (Hostile Juror)
+- **Zero White-Screen Guarantee**: Verified via interactive component crash simulation that throwing an unhandled exception inside a component subtree isolates the failure cleanly inside the `<ErrorBoundary />` while keeping the primary `AppShell` header, navigation, and theme switches 100% operational.
+- **Observable Telemetry Queueing**: Evaluators can observe the live buffer counter advance from `14/500` to `15/500` and flush to `0/500` in real time, proving that in-flight trial observations are preserved without network connectivity.
+- **Catch-All 404 Routing**: Navigating to any unregistered route automatically presents the intelligent 404 Wayfinder with 4 prominent return paths (`/`, `/dashboard`, `/coach`, `/judge-mode`), preventing broken navigation traps.
+
+---
+
+## 12. Verification & Screenshots
+- **1440px Desktop (Playful Lab — 404 Wayfinder)**: [`17-system-1440.png`](../screenshots/17-system-1440.png)
+- **Offline Resilience Hub & Telemetry Queue**: [`17-system-offline.png`](../screenshots/17-system-offline.png)
+- **Error Boundary Intercepted & Self-Healing**: [`17-system-error.png`](../screenshots/17-system-error.png)
+- **1440px Dark Mode (Night Lab)**: [`17-system-dark.png`](../screenshots/17-system-dark.png)
+- **768px Tablet Viewport**: [`17-system-768.png`](../screenshots/17-system-768.png)
+- **375px Mobile Viewport**: [`17-system-375.png`](../screenshots/17-system-375.png)

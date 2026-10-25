@@ -708,4 +708,83 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
       screen.getByText(/All simulated data and store preferences reset/i),
     ).toBeInTheDocument()
   })
+  it('renders Page 17 (/system) and supports 404 wayfinder, offline queue simulation, and error boundary self-healing', async () => {
+    window.history.pushState({}, '', '/system')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /System States & Fault Resilience Console/i,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // 1. Verify 404 Wayfinder default view
+    expect(
+      screen.getByRole('heading', { name: /Synaptic Pathway Not Mapped/i }),
+    ).toBeInTheDocument()
+
+    // 2. Switch to Offline Resilience tab
+    const offlineTab = screen.getByRole('tab', { name: /Offline Resilience Hub/i })
+    fireEvent.click(offlineTab)
+    expect(
+      screen.getByRole('heading', {
+        name: /Offline Telemetry Buffer & Sync Engine/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Test adding mock telemetry event
+    const addEventBtn = screen.getByRole('button', {
+      name: /Add Mock Telemetry Event/i,
+    })
+    fireEvent.click(addEventBtn)
+    expect(screen.getByText((content) => content.includes("15 / 500 Events"))).toBeInTheDocument()
+
+    // Test flushing queue
+    const flushBtn = screen.getByRole('button', {
+      name: /Flush Queue & Sync Now/i,
+    })
+    fireEvent.click(flushBtn)
+    expect(screen.getByText((content) => content.includes("0 / 500 Events"))).toBeInTheDocument()
+
+    // 3. Switch to Error Boundary Test Bench tab
+    const errorTab = screen.getByRole('tab', {
+      name: /Error Boundary Test Bench/i,
+    })
+    fireEvent.click(errorTab)
+    expect(screen.getByText(/Subtree Mounted Cleanly/i)).toBeInTheDocument()
+
+    // Trigger simulated crash
+    const crashBtn = screen.getByRole('button', {
+      name: /Trigger Simulated Component Crash/i,
+    })
+    fireEvent.click(crashBtn)
+
+    // Verify Error Boundary caught the error
+    expect(
+      screen.getByRole('heading', {
+        name: /Component Fault Isolated & Preserved/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Recover by clicking Try Re-rendering Component
+    const recoverBtn = screen.getByRole('button', {
+      name: /Try Re-rendering Component/i,
+    })
+    fireEvent.click(recoverBtn)
+    expect(screen.getByText(/Subtree Mounted Cleanly/i)).toBeInTheDocument()
+
+    // 4. Switch to Diagnostic Logs tab
+    const logsTab = screen.getByRole('tab', {
+      name: /Diagnostic Recovery Log/i,
+    })
+    fireEvent.click(logsTab)
+    expect(
+      screen.getByRole('table', {
+        name: /System Faults and Diagnostic Recovery Log Table/i,
+      }),
+    ).toBeInTheDocument()
+  })
 })

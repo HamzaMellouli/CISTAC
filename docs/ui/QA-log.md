@@ -239,3 +239,15 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **Critique Round 1 (Picky Designer)**: Avoided embedding raw JSX component instances `<JudgeModeDock />` inside text badges; used JSX string literals `{"Signature #7 <JudgeModeDock />"}` to preserve component rendering boundaries. Standardized all button accessible names to match visible text without divergent labels (WCAG 2.5.3).
 - **Critique Round 2 (Hostile Juror)**: Grounded all 11 competition rubric criteria (Phase 1 60% + Phase 2 40%) in an interactive proof matrix table with direct "Inspect ->" jump links to executable screens. Verified that 6 seeded personas and live fault switches cascade instantly to all application routes without full page reloads.
 
+---
+
+## 18. Page 17 (`/system/*` · `System States & Error Boundaries`) Automated QA & Critique Log (2026-10-25)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `ErrorBoundary.tsx` and `SystemPage.tsx`. Zero arbitrary bracket values.
+- **`npm run lint:copy`**: `PASS` — 0 clinical diagnostic or punitive guilt terms across all 404 guide copy, offline buffer instructions, error recovery messages, and diagnostic log tables.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 19/19 unit & component tests pass (`src/tests/designSystem.test.tsx`). Verified 404 wayfinder, offline queue increment & flush, component crash throw & catch via ErrorBoundary, re-render recovery, and diagnostic log table.
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `SystemPage` route chunk is `20.10 kB` (`5.52 kB` gzipped).
+- **`npx playwright test e2e/system.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab` — 404 view), Offline Hub (`offline`), Error Boundary Catch (`error`), Dark (`Night Lab`), Tablet (`768px`), Mobile (`375px`), and Direct Unregistered Route navigation; 0 horizontal overflow; 6 verification screenshots saved to `docs/ui/screenshots/17-system-*.png`.
+- **Critique Round 1 (Picky Designer)**: Maintained visual serenity and non-intimidating warmth even during failure states. Replaced harsh red error screens with subtle semantic card elevation and companion `<Mascot state="rest" />`. Sanitized technical stack traces into collapsible `<details>` blocks for clean juror readability.
+- **Critique Round 2 (Hostile Juror)**: Proved complete subtree isolation via live simulated component crash test bench: throwing an unhandled exception inside a component leaves the top-level shell, navigation, and theme switches 100% functional. Verified real-time telemetry buffer queue visualization (advancing and flushing without data loss) and catch-all 404 routing across arbitrary URLs.
