@@ -14,6 +14,9 @@ const DimensionDetailPage = React.lazy(
 const PlanPage = React.lazy(() => import('./pages/PlanPage'))
 const BrainTwinPage = React.lazy(() => import('./pages/BrainTwinPage'))
 const AiCoachPage = React.lazy(() => import('./pages/AiCoachPage'))
+const CollaborationScorePage = React.lazy(
+  () => import('./pages/CollaborationScorePage'),
+)
 const DesignSystemPage = React.lazy(() => import('./pages/DesignSystemPage'))
 
 function RouteLoadingSkeleton() {
@@ -59,6 +62,7 @@ export function App() {
               element={<DimensionDetailPage />}
             />
             <Route path="/plan" element={<PlanPage />} />
+            <Route path="/collaboration" element={<CollaborationScorePage />} />
             <Route path="/brain-twin" element={<BrainTwinPage />} />
             <Route path="/coach" element={<AiCoachPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />

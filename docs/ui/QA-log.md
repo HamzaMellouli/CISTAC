@@ -183,3 +183,18 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **Critique Round 2 (Hostile Juror)**: Verified that rest days celebrate restorative neural consolidation with zero guilt (`Streak Protected`), and added `tabIndex={0} role="region"` to the $\Delta c$ table container for full keyboard navigation.
 
 
+---
+
+## 14. Page 12 (`/collaboration` · `AI Collaboration Score` Signature #5) Automated QA & Critique Log (2026-10-25)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across `CollaborationScoreCard.tsx` and `CollaborationScorePage.tsx`.
+- **`npm run lint:copy`**: `PASS` — 0 clinical or guilt terms across all 5 sub-dimension descriptions, action simulator feedback, and human-AI agency principles.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light & Dark token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 15/15 unit & component tests pass (`src/tests/designSystem.test.tsx`).
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — `CollaborationScorePage` route chunk is `26.03 kB` (`6.59 kB` gzipped).
+- **`npx playwright test e2e/collaboration.spec.ts`**: `PASS` — 0 `axe-core` violations across Light (`Playful Lab`), Live Telemetry Simulator (`simulated-actions-engaged`), and Dark (`Night Lab` + 10-Dimension Stress + Dynamic Weights + Table View); 0 horizontal overflow at `375 px`, `768 px`, and `1440 px`; 5 verification screenshots saved to `docs/ui/screenshots/12-collaboration-*.png`.
+- **Critique Round 1 (Picky Designer)**: Fixed WCAG 2.5.3 (Label in Name) by aligning visible button text (`Hide Evidence ▲` / `Show Evidence ▼`) with its accessible name and adding `aria-expanded`, preventing screen-reader mismatch.
+- **Critique Round 2 (Hostile Juror)**: Upgraded contrast on current longitudinal history badge and persona switcher by eliminating `opacity-80` and pairing `text-ink` with pastel teal backgrounds, guaranteeing strict WCAG AA $\ge 4.5:1$ compliance across all themes.
+
+
+

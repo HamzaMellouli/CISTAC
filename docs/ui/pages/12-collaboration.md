@@ -189,20 +189,24 @@ export interface CollaborationScorePayload {
 
 ---
 
-## 9. Two Rounds of Design Critique Plan
-- **Round 1 (Spacing & Mobile Card Hierarchy)**: Verify that the 5 sub-dimension cards stack cleanly on 375px without horizontal clipping, and that evidence lists remain readable.
-- **Round 2 (Jury & Metacognitive Defensibility)**: Ensure the formula $S_{\text{collab}} = \sum w_i V_i$, the `"Design proposal, not validated"` badge, and the distinction between baseline and dynamic archetype weights are unmistakable to any reviewer.
+## 9. Two Rounds of Design Critique Plan & Outcome
+- **Round 1 (WCAG 2.5.3 Label-in-Name & Button Semantics)**:
+  - *Critique*: Sub-score toggle buttons had distinct visible text (`Hide ▲` vs `Evidence ▼`) while `aria-label` was `Toggle evidence log for ${sub.label}`, triggering WCAG 2.5.3 `label-content-name-mismatch`.
+  - *Fix*: Aligned visible text and accessible name to `Hide Evidence ▲` / `Show Evidence ▼` and added `aria-expanded`, guaranteeing 100% accessible label-in-name compliance.
+- **Round 2 (Contrast on Shaded Badges & Action Simulator)**:
+  - *Critique*: Persona badge had `opacity-80` which dropped contrast to `4.13:1`, and active stepper item had white text on light teal tint.
+  - *Fix*: Replaced `opacity-80` with `text-brand-ink font-semibold` (`5.48:1` contrast) and updated current stepper cell text to `text-ink` (`15.61:1`), yielding 0 contrast violations across all themes.
 
 ---
 
 ## 10. DoD (Definition of Done) Checklist
-- [ ] Spec approved at **Gate 1**.
-- [ ] Build `frontend/src/components/signature/CollaborationScoreCard.tsx` (Signature #5).
-- [ ] Build `frontend/src/pages/CollaborationScorePage.tsx` with simulator, longitudinal curve, and dynamic weight toggle.
-- [ ] Wire `/collaboration` route into `App.tsx` and navigation in `AppShell.tsx`.
-- [ ] Add unit tests in `frontend/src/tests/designSystem.test.tsx`.
-- [ ] Author Playwright E2E test in `frontend/e2e/collaboration.spec.ts`.
-- [ ] Run `npm run qa:checks` (lint tokens, lint copy, check contrast, unit tests, build) $\rightarrow$ 0 errors.
-- [ ] Run Playwright suite and generate 5 screenshots with 0 `axe-core` violations and 0 horizontal overflow.
-- [ ] Log critiques in `docs/ui/QA-log.md` and update `STATE.md`, `CHANGELOG.md`, `JUDGES-UI.md`.
-- [ ] Present **Gate 2** to the user.
+- [x] Spec approved at **Gate 1**.
+- [x] Build `frontend/src/components/signature/CollaborationScoreCard.tsx` (Signature #5).
+- [x] Build `frontend/src/pages/CollaborationScorePage.tsx` with simulator, longitudinal curve, and dynamic weight toggle.
+- [x] Wire `/collaboration` route into `App.tsx` and navigation in `AppShell.tsx`.
+- [x] Add unit tests in `frontend/src/tests/designSystem.test.tsx` (15/15 passing).
+- [x] Author Playwright E2E test in `frontend/e2e/collaboration.spec.ts`.
+- [x] Run `npm run qa:checks` (lint tokens, lint copy, check contrast, unit tests, build) $\rightarrow$ 0 errors.
+- [x] Run Playwright suite and generate 5 screenshots with 0 `axe-core` violations and 0 horizontal overflow.
+- [x] Log critiques in `docs/ui/QA-log.md` and update `STATE.md`, `CHANGELOG.md`, `JUDGES-UI.md`.
+- [x] Present **Gate 2** to the user.

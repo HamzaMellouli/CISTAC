@@ -425,6 +425,74 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
     ).toBeInTheDocument()
   })
 
+  it('renders Page 12 AI Collaboration Score (/collaboration) with Signature #5 CollaborationScoreCard, dynamic weights, action simulator, and longitudinal curve', async () => {
+    window.history.pushState({}, '', '/collaboration')
+    render(<App />)
+
+    const heading = await screen.findByRole(
+      'heading',
+      {
+        name: /AI Collaboration Score Deep-Dive/i,
+        level: 1,
+      },
+      { timeout: 5000 },
+    )
+    expect(heading).toBeInTheDocument()
+
+    // Verify mandatory non-validated badges
+    const badges = screen.getAllByText(/Design proposal, not validated/i)
+    expect(badges.length).toBeGreaterThanOrEqual(1)
+
+    // Verify Signature #5 heading
+    expect(
+      screen.getByRole('heading', {
+        name: /Signature #5: AI Collaboration Score/i,
+        level: 2,
+      }),
+    ).toBeInTheDocument()
+
+    // Verify baseline score exists
+    expect(screen.getByText('82')).toBeInTheDocument()
+
+    // Switch to Dynamic Archetype Weights
+    const dynamicWeightsBtn = screen.getByRole('button', {
+      name: /Dynamic Archetype Weights/i,
+    })
+    fireEvent.click(dynamicWeightsBtn)
+    expect(dynamicWeightsBtn).toHaveAttribute('aria-pressed', 'true')
+
+    // Test Action Simulator button
+    const auditBtn = screen.getByRole('button', {
+      name: /Audit "Why This\?" Trail/i,
+    })
+    fireEvent.click(auditBtn)
+    expect(screen.getByText(/Simulated Action Active/i)).toBeInTheDocument()
+
+    // Expand Accessible Score Table
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Show Accessible Score Table/i,
+      }),
+    )
+    expect(
+      screen.getByRole('table', {
+        name: /Collaboration Score Sub-dimension Breakdown/i,
+      }),
+    ).toBeInTheDocument()
+
+    // Expand Longitudinal Curve Table
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Inspect Longitudinal Table Region/i,
+      }),
+    )
+    expect(
+      screen.getByRole('table', {
+        name: /Longitudinal Collaboration Score History/i,
+      }),
+    ).toBeInTheDocument()
+  })
+
   it('renders Page 18 (/design-system) and supports 3-to-10 dimension switching and radar table toggle', async () => {
     window.history.pushState({}, '', '/design-system')
     render(<App />)
