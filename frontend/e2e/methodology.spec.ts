@@ -81,7 +81,7 @@ test.describe('Page 15: Methodology, Limits & Ethics (/methodology) Visual QA & 
     })
 
     // 5. Night Lab Dark Mode Switch
-    const themeBtn = page.getByRole('button', { name: /Dark \(Night Lab\)/i })
+    const themeBtn = page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first()
     await themeBtn.click()
 
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
@@ -96,7 +96,7 @@ test.describe('Page 15: Methodology, Limits & Ethics (/methodology) Visual QA & 
     })
 
     // Switch back to light
-    const lightBtn = page.getByRole('button', { name: /Light \(Playful Lab\)/i })
+    const lightBtn = page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first()
     await lightBtn.click()
 
     // 6. Tablet 768px Viewport

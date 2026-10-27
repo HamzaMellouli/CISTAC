@@ -62,7 +62,7 @@ test.describe('Page 03: Assessment Hub (/assessment) Visual QA & A11y', () => {
     await page
       .getByRole('button', { name: /View Modules as Cards/i })
       .click()
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     await page.waitForTimeout(300)
 
     const a11yDark = await new AxeBuilder({ page }).analyze()
@@ -74,7 +74,7 @@ test.describe('Page 03: Assessment Hub (/assessment) Visual QA & A11y', () => {
     })
 
     // Reset back to Light + 7 Dims + Calibrated Queue for Tablet & Mobile checks
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page.getByRole('button', { name: /7 Dims \(Default\)/i }).click()
     await closeJudgeMode(page)
     await page

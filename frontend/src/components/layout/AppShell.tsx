@@ -267,8 +267,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
               <button
                 type="button"
-                aria-label={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-                title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
+                aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
+                title={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
                 onClick={toggleTheme}
                 className="focus-ring p-2 rounded-sm border border-border-strong bg-surface text-ink hover:bg-surface-raised shadow-doodle-sm transition-colors cursor-pointer"
               >
@@ -350,7 +350,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <button
                     type="button"
                     aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
-                    title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
+                    title={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
                     onClick={toggleTheme}
                     className="focus-ring px-2.5 py-1 rounded-sm text-xs font-bold text-ink hover:bg-surface border-2 border-border-strong transition-colors cursor-pointer inline-flex items-center gap-1 shadow-doodle-sm"
                   >
@@ -359,7 +359,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   </button>
                   <Link
                     to="/judge-mode"
-                    className="text-xs font-bold text-brand hover:underline inline-flex items-center gap-1"
+                    className="text-xs font-bold text-ink hover:text-brand hover:underline inline-flex items-center gap-1"
                   >
                     Open Full Judge Console →
                   </Link>

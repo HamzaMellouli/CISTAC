@@ -71,7 +71,7 @@ test.describe('Page 09: AI Coach (/coach) Hero Visual QA & A11y', () => {
     await page
       .getByRole('button', { name: /3 · ☾ Rest-First Pacing/i })
       .click()
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     await page.waitForTimeout(300)
 
     const a11yDark = await new AxeBuilder({ page })
@@ -85,7 +85,7 @@ test.describe('Page 09: AI Coach (/coach) Hero Visual QA & A11y', () => {
     })
 
     // Restore Light Mode + 7 Dims Default + Live Grounded
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page.getByRole('button', { name: '7 Dims (Default)' }).click()
     await closeJudgeMode(page)
     await page

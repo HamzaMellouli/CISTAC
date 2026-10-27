@@ -249,7 +249,7 @@ export default function DesignSystemPage() {
               />
               <div className="flex-1 space-y-4 w-full">
                 <div className="relative rounded-2xl border-2 border-border-strong bg-surface-raised p-4 shadow-doodle-sm">
-                  <span className="text-xs font-mono-tabular font-bold text-brand uppercase block mb-1">
+                  <span className="text-xs font-mono-tabular font-bold text-ink-muted uppercase block mb-1">
                     ☀ Morning Synchronization
                   </span>
                   <p className="font-display text-lg font-bold text-ink">
@@ -347,7 +347,7 @@ export default function DesignSystemPage() {
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center text-xs font-mono-tabular text-ink-muted">
                     <span>Confidence Halo Bandwidth</span>
-                    <span className="text-danger font-bold">±16% Range Variance</span>
+                    <span className="text-ink font-bold">±16% Range Variance</span>
                   </div>
                   <div className="w-full h-8 bg-surface-raised border-2 border-border-strong rounded-xl overflow-hidden relative flex items-center p-1">
                     <div className="h-full bg-brand rounded-lg w-[45%] flex items-center px-2">
@@ -413,19 +413,19 @@ export default function DesignSystemPage() {
               <div className="lg:col-span-9 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="p-3 rounded-xl border border-border-strong bg-surface-raised space-y-1">
-                    <span className="font-mono-tabular text-xs font-bold text-brand uppercase">Step 01</span>
+                    <span className="font-mono-tabular text-xs font-bold text-ink-muted uppercase">Step 01</span>
                     <h4 className="font-display text-sm font-bold text-ink">Your Pacing</h4>
                     <span className="font-mono-tabular text-sm font-bold text-ink block">585ms rhythm</span>
                     <p className="text-xs text-ink-muted">88% baseline response accuracy recorded across 14 trials.</p>
                   </div>
                   <div className="p-3 rounded-xl border border-border-strong bg-surface-raised space-y-1">
-                    <span className="font-mono-tabular text-xs font-bold text-brand uppercase">Step 02</span>
+                    <span className="font-mono-tabular text-xs font-bold text-ink-muted uppercase">Step 02</span>
                     <h4 className="font-display text-sm font-bold text-ink">Twin Shift</h4>
-                    <span className="font-mono-tabular text-sm font-bold text-success block">+18% Stability Halo</span>
+                    <span className="font-mono-tabular text-sm font-bold text-ink block">+18% Stability Halo</span>
                     <p className="text-xs text-ink-muted">Working memory boundary narrowed from ±14% down to ±5%.</p>
                   </div>
                   <div className="p-3 rounded-xl border border-border-strong bg-surface-raised space-y-1">
-                    <span className="font-mono-tabular text-xs font-bold text-brand uppercase">Step 03</span>
+                    <span className="font-mono-tabular text-xs font-bold text-ink-muted uppercase">Step 03</span>
                     <h4 className="font-display text-sm font-bold text-ink">Next Step</h4>
                     <span className="font-mono-tabular text-sm font-bold text-ink block">90s Visual Flow</span>
                     <p className="text-xs text-ink-muted">Queued for Thursday afternoon peak alertness interval.</p>
@@ -484,7 +484,7 @@ export default function DesignSystemPage() {
                 <div className="p-3 rounded-xl border border-border-strong bg-surface-raised space-y-2">
                   <div className="flex items-center justify-between text-xs font-mono-tabular text-ink-muted">
                     <span>Evening Heatmap (8 PM – 11 PM)</span>
-                    <span className="text-danger font-bold">Optimal Window Passed</span>
+                    <span className="text-ink font-bold">Optimal Window Passed</span>
                   </div>
                   <div className="grid grid-cols-7 gap-1">
                     {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, idx) => (
@@ -492,7 +492,7 @@ export default function DesignSystemPage() {
                         key={idx}
                         className={`h-7 rounded-lg border border-border-strong flex items-center justify-center font-mono-tabular text-xs font-bold ${
                           idx === 4
-                            ? 'bg-warning-subtle text-danger'
+                            ? 'bg-warning-subtle text-ink font-bold'
                             : idx < 2
                               ? 'bg-brand text-brand-ink'
                               : 'bg-surface text-ink-muted'
@@ -590,19 +590,19 @@ export default function DesignSystemPage() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
               <div className="p-3 rounded-lg border border-border-strong bg-surface space-y-1">
-                <span className="font-bold text-brand uppercase block">Scale &amp; Optical Sizing</span>
+                <span className="font-bold text-ink-muted uppercase block">Scale &amp; Optical Sizing</span>
                 <p className="text-ink-muted">
                   Brian is vector-aligned with a distinct outer die-cut border. Always isolate him on his dedicated background aura: Hero views (180–200px), Telemetry (140–150px), Badges (32–40px).
                 </p>
               </div>
               <div className="p-3 rounded-lg border border-border-strong bg-surface space-y-1">
-                <span className="font-bold text-brand uppercase block">Color Harmonization</span>
+                <span className="font-bold text-ink-muted uppercase block">Color Harmonization</span>
                 <p className="text-ink-muted">
                   Body tones match terracotta (<code className="font-mono-tabular">--color-brand</code>), ink contours match navy (<code className="font-mono-tabular">--color-border-strong</code>), and halos use brand and reward tints.
                 </p>
               </div>
               <div className="p-3 rounded-lg border border-border-strong bg-surface space-y-1">
-                <span className="font-bold text-brand uppercase block">Neuroscience Copy Guardrails</span>
+                <span className="font-bold text-ink-muted uppercase block">Neuroscience Copy Guardrails</span>
                 <p className="text-ink-muted">
                   Brian never communicates shame, failure, or clinical certainty. Replace "Score Dropped" with "Latency Drift / Rest Protected".
                 </p>
@@ -1281,9 +1281,9 @@ export default function DesignSystemPage() {
       </Card>
 
       {/* SECTION 06B: Signature #8 Mascot 5-State Companion Showcase */}
-      <Card as="section" id="sec-mascot" aria-labelledby="heading-mascot">
+      <Card as="section" id="sec-mascot-showcase" aria-labelledby="heading-mascot-showcase">
         <h2
-          id="heading-mascot"
+          id="heading-mascot-showcase"
           className="font-display text-2xl font-bold text-ink border-b border-border pb-3"
         >
           06B · Signature #8: 5-State Non-Clinical Mascot Companion

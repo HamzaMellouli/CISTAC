@@ -284,7 +284,7 @@ export default function WelcomePage() {
                   <span className="w-2 h-2 rounded-pill bg-success animate-pulse" />
                   Brian · Twin Node
                 </span>
-                <span className="text-brand font-bold">Online</span>
+                <span className="text-ink font-bold">Online</span>
               </div>
               {/* Tactical Speech Pointer */}
               <div

@@ -195,7 +195,7 @@ export function SettingsPage() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-display text-sm text-ink">☀ Playful Lab (Light)</span>
-                    {theme === 'light' && <span className="text-brand font-bold">●</span>}
+                    {theme === 'light' && <span className="text-ink font-bold">●</span>}
                   </div>
                   <p className="text-xs text-ink-muted mt-1">
                     Warm paper (warm paper), deep ink (15.61:1 contrast), teal accents.
@@ -215,7 +215,7 @@ export function SettingsPage() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-display text-sm text-ink">☾ Night Lab (Dark)</span>
-                    {theme === 'dark' && <span className="text-brand font-bold">●</span>}
+                    {theme === 'dark' && <span className="text-ink font-bold">●</span>}
                   </div>
                   <p className="text-xs text-ink-muted mt-1">
                     Deep canvas (deep canvas), electric cyan, high-contrast lime indicators.
@@ -421,7 +421,7 @@ export function SettingsPage() {
                         <span className="text-sm text-ink block">{win.label}</span>
                         <span className="text-xs text-ink-muted">{win.desc}</span>
                       </div>
-                      {active && <span className="text-brand font-bold text-sm">● Active</span>}
+                      {active && <span className="text-ink font-bold text-sm">● Active</span>}
                     </button>
                   )
                 })}

@@ -53,7 +53,7 @@ test.describe('Page 05: Profile Reveal (/profile-reveal) + Mascot Sprint Visual 
     })
 
     // 3. Dark Theme (Night Lab) @ 1440px
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     await page.waitForTimeout(300)
     const a11yDark = await new AxeBuilder({ page }).analyze()
     expect(a11yDark.violations).toEqual([])
@@ -64,7 +64,7 @@ test.describe('Page 05: Profile Reveal (/profile-reveal) + Mascot Sprint Visual 
     })
 
     // Reset back to Light + 7 Dims + Calibrated for Tablet & Mobile checks
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page.getByRole('button', { name: /7 Dims \(Default\)/i }).click()
     await closeJudgeMode(page)
     await page

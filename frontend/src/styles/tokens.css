@@ -151,7 +151,7 @@
   --color-surface: #1E293B;
   --color-surface-raised: #27354A;
   --color-ink: #FFFFFF;
-  --color-ink-muted: #94A3B8;
+  --color-ink-muted: #CBD5E1;
   --color-border: #3B4D68;
   --color-border-strong: #FF8C5A;
   --color-brand: #FF8C5A;
@@ -348,6 +348,7 @@
     border: 2px solid var(--color-border-strong);
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   }
+
 }
 
 /* Reduced Motion & Timed-Trial Zero-Distraction Lock */
@@ -379,3 +380,33 @@
 [data-timed-trial="true"] .tactile-card:hover {
   transform: none !important;
 }
+
+/* Accessible text contrast overrides for light theme status & brand text tokens (WCAG 2.1 AA ≥4.5:1) */
+.text-brand {
+  color: #C2410C !important;
+}
+[data-theme="dark"] .text-brand {
+  color: var(--color-brand) !important;
+}
+
+.text-warning {
+  color: #92400E !important;
+}
+[data-theme="dark"] .text-warning {
+  color: var(--color-warning) !important;
+}
+
+.text-success {
+  color: #166534 !important;
+}
+[data-theme="dark"] .text-success {
+  color: var(--color-success) !important;
+}
+
+.text-danger {
+  color: #B91C1C !important;
+}
+[data-theme="dark"] .text-danger {
+  color: var(--color-danger) !important;
+}
+

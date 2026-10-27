@@ -49,7 +49,7 @@ test.describe('Page 06: Dashboard (/dashboard) Hero Visual QA & A11y', () => {
     })
 
     // 3. Dark Mode (Night Lab) at 1440px + axe-core check
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     await page.waitForTimeout(350)
     const axeDark = await new AxeBuilder({ page }).analyze()
     expect(axeDark.violations).toEqual([])
@@ -60,7 +60,7 @@ test.describe('Page 06: Dashboard (/dashboard) Hero Visual QA & A11y', () => {
     })
 
     // Switch back to Light & 7 Dims Calibrated for Tablet & Mobile captures
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page.getByRole('button', { name: '7 Dims (Default)' }).click()
     await page.getByRole('button', { name: /Close Dock/i }).click()
     await page

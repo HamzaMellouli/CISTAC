@@ -1037,14 +1037,14 @@ export default function TaskRunnerPage() {
           <div className="w-full bg-surface-raised border-2 border-border-strong rounded-xl p-4 shadow-doodle-sm space-y-2">
             <div className="flex items-center justify-between text-xs font-mono-tabular">
               <span className="text-ink-muted font-bold uppercase tracking-wider">Confidence Band Tightening</span>
-              <span className="text-success font-bold">OPTIMIZED</span>
+              <span className="text-ink font-bold">OPTIMIZED</span>
             </div>
             <div className="flex items-center justify-between gap-3 font-mono-tabular">
-              <span className="text-sm text-ink-muted line-through opacity-70">±14%</span>
+              <span className="text-sm text-ink-muted line-through">±14%</span>
               <div className="flex-1 h-2.5 bg-surface border border-border-strong rounded-full overflow-hidden flex items-center">
                 <div className="h-full bg-brand rounded-full w-full" />
               </div>
-              <span className="text-sm font-bold text-brand">±9%</span>
+              <span className="text-sm font-bold text-ink">±9%</span>
             </div>
             <p className="text-xs text-ink-muted">
               Fidelity score tightened by 35% through high discriminatory consistency across {recordedEvents.length} trials.

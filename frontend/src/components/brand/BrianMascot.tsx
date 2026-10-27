@@ -160,11 +160,11 @@ export const BrianMascot: React.FC<BrianMascotProps> = ({
             badgeTone === 'secondary'
               ? 'bg-secondary text-canvas'
               : badgeTone === 'reward'
-              ? 'bg-reward text-ink'
-              : 'bg-success text-canvas'
+              ? 'bg-reward text-brand-ink'
+              : 'bg-success text-brand-ink'
           }`}
         >
-          <span className="w-1.5 h-1.5 rounded-pill bg-canvas animate-ping" />
+          <span className="w-1.5 h-1.5 rounded-pill bg-current animate-ping" />
           {badge}
         </span>
       )}

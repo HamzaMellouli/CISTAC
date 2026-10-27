@@ -52,7 +52,7 @@ test.describe('Page 18: Living Design System (/design-system) Visual QA & A11y',
     })
 
     // Verify Dark theme (Night Lab) screenshot & zero axe violations
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     const darkAxeResults = await new AxeBuilder({ page }).analyze()
     expect(darkAxeResults.violations).toEqual([])
     await page.screenshot({
@@ -61,7 +61,7 @@ test.describe('Page 18: Living Design System (/design-system) Visual QA & A11y',
     })
 
     // Switch back to Light, trigger Offline + LLM-Down banners + Error State + Flagged Copy Linter state
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page.getByRole('button', { name: /Test Offline Banner/i }).click()
     await page.getByRole('button', { name: /Test LLM-Down Banner/i }).click()
     await page.getByRole('button', { name: 'Error State' }).click()

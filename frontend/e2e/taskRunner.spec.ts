@@ -66,7 +66,7 @@ test.describe('Page 04: Task Runner (/task/:dimId) Hero Visual QA & A11y', () =>
 
     // 3. Dark Theme (Night Lab) @ 1440px (Switch back to Active Trial on Stroop IC)
     await page.getByRole('button', { name: /■ IC/i }).click()
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     await page.waitForTimeout(300)
 
     const a11yDark = await new AxeBuilder({ page }).analyze()
@@ -78,7 +78,7 @@ test.describe('Page 04: Task Runner (/task/:dimId) Hero Visual QA & A11y', () =>
     })
 
     // Reset back to Light + 7 Dims + EP Active Trial for Tablet & Mobile checks
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page.getByRole('button', { name: /7 Dims \(Default\)/i }).click()
     await closeJudgeMode(page)
     await page.getByRole('button', { name: /⬢ EP/i }).click()

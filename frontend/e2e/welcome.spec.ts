@@ -52,7 +52,7 @@ test.describe('Page 01: Welcome (/) Hero Visual QA & A11y', () => {
     })
 
     // Verify Dark theme (Night Lab) screenshot & zero axe violations
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     const darkAxeResults = await new AxeBuilder({ page }).analyze()
     expect(darkAxeResults.violations).toEqual([])
     await page.screenshot({

@@ -73,7 +73,7 @@ test.describe('Page 08: Brain Twin & Historical Timeline (/brain-twin) Hero Visu
     await page
       .getByRole('button', { name: /#7 · Day 7 \(Oct 17\)/i })
       .click()
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     await page.waitForTimeout(300)
 
     const a11yDark = await new AxeBuilder({ page })
@@ -87,7 +87,7 @@ test.describe('Page 08: Brain Twin & Historical Timeline (/brain-twin) Hero Visu
     })
 
     // Restore Light Mode + 7 Dims Default + Snap #14 Live
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page.getByRole('button', { name: '7 Dims (Default)' }).click()
     await closeJudgeMode(page)
     await page

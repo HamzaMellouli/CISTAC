@@ -665,7 +665,7 @@ export default function BrainTwinPage() {
                   <div className="h-9 rounded-lg border border-border-strong bg-brand text-brand-ink flex items-center justify-center font-mono-tabular text-xs font-bold">88</div>
                   <div className="h-9 rounded-lg border border-border-strong bg-brand text-brand-ink flex items-center justify-center font-mono-tabular text-xs font-bold">84</div>
                   <div className="h-9 rounded-lg border border-border-strong bg-brand text-brand-ink flex items-center justify-center font-mono-tabular text-xs font-bold">89</div>
-                  <div className="h-9 rounded-lg border border-border-strong bg-success text-success-ink flex items-center justify-center font-mono-tabular text-xs font-bold shadow-xs">92</div>
+                  <div className="h-9 rounded-lg border border-border-strong bg-success text-brand-ink flex items-center justify-center font-mono-tabular text-xs font-bold shadow-xs">92</div>
                   <div className="h-9 rounded-lg border border-border-strong bg-surface-raised text-ink flex items-center justify-center font-mono-tabular text-xs font-medium">74</div>
                   <div className="h-9 rounded-lg border border-border-strong bg-surface-raised text-ink flex items-center justify-center font-mono-tabular text-xs font-medium">71</div>
                 </div>

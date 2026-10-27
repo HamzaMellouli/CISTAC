@@ -199,7 +199,7 @@ export const DESIGN_SYSTEM_CONTRAST_PAIRS: readonly RawContrastPairSpec[] = [
     role: 'Blackboard sketch muted text on dark canvas',
     theme: 'dark',
     fgName: '--color-ink-muted',
-    fgHex: '#94A3B8',
+    fgHex: '#CBD5E1',
     bgName: '--color-canvas',
     bgHex: '#131B2E',
     minRequired: 4.5,

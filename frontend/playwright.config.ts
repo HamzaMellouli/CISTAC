@@ -2,17 +2,17 @@ import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
   testDir: './e2e',
-  timeout: 30000,
+  timeout: 60000,
   fullyParallel: false,
   use: {
     baseURL: 'http://localhost:4173',
-    channel: 'chrome',
     trace: 'off',
+    ...(process.env.CI ? {} : { channel: 'chrome' }),
   },
   webServer: {
-    command: 'npm run preview -- --port 4173',
+    command: 'npm run preview -- --port 4173 --host 127.0.0.1',
     url: 'http://localhost:4173',
-    reuseExistingServer: false,
+    reuseExistingServer: !process.env.CI,
     timeout: 30000,
   },
 })

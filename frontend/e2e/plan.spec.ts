@@ -64,7 +64,7 @@ test.describe('Page 10: Plan & Adaptive Exercises (/plan) Visual QA & A11y', () 
     await page
       .getByRole('button', { name: '10 Dims (Stress)', exact: true })
       .click()
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     await page.waitForTimeout(300)
     await page
       .getByRole('button', { name: /1 · Active Plan/i })
@@ -86,7 +86,7 @@ test.describe('Page 10: Plan & Adaptive Exercises (/plan) Visual QA & A11y', () 
     })
 
     // Restore Light + 7 Dims for Tablet & Mobile checks
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page
       .getByRole('button', { name: '7 Dims (Default)', exact: true })
       .click()

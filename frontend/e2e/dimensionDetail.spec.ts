@@ -67,7 +67,7 @@ test.describe('Page 07: Dimension Detail (/dimensions/:dimId) Visual QA & A11y',
     })
 
     // 3. Switch to Night Lab (Dark Theme) + Visuospatial Planning & Gf
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     await page.waitForTimeout(300)
     await page
       .getByRole('button', { name: /1 · Converged Solid/i })
@@ -85,7 +85,7 @@ test.describe('Page 07: Dimension Detail (/dimensions/:dimId) Visual QA & A11y',
     })
 
     // Restore Light + 7 Dims + WM for Tablet & Mobile checks
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page
       .getByRole('button', { name: '7 Dims (Default)', exact: true })
       .click()

@@ -73,7 +73,7 @@ test.describe('Page 13: Privacy Center & Audit Log (/privacy) Visual QA & A11y',
     await page
       .getByRole('button', { name: '10 Dims (Stress)', exact: true })
       .click()
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).first().click()
     await page.waitForTimeout(300)
 
     await page
@@ -100,7 +100,7 @@ test.describe('Page 13: Privacy Center & Audit Log (/privacy) Visual QA & A11y',
     await page.getByRole('button', { name: 'Cancel', exact: true }).click()
 
     // Restore Light + 7 Dims
-    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
+    await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page
       .getByRole('button', { name: '7 Dims (Default)', exact: true })
       .click()
