@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
   Compass,
   Target,
@@ -11,13 +10,12 @@ import {
   Settings,
   Moon,
   Sun,
-  Scale,
   WifiOff,
   Cpu,
 } from 'lucide-react'
 import { BRAND_CONFIG } from '../../config/brand'
-import { BrianLogo } from '../brand/BrianLogo'
 import { DIMENSION_PRESETS } from '../../config/dimensions'
+import { BrianLogo } from '../brand/BrianLogo'
 import { useAppStore } from '../../store/useAppStore'
 import { telemetryQueue } from '../../services/telemetryQueue'
 import { Badge } from '../ui/Badge'
@@ -34,9 +32,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     setDimensionPreset,
     simulateOffline,
     simulateLlmDown,
-    isJudgeDrawerOpen,
-    setIsJudgeDrawerOpen,
-    toggleJudgeDrawer,
   } = useAppStore()
 
   // Real offline queue status
@@ -48,18 +43,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     })
   }, [])
 
-  // Keyboard shortcut: Shift+J toggles Judge Mode
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.shiftKey && (e.key === 'J' || e.key === 'j')) {
-        e.preventDefault()
-        toggleJudgeDrawer()
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
-
   // 5 Primary Consumer Destinations
   const consumerNavItems = [
     { path: '/dashboard', label: 'Today', icon: Compass },
@@ -67,44 +50,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     { path: '/coach', label: 'Coach', icon: Bot },
     { path: '/brain-twin', label: 'Progress', icon: TrendingUp },
     { path: '/settings', label: 'You', icon: User },
-  ]
-
-  // Deep-Links to All 19 Views for Judge Console
-  const deepLinkCategories = [
-    {
-      group: 'Core Experience',
-      links: [
-        { path: '/', label: 'Welcome' },
-        { path: '/onboarding', label: 'Onboarding' },
-        { path: '/assessment', label: 'Assess Hub' },
-        { path: '/task/episodic_pattern_separation', label: 'Task Runner' },
-        { path: '/profile-reveal', label: 'Profile Reveal' },
-        { path: '/dashboard', label: 'Today (Dashboard)' },
-      ],
-    },
-    {
-      group: 'Cognitive Intelligence',
-      links: [
-        { path: '/dimensions/working_memory', label: 'Dimension Detail' },
-        { path: '/brain-twin', label: 'Brain Twin' },
-        { path: '/coach', label: 'AI Coach' },
-        { path: '/plan', label: 'Plan & Staircase' },
-        { path: '/goals', label: 'Goals & Habit Contracts' },
-        { path: '/collaboration', label: 'AI Collaboration Score' },
-      ],
-    },
-    {
-      group: 'Standards, Ethics & Defense',
-      links: [
-        { path: '/privacy', label: 'Privacy Center' },
-        { path: '/judge-mode', label: 'Judge Console' },
-        { path: '/settings', label: 'Settings & A11y' },
-        { path: '/methodology', label: 'Science & Ethics' },
-        { path: '/layer-d', label: 'Layer D Voice Studio' },
-        { path: '/design-system', label: 'Style Guide' },
-        { path: '/system', label: 'System States & 404' },
-      ],
-    },
   ]
 
   const isRealOffline = !queueStatus.isOnline
@@ -297,150 +242,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </header>
       )}
 
-      {/* Discreet Judge Mode Trigger for Practice Mode */}
-      {isTaskRoute && (
-        <aside
-          aria-label="Competition evaluator drawer toggle"
-          className="fixed bottom-2 right-2 z-50"
-        >
-          <button
-            type="button"
-            aria-expanded={isJudgeDrawerOpen}
-            aria-controls="judge-devtools-drawer"
-            onClick={() => toggleJudgeDrawer()}
-            title="Evaluator Mode & Dimension Presets (Shift+J)"
-            className="focus-ring inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-xs font-mono font-bold text-ink bg-surface border-2 border-border-strong shadow-doodle-sm hover:bg-surface-raised transition-colors cursor-pointer"
-          >
-            <Scale size={12} aria-hidden="true" className="text-ink" />
-            <span>Judge Mode</span>
-            <kbd className="text-xs font-mono text-ink font-bold">⇧J</kbd>
-          </button>
-        </aside>
-      )}
-
-      {/* Collapsible "Judge & Evaluator Console" Drawer (Closed by default) */}
-      <AnimatePresence initial={false}>
-        {isJudgeDrawerOpen && (
-          <motion.aside
-            id="judge-devtools-drawer"
-            aria-label="Judge and Evaluator Console"
-            initial={reducedMotion ? undefined : { height: 0, opacity: 0 }}
-            animate={reducedMotion ? undefined : { height: 'auto', opacity: 1 }}
-            exit={reducedMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="border-b-2 border-border-strong bg-surface-raised/95 backdrop-blur-md px-4 py-3 shadow-doodle-lg"
-          >
-            <div className="max-w-6xl mx-auto space-y-3">
-              {/* Drawer Header & Quick Jump */}
-              <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b-2 border-border-strong">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-display text-xs font-bold text-ink flex items-center gap-1">
-                    <Scale size={14} aria-hidden="true" />
-                    <span>Competition Evaluator Console</span>
-                  </span>
-                  <Badge tone="brand" glyph="◈">
-                    Active Registry: {dimensionPreset} Dimensions
-                  </Badge>
-                  <span className="text-xs text-ink-muted">
-                    Preset Switching, Personas &amp; Fault Injection
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
-                    title={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
-                    onClick={toggleTheme}
-                    className="focus-ring px-2.5 py-1 rounded-sm text-xs font-bold text-ink hover:bg-surface border-2 border-border-strong transition-colors cursor-pointer inline-flex items-center gap-1 shadow-doodle-sm"
-                  >
-                    {theme === 'light' ? <Moon size={13} aria-hidden="true" /> : <Sun size={13} aria-hidden="true" />}
-                    <span>{theme === 'light' ? 'Dark (Night Lab)' : 'Light (Playful Lab)'}</span>
-                  </button>
-                  <Link
-                    to="/judge-mode"
-                    className="text-xs font-bold text-ink hover:text-brand hover:underline inline-flex items-center gap-1"
-                  >
-                    Open Full Judge Console →
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => setIsJudgeDrawerOpen(false)}
-                    className="text-xs text-ink-muted hover:text-ink cursor-pointer px-2 py-0.5 rounded-sm hover:bg-canvas"
-                  >
-                    Close Dock ▲
-                  </button>
-                </div>
-              </div>
-
-              {/* Dimension Generalisation Switcher (3, 6, 7, 8, 10 Dimensions) */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-bold text-ink">
-                  Dimension Preset:
-                </span>
-                <div
-                  role="group"
-                  aria-label="Cognitive dimension count preset"
-                  className="inline-flex flex-wrap items-center gap-1 rounded-sm border-2 border-border-strong bg-canvas p-1"
-                >
-                  {DIMENSION_PRESETS.map((item) => {
-                    const active = dimensionPreset === item.key
-                    return (
-                      <button
-                        key={item.key}
-                        type="button"
-                        aria-pressed={active}
-                        onClick={() => setDimensionPreset(item.key)}
-                        className={`focus-ring px-3 py-1 rounded-sm text-xs font-bold cursor-pointer transition-all ${
-                          active
-                            ? 'bg-brand text-brand-ink border border-border-strong shadow-xs'
-                            : 'bg-transparent text-ink hover:bg-surface-raised'
-                        }`}
-                      >
-                        {item.label}
-                      </button>
-                    )
-                  })}
-                </div>
-
-                <span className="text-xs text-ink-muted ms-2">
-                  (Default: 6 Calibrated Dimensions matching Assessment Engine)
-                </span>
-              </div>
-
-              {/* Categorized Deep-Links to All 19 Views */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                {deepLinkCategories.map((cat) => (
-                  <div key={cat.group} className="space-y-1">
-                    <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted block">
-                      {cat.group}
-                    </span>
-                    <div className="flex flex-wrap items-center gap-1">
-                      {cat.links.map((link) => {
-                        const isCurrent = location.pathname === link.path
-                        return (
-                          <Link
-                            key={link.path}
-                            to={link.path}
-                            className={`px-2.5 py-1 text-xs font-bold rounded-sm no-underline inline-flex items-center transition-all ${
-                              isCurrent
-                                ? 'bg-brand text-brand-ink border border-border-strong shadow-xs'
-                                : 'bg-surface text-ink hover:bg-canvas border border-border'
-                            }`}
-                          >
-                            {link.label}
-                          </Link>
-                        )
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.aside>
-        )}
-      </AnimatePresence>
-
       {/* Main Content Column */}
       <main
         id="main-content"
@@ -467,16 +268,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <p className="m-0">{BRAND_CONFIG.nonClinicalNotice}</p>
             </div>
 
-            <div className="flex items-center gap-4">
-              <button
-                type="button"
-                onClick={() => setIsJudgeDrawerOpen(true)}
-                className="text-xs font-bold text-ink hover:text-brand inline-flex items-center gap-1 cursor-pointer transition-colors"
+            <div className="flex flex-wrap items-center gap-3">
+              <div
+                role="group"
+                aria-label="Cognitive dimension preset"
+                className="flex items-center gap-1 bg-surface-raised border border-border-strong rounded-sm p-0.5"
               >
-                <Scale size={13} aria-hidden="true" />
-                <span>Judge Mode</span>
-                <kbd className="hidden lg:inline text-xs font-mono text-ink font-bold">⇧J</kbd>
-              </button>
+                {DIMENSION_PRESETS.map((item) => {
+                  const active = dimensionPreset === item.key
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => setDimensionPreset(item.key)}
+                      className={`focus-ring px-2 py-0.5 rounded-xs text-xs font-bold cursor-pointer transition-colors ${
+                        active
+                          ? 'bg-brand text-brand-ink'
+                          : 'text-ink-muted hover:text-ink'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  )
+                })}
+              </div>
               <span className="font-mono-tabular text-ink-muted">
                 Registry: {dimensionPreset} dims · Theme: {theme}
               </span>

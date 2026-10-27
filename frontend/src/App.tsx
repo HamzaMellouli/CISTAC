@@ -20,7 +20,6 @@ const CollaborationScorePage = React.lazy(
   () => import('./pages/CollaborationScorePage'),
 )
 const PrivacyPage = React.lazy(() => import('./pages/PrivacyPage'))
-const JudgeModePage = React.lazy(() => import('./pages/JudgeModePage'))
 const SystemPage = React.lazy(() => import('./pages/SystemPage'))
 const SettingsPage = React.lazy(() => import('./pages/SettingsPage'))
 const MethodologyPage = React.lazy(() => import('./pages/MethodologyPage'))
@@ -76,7 +75,6 @@ export function App() {
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/brain-twin" element={<BrainTwinPage />} />
               <Route path="/coach" element={<AiCoachPage />} />
-              <Route path="/judge-mode" element={<JudgeModePage />} />
               <Route path="/system" element={<SystemPage defaultTab="404" />} />
               <Route path="/system/:subView" element={<SystemPage />} />
               <Route path="/404" element={<SystemPage defaultTab="404" />} />

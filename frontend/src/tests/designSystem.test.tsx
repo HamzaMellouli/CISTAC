@@ -664,49 +664,18 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
       }),
     ).toBeInTheDocument()
   })
-  it('renders Page 16 (/judge-mode) and supports persona switching, fault switches, and rubric proof matrix', async () => {
+  it('renders 404 wayfinder cleanly when navigating to removed /judge-mode route', async () => {
     window.history.pushState({}, '', '/judge-mode')
     render(<App />)
 
     const heading = await screen.findByRole(
       'heading',
       {
-        name: /Demo & Judge Mode/i,
+        name: /Synaptic Pathway Not Mapped/i,
       },
       { timeout: 5000 },
     )
     expect(heading).toBeInTheDocument()
-
-    // Verify 6 persona buttons exist and switch to Noisy
-    const noisyPersonaBtn = screen.getByRole('button', {
-      name: /Noisy & Low-Confidence/i,
-    })
-    expect(noisyPersonaBtn).toBeInTheDocument()
-    fireEvent.click(noisyPersonaBtn)
-
-    // Verify fault switches
-    const offlineSwitch = screen.getByRole('switch', {
-      name: /Offline Queue/i,
-    })
-    expect(offlineSwitch).toBeInTheDocument()
-    fireEvent.click(offlineSwitch)
-    expect(offlineSwitch).toHaveAttribute('aria-checked', 'true')
-
-    // Verify rubric matrix table
-    expect(
-      screen.getByRole('table', {
-        name: /AI4Brain CISTAC 1.0 Jury Evaluation Rubric to UI Proof Matrix/i,
-      }),
-    ).toBeInTheDocument()
-
-    // Verify reset demo state button works
-    const resetBtn = screen.getByRole('button', {
-      name: /Reset Demo State/i,
-    })
-    fireEvent.click(resetBtn)
-    expect(
-      screen.getByText(/All simulated data and store preferences reset/i),
-    ).toBeInTheDocument()
   })
   it('renders Page 17 (/system) and supports 404 wayfinder, offline queue simulation, and error boundary self-healing', async () => {
     window.history.pushState({}, '', '/system')

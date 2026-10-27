@@ -224,6 +224,44 @@ export function SettingsPage() {
               </div>
             </div>
 
+            {/* Cognitive Dimension Registry Preset */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label id="preset-label" className="text-sm font-bold text-ink block">
+                  Cognitive Dimensions Active Registry (3 to 10 Dimensions)
+                </label>
+                <Badge tone="brand" glyph="◈">
+                  {getDimensionsByPreset(dimensionPreset).length} Dimensions Active
+                </Badge>
+              </div>
+              <div
+                role="radiogroup"
+                aria-labelledby="preset-label"
+                className="grid grid-cols-2 sm:grid-cols-5 gap-2"
+              >
+                {DIMENSION_PRESETS.map((item) => {
+                  const active = dimensionPreset === item.key
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      role="radio"
+                      aria-checked={active}
+                      onClick={() => setDimensionPreset(item.key)}
+                      className={`p-2.5 rounded-lg border-2 text-center transition-all cursor-pointer focus-ring ${
+                        active
+                          ? 'border-brand bg-brand/10 font-bold'
+                          : 'border-border bg-surface hover:bg-surface-raised'
+                      }`}
+                    >
+                      <span className="text-xs sm:text-sm block text-ink">{item.label}</span>
+                      <span className="text-xs text-ink-muted block mt-0.5">{item.key} active</span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
             {/* Text Scale Selector */}
             <div className="space-y-2">
               <label id="scale-label" className="text-sm font-bold text-ink block">

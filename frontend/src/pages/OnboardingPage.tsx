@@ -70,7 +70,6 @@ export default function OnboardingPage() {
     updateConsentPreferences,
     applyFastTrackConsent,
     resetConsentPreferences,
-    isJudgeDrawerOpen,
   } = useAppStore()
 
   const [activeStep, setActiveStep] = useState<OnboardingStep>(1)
@@ -276,13 +275,9 @@ export default function OnboardingPage() {
               [
                 { id: 'wizard', label: 'Step Wizard' },
                 { id: 'all-steps', label: 'View All 3 Steps' },
-                ...(isJudgeDrawerOpen
-                  ? ([
-                      { id: 'validation-error', label: 'Missing Ack Alert' },
-                      { id: 'loading', label: 'Saving State' },
-                      { id: 'extreme-text', label: 'Extreme Values' },
-                    ] as const)
-                  : []),
+                { id: 'validation-error', label: 'Missing Ack Alert' },
+                { id: 'loading', label: 'Saving State' },
+                { id: 'extreme-text', label: 'Extreme Values' },
               ] as const
             ).map((mode) => (
               <button

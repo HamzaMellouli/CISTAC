@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import path from 'node:path'
+import { openJudgeMode, closeJudgeMode } from './testUtils'
 
 const SCREENSHOT_DIR = path.resolve(process.cwd(), '../docs/ui/screenshots')
 
@@ -33,7 +34,7 @@ test.describe('Page 06: Dashboard (/dashboard) Hero Visual QA & A11y', () => {
     })
 
     // 2. Desktop 1440px — 10 Dimensions Stress + Low-Confidence Hatched (Salma)
-    await page.getByRole('button', { name: /Judge Mode/i }).click()
+    await openJudgeMode(page)
     await page.getByRole('button', { name: '10 Dims (Stress)' }).click()
     const salmaBtn = page.getByRole('button', { name: /Low-Conf Hatched \(Salma/i })
     await salmaBtn.click()
@@ -62,7 +63,7 @@ test.describe('Page 06: Dashboard (/dashboard) Hero Visual QA & A11y', () => {
     // Switch back to Light & 7 Dims Calibrated for Tablet & Mobile captures
     await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).first().click()
     await page.getByRole('button', { name: '7 Dims (Default)' }).click()
-    await page.getByRole('button', { name: /Close Dock/i }).click()
+    await closeJudgeMode(page)
     await page
       .getByRole('button', { name: /Calibrated Twin \(Youssef/i })
       .click()

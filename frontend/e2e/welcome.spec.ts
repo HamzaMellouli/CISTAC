@@ -43,7 +43,6 @@ test.describe('Page 01: Welcome (/) Hero Visual QA & A11y', () => {
     expect(accessibilityScanResults.violations).toEqual([])
 
     // Verify 10-dimension stress state + Low-Conf Hatched state screenshot
-    await page.getByRole('button', { name: /Judge Mode/i }).click()
     await page.getByRole('button', { name: '10 Dims (Stress)' }).click()
     await page.getByRole('button', { name: 'Low-Conf (Hatched)' }).click()
     await page.screenshot({

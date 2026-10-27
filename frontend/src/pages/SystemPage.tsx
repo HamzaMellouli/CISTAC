@@ -334,11 +334,11 @@ export default function SystemPage({ defaultTab = '404' }: SystemPageProps) {
                   </Link>
 
                   <Link
-                    to="/judge-mode"
+                    to="/settings"
                     className="p-3.5 rounded-xl border border-border bg-canvas/40 hover:bg-surface-raised transition-colors no-underline block"
                   >
-                    <div className="font-semibold text-sm text-ink mb-0.5">Judge Defense Console</div>
-                    <div className="text-xs text-ink-muted">Test 6 seeded personas and live fault injection.</div>
+                    <div className="font-semibold text-sm text-ink mb-0.5">Settings &amp; Accessibility</div>
+                    <div className="text-xs text-ink-muted">Configure sensory preferences, contrast, and cognitive zoom.</div>
                   </Link>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { X, Pause } from 'lucide-react'
-import { getDimensionsByPreset } from '../config/dimensions'
+import { getDimensionsByPreset, DIMENSION_PRESETS } from '../config/dimensions'
 import type { DimensionConfig, TaskSchemaType } from '../contracts'
 import {
   buildEstimatesForDimensions,
@@ -607,7 +607,10 @@ export default function TaskRunnerPage() {
   const { dimId } = useParams<{ dimId: string }>()
   const navigate = useNavigate()
   const {
+    theme,
+    toggleTheme,
     dimensionPreset,
+    setDimensionPreset,
     activePersona,
     consentPreferences,
   } = useAppStore()
@@ -1327,6 +1330,36 @@ export default function TaskRunnerPage() {
           >
             {showTelemetryTable ? 'Hide Telemetry' : 'View Telemetry as Table'}
           </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={toggleTheme}
+            aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
+          >
+            {theme === 'light' ? 'Dark (Night Lab)' : 'Light (Playful Lab)'}
+          </Button>
+        </div>
+
+        {/* Dimension Preset Switcher for Stress Testing */}
+        <div
+          role="group"
+          aria-label="Cognitive dimension preset"
+          className="flex flex-wrap items-center gap-1"
+        >
+          {DIMENSION_PRESETS.map((item) => {
+            const active = dimensionPreset === item.key
+            return (
+              <Button
+                key={item.key}
+                size="sm"
+                variant={active ? 'primary' : 'secondary'}
+                aria-pressed={active}
+                onClick={() => setDimensionPreset(item.key)}
+              >
+                {item.label}
+              </Button>
+            )
+          })}
         </div>
 
         {/* Stage switcher for automated E2E tests */}
