@@ -303,7 +303,7 @@ export default function BrainTwinPage() {
             <code className="font-mono-tabular">
               GET /v1/dashboard/profile?include_history=true
             </code>
-            . Showing locally cached 14-snapshot chain from IndexedDB.
+            . Showing the 14-snapshot sample history.
           </p>
           <Button variant="primary" onClick={() => setPreviewState('live')}>
             Retry &amp; Restore Live Scrubber

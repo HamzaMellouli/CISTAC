@@ -2,6 +2,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
+import { openJudgeMode, closeJudgeMode } from './testUtils'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -72,10 +73,12 @@ test.describe('Page 12: AI Collaboration Score (/collaboration) Visual QA & A11y
     })
 
     // 3. Switch to Night Lab (Dark Theme) + 10 Dims + Dynamic Weights + Tables Expanded
-    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await openJudgeMode(page)
     await page
       .getByRole('button', { name: '10 Dims (Stress)', exact: true })
       .click()
+    await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.waitForTimeout(300)
     await page
       .getByRole('button', { name: /Dynamic Archetype Weights/i })
       .click()
@@ -111,6 +114,8 @@ test.describe('Page 12: AI Collaboration Score (/collaboration) Visual QA & A11y
     await page
       .getByRole('button', { name: '7 Dims (Default)', exact: true })
       .click()
+    await closeJudgeMode(page)
+    await page.waitForTimeout(300)
 
     // 4. Tablet 768px
     await page.setViewportSize({ width: 768, height: 1024 })

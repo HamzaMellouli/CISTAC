@@ -74,3 +74,26 @@ Every non-trivial frontend, UX, design-system, and contract decision is recorded
   2. Redesign the top navigation into a 5-destination consumer bar (`Welcome`, `Dashboard`, `Assess`, `AI Coach`, `Plan`) paired with a collapsible floating `⚖️ Judge & DevTools Quick-Bar`, soft editorial tokens (`1px` subtle borders, layered `shadow-soft`, warm hero gradients, 20px radii), and progressive disclosure tabs on the dashboard (`All`, `Overview`, `7 Dimensions`, `Habits`), powered by `framer-motion`.
 - **Choice**: **Option 2**.
 - **Why**: Eliminates cognitive clutter and visual fatigue for end users and judges; preserves 100% of DOM selectors, `data-testid` attributes, and accessibility landmarks so all 22 unit tests and all Playwright visual QA specs pass without breakage.
+
+
+---
+
+## DEC-008: Dual-Persona Product Shell, Nodi Seedling Companion, Self-Hosted Fonts & Truth-in-Claims
+- **Date**: 2026-10-27
+- **Context**: Implementing the comprehensive "AI4Brain Frontend: Evaluation and Redesign" roadmap to elevate SynapseTwin frontend readiness from ~72/100 to ~84/100 for the CISTAC 1.0 competition.
+- **Problem**:
+  1. Header was overloaded with 28 evaluator controls, pushing page content down to 232px on laptop and 577px on mobile.
+  2. Google Fonts loaded from third-party servers at runtime, contradicting offline privacy guarantees.
+  3. Four copy claims did not match code behavior (IndexedDB keyring, 14-snapshot cached chain, unbuffered offline banner, simulated deletion count).
+  4. The companion was a static 64px visor robot that felt mechanical rather than an empathetic learning guide.
+- **Options**:
+  1. Keep the single monolithic toolbar with inline tooltips.
+  2. Implement a Dual-Persona Architecture:
+     - Layer 1 (Product Navigation): Clean 64px top bar (`h-16`) on desktop and bottom tab bar on mobile with 5 consumer destinations (`Today`, `Practice`, `Coach`, `Progress`, `You`). Content starts $\le 80\text{px}$ on desktop and $\le 130\text{px}$ on mobile.
+     - Layer 2 (Judge Mode): Opt-in right-docked drawer (Shift+J / `?judge=1` / header pill), collapsed by default, containing persona switching, 3-to-10 dimension presets, fault injections, and all 19 deep-links.
+     - Self-host `@fontsource/fredoka`, `@fontsource/lexend`, and `@fontsource/jetbrains-mono` with zero runtime external calls.
+     - Implement real 500-event offline `telemetryQueue.ts` with exponential backoff and browser online/offline synchronization.
+     - Design "Nodi", an animated seedling neuron with dendrite leaves for calibrated dimensions and pulsing buds for low-confidence dimensions.
+     - Build GitHub Actions CI workflow (`.github/workflows/ui-ci.yml`) to enforce all quality gates.
+- **Choice**: **Option 2**.
+- **Why**: Eliminates cognitive overload, respects learner focus, guarantees 100% offline self-containment, establishes truth-in-claims, and makes dimension generalisation immediately visible on the companion character. All 22 Vitest unit tests and all 19 Playwright E2E specs pass with 0 axe-core accessibility violations.

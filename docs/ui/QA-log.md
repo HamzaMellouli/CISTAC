@@ -293,3 +293,28 @@ All 7 primary dimension strokes/markers are darkened from raw Okabe-Ito where ne
 - **`npx playwright test e2e/layerD.spec.ts`**: `PASS` (30.9s) — 0 `axe-core` violations across Light (`Playful Lab`), Voice Playing with active SVG waveform, What-If Accelerated Scenario simulated, Dark (`Night Lab`), Tablet (`768px`), and Mobile (`375px`); 0 horizontal overflow; 6 verification screenshots saved to `docs/ui/screenshots/19-layer-d-*.png`.
 - **Critique Round 1 (Picky Designer)**: Designed a bespoke tactile audio console featuring a 24-bar animated SVG waveform that pulses responsively with playback status, accompanied by an accessible synchronized transcript ticker. Created tactile pill buttons for Voice Pace (`0.85x`, `1.0x`, `1.25x`) and Persona selection with distinctive 2px borders, active fill styling, and visible focus rings.
 - **Critique Round 2 (Hostile Juror)**: Verified that all counterfactual projections dynamically scale with the active `DimensionRegistry` (`3`, `6`, `7`, `8`, or `10` dimensions) and display honest Bayesian credible intervals ($\pm \sigma$) rather than unsubstantiated claims. Proved that auditory coaching is 100% accessible via text parity (WCAG 1.2.2) and that the Counterfactual Impact Matrix is wrapped in a dedicated keyboard-focusable region (`role="region"`, `tabIndex={0}`).
+
+
+---
+
+## 22. CISTAC 1.0 Comprehensive Evaluation & Redesign Sprint Automated QA & Verification Log (2026-10-27)
+
+- **`npm run lint:tokens`**: `PASS` — 100% design tokens used across all 19 application routes, components, and signatures (`Mascot.tsx`, `NodiCompanion.tsx`, `AppShell.tsx`, `telemetryQueue.ts`). Zero hardcoded hex colors, zero arbitrary bracket values, zero hardcoded durations.
+- **`npm run lint:copy`**: `PASS` — 0 clinical diagnostic (`ADHD`, `dementia`, `autism`, `diagnos*`, `disorder`, `deficit`, `impair*`, `patholog*`, `symptom`, `patient`, `IQ`, `anxiety`, `depression`, `dyslexia`, `alzheimer`, `cognitive decline`, `abnormal`, `below average`) or punitive guilt terms (`falling behind`, `lazy`, `weak`, etc.) across all UI copy, coach templates, goals, and mock fixtures. Linter rules are unified and negation-aware for scientific disclaimers.
+- **`npm run check:contrast`**: `PASS` — 21/21 Light (`Playful Lab`) and Dark (`Night Lab`) semantic and Okabe-Ito dimension token pairs pass WCAG 2.1 AA/AAA thresholds.
+- **`npm test` (Vitest)**: `PASS` — 22/22 unit & component tests pass in 10.20s across all 19 routes, design system tokens, copy linter, and registry scaling.
+- **`npm run build` (`tsc -b && vite build`)**: `PASS` — TypeScript strictly compiles with zero errors, self-hosted `@fontsource` `.woff2` font assets bundle cleanly in 5.98s, zero external Google Fonts runtime dependencies.
+- **`npx playwright test` (Playwright E2E Suite)**: `PASS` — 19 of 19 Playwright test specifications pass cleanly with 0 `axe-core` accessibility violations across Light, Dark, 10-Dimension Stress, and 3 viewports (`375px`, `768px`, `1440px`), with zero horizontal scroll overflow.
+- **Dual-Persona Architecture Verified**:
+  - Primary consumer product navigation: 5 destinations (`Today` `/dashboard`, `Practice` `/assessment`, `Coach` `/coach`, `Progress` `/brain-twin`, `You` `/settings`). Desktop top bar is strictly 64px (`h-16`), content starts $\le 80\text{px}$ on desktop and $\le 130\text{px}$ on mobile.
+  - Opt-in Judge Mode drawer: Collapsed by default, activated via `Shift+J`, URL `?judge=1`, or header/footer toggle pill. Holds 6 competition personas, 3-to-10 dimension preset switcher, fault injection switches, 19 deep-links, and state reset.
+- **Nodi Seedling Companion Verified**:
+  - Layered SVG component (`NodiCompanion.tsx` & `Mascot.tsx`) with 8 states (`idle`, `hello`, `curious`, `thinking`, `celebrate`, `rest`, `calm-shrug`, `hidden`).
+  - Anatomical dendrite sprout dynamically renders calibrated dimensions as solid teal leaves and low-confidence dimensions ($<60\%$) as pulsing embryonic buds.
+  - Ambient breathing and blinking loop pauses under reduced motion and is completely unmounted during timed trial blocks.
+- **Truth-in-Claims Verified**:
+  - `PrivacyPage.tsx`: Replaced misleading IndexedDB WebCrypto string with truthful `"This preview keeps your answers in memory only and stores nothing in your browser."`
+  - `BrainTwinPage.tsx`: Replaced cached string with truthful `"Showing the 14-snapshot sample history."`
+  - Real 500-event offline `telemetryQueue.ts` with `localStorage` mirroring, idempotency IDs, exponential backoff, and online/offline event synchronization.
+- **Continuous Integration Pipeline Added**:
+  - `.github/workflows/ui-ci.yml`: 30-line GitHub Actions workflow automating typecheck, `lint:tokens`, `lint:copy`, `check:contrast`, `npm test` (22/22), `npm run build`, and `npx playwright test` (19/19) across all pushes and pull requests.

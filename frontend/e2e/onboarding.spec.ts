@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import path from 'node:path'
+import { openJudgeMode, closeJudgeMode } from './testUtils'
 
 const SCREENSHOT_DIR = path.resolve(process.cwd(), '../docs/ui/screenshots')
 
@@ -33,6 +34,7 @@ test.describe('Page 02: Onboarding & Consent (/onboarding) Visual QA & A11y', ()
     })
 
     // 2. Desktop 1440px — All 3 Steps Expanded + 10 Dimensions Stress Check
+    await openJudgeMode(page)
     await page.getByRole('button', { name: '10 Dims (Stress)' }).click()
     await page.getByRole('button', { name: 'View All 3 Steps' }).click()
     await expect(
@@ -51,6 +53,7 @@ test.describe('Page 02: Onboarding & Consent (/onboarding) Visual QA & A11y', ()
 
     // 3. Dark Mode (Night Lab) at 1440px + axe-core check
     await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.waitForTimeout(300)
     const axeDark = await new AxeBuilder({ page }).analyze()
     expect(axeDark.violations).toEqual([])
 
@@ -62,6 +65,8 @@ test.describe('Page 02: Onboarding & Consent (/onboarding) Visual QA & A11y', ()
     // Switch back to Light & 7 Dims Default for Tablet & Mobile captures
     await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
     await page.getByRole('button', { name: '7 Dims (Default)' }).click()
+    await closeJudgeMode(page)
+    await page.waitForTimeout(300)
 
     // 4. Tablet 768px
     await page.setViewportSize({ width: 768, height: 1024 })
