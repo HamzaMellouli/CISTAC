@@ -7,6 +7,7 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4173',
     trace: 'off',
+    reducedMotion: 'reduce',
     ...(process.env.CI ? {} : { channel: 'chrome' }),
   },
   webServer: {

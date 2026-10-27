@@ -75,6 +75,7 @@ test.describe('Page 07: Dimension Detail (/dimensions/:dimId) Visual QA & A11y',
     await page
       .getByRole('button', { name: /VP · Visuospatial Planning/i })
       .click()
+    await page.waitForTimeout(300)
 
     const axeDark = await new AxeBuilder({ page }).analyze()
     expect(axeDark.violations).toEqual([])
