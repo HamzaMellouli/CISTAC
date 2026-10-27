@@ -47,7 +47,7 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
     const heading = await screen.findByRole(
       'heading',
       {
-        name: /Meet your evolving cognitive twin/i,
+        name: /Let's map how your mind works/i,
       },
       { timeout: 5000 },
     )

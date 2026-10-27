@@ -118,7 +118,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const showOfflineBanner = simulateOffline || isRealOffline
 
   return (
-    <div className="min-h-screen flex flex-col bg-canvas text-ink pb-16 md:pb-0">
+    <div className={`min-h-screen flex flex-col bg-canvas text-ink ${location.pathname === '/' ? 'pb-0' : 'pb-16 md:pb-0'}`}>
       {/* Skip link for keyboard users (Tab stop 1) */}
       <a
         href="#main-content"
@@ -198,35 +198,47 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </Link>
 
-          {/* 5 Primary Consumer Destinations Navbar (Desktop) */}
-          <nav
-            aria-label="Primary product navigation"
-            className="hidden md:flex items-center gap-1 p-1 rounded-full bg-surface-raised border border-border"
-          >
-            {consumerNavItems.map((item) => {
-              const Icon = item.icon
-              const isActive =
-                item.path === '/dashboard'
-                  ? location.pathname === '/dashboard' || location.pathname === '/'
-                  : location.pathname.startsWith(item.path)
+          {/* 5 Primary Consumer Destinations Navbar (Desktop) or Skip intro on Welcome first run */}
+          {location.pathname === '/' ? (
+            <div className="flex-1 flex justify-end items-center mr-2">
+              <Link
+                to="/dashboard"
+                className="focus-ring px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline inline-flex items-center gap-1.5 border border-border"
+              >
+                <span>Skip intro</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          ) : (
+            <nav
+              aria-label="Primary product navigation"
+              className="hidden md:flex items-center gap-1 p-1 rounded-full bg-surface-raised border border-border"
+            >
+              {consumerNavItems.map((item) => {
+                const Icon = item.icon
+                const isActive =
+                  item.path === '/dashboard'
+                    ? location.pathname === '/dashboard'
+                    : location.pathname.startsWith(item.path)
 
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold no-underline transition-all ${
-                    isActive
-                      ? 'bg-brand text-brand-ink shadow-sm'
-                      : 'text-ink-muted hover:text-ink hover:bg-canvas'
-                  }`}
-                >
-                  <Icon size={15} aria-hidden="true" />
-                  <span>{item.label}</span>
-                </Link>
-              )
-            })}
-          </nav>
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold no-underline transition-all ${
+                      isActive
+                        ? 'bg-brand text-brand-ink shadow-sm'
+                        : 'text-ink-muted hover:text-ink hover:bg-canvas'
+                    }`}
+                  >
+                    <Icon size={15} aria-hidden="true" />
+                    <span>{item.label}</span>
+                  </Link>
+                )
+              })}
+            </nav>
+          )}
 
           {/* Utility Controls & Floating Judge Drawer Toggle */}
           <div className="flex items-center gap-2">
@@ -433,35 +445,37 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
 
-      {/* Mobile Bottom Tab Bar (Fixed, native app style ergonomics) */}
-      <nav
-        aria-label="Mobile bottom navigation"
-        className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md border-t border-border flex items-center justify-around py-1.5 px-2"
-      >
-        {consumerNavItems.map((item) => {
-          const Icon = item.icon
-          const isActive =
-            item.path === '/dashboard'
-              ? location.pathname === '/dashboard' || location.pathname === '/'
-              : location.pathname.startsWith(item.path)
+      {/* Mobile Bottom Tab Bar (Fixed, native app style ergonomics - hidden on first-run Welcome) */}
+      {location.pathname !== '/' && (
+        <nav
+          aria-label="Mobile bottom navigation"
+          className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md border-t border-border flex items-center justify-around py-1.5 px-2"
+        >
+          {consumerNavItems.map((item) => {
+            const Icon = item.icon
+            const isActive =
+              item.path === '/dashboard'
+                ? location.pathname === '/dashboard'
+                : location.pathname.startsWith(item.path)
 
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              aria-current={isActive ? 'page' : undefined}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-xs no-underline transition-all ${
-                isActive
-                  ? 'text-brand font-bold'
-                  : 'text-ink-muted hover:text-ink'
-              }`}
-            >
-              <Icon size={18} aria-hidden="true" />
-              <span className="text-xs">{item.label}</span>
-            </Link>
-          )
-        })}
-      </nav>
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                aria-current={isActive ? 'page' : undefined}
+                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-xs no-underline transition-all ${
+                  isActive
+                    ? 'text-brand font-bold'
+                    : 'text-ink-muted hover:text-ink'
+                }`}
+              >
+                <Icon size={18} aria-hidden="true" />
+                <span className="text-xs">{item.label}</span>
+              </Link>
+            )
+          })}
+        </nav>
+      )}
     </div>
   )
 }

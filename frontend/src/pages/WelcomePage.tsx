@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { BRAND_CONFIG } from '../config/brand'
 import { getDimensionsByPreset } from '../config/dimensions'
 import {
   buildEstimatesForDimensions,
-  SAMPLE_COLLABORATION_SCORE,
   SAMPLE_WHY_THIS_TRAIL,
 } from '../services/mocks/fixtures'
 import { useAppStore, type PersonaId } from '../store/useAppStore'
 import { UncertaintyRadar } from '../components/signature/UncertaintyRadar'
 import { WhyThisPanel } from '../components/signature/WhyThisPanel'
+import { NodiCompanion } from '../components/signature/NodiCompanion'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
@@ -78,51 +78,45 @@ const PERSONA_CARDS: readonly PersonaLauncherCardSpec[] = [
   },
 ]
 
-const FOUR_PILLARS = [
+const THREE_STEPS = [
   {
-    step: '01 · ASSESS (Layer A)',
-    title: 'Adaptive Micro-Tasks, Zero Biometrics Required',
-    badge: 'Reaction Time · Error Bursts · Jitter',
+    number: '01',
+    stepLabel: 'Step 1 · Assess',
+    title: 'Adaptive Micro-Tasks',
+    badge: 'Layer A Psychometrics',
     badgeTone: 'brand' as const,
     glyph: '●',
     description:
-      'Interactive cognitive tasks (N-Back, Stroop, UFOV, Mnemonic Similarity, Matrix & Tower) adapt toward 85% accuracy using client-side staircase and QUEST+ engines without camera or microphone collection.',
+      'Engage in 2-minute cognitive tasks (Pattern Separation, Working Memory, Inhibitory Control) that calibrate in real time. Strictly reaction time, accuracy, and jitter—zero camera, audio, or biometric telemetry.',
   },
   {
-    step: '02 · UNDERSTAND (Brain Twin)',
-    title: 'Historised Profile with Honest Uncertainty Bands',
-    badge: 'SAT-JEPA + 95% CI Ranges',
+    number: '02',
+    stepLabel: 'Step 2 · Understand',
+    title: 'Honest Uncertainty Bands',
+    badge: '95% ±CI & Hatched States',
     badgeTone: 'info' as const,
     glyph: '◆',
     description:
-      'Every dimension is modeled as a percentage estimate plus confidence interval (±CI). When confidence is below 60%, bands automatically switch to diagonal SVG hatching.',
+      'Your cognitive twin visualizes confidence ranges (±CI) for every dimension. When sample sizes are small or variance is high (<60% confidence), bands switch to honest diagonal hatching instead of false certainty.',
   },
   {
-    step: '03 · COACH (Layer B)',
-    title: 'Explainable, Non-Clinical Growth Guidance',
-    badge: '5-Part “Why This?” Trail',
-    badgeTone: 'success' as const,
+    number: '03',
+    stepLabel: 'Step 3 · Grow',
+    title: 'Zero-Guilt Daily Guidance',
+    badge: 'Layer B + C Coaching',
+    badgeTone: 'reward' as const,
     glyph: '✓',
     description:
-      'Every piece of coaching advice exposes its observed telemetry, SAT-JEPA prototype delta (Δc), confidence bar, and counterfactual condition—enforced by an automated non-clinical copy linter.',
-  },
-  {
-    step: '04 · IMPROVE (Layer C + Collab Score)',
-    title: 'Adaptive Weekly Plans & 0–100 Collaboration Score',
-    badge: `Collab Score: ${SAMPLE_COLLABORATION_SCORE.totalScore} ± 4`,
-    badgeTone: 'reward' as const,
-    glyph: '★',
-    description:
-      'Tracks historical growth curves, session fatigue heatmaps, and our transparent 5-weight AI Collaboration Score (Clarification 20%, Verification 25%, Iteration 20%, Autonomy 20%, Responsible Use 15%).',
+      'Receive explainable growth suggestions showing exact underlying telemetry and reasoning. Habit contracts and rest days are respected with zero guilt streaks or penalty scores.',
   },
 ] as const
 
 export default function WelcomePage() {
+  const navigate = useNavigate()
   const {
     dimensionPreset,
     activePersona,
     setActivePersona,
-    showMascot,
   } = useAppStore()
 
   const [previewState, setPreviewState] =
@@ -156,8 +150,13 @@ export default function WelcomePage() {
     )
   }
 
+  const handleStartBaseline = () => {
+    setActivePersona('new-user')
+    navigate('/onboarding')
+  }
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-16">
       {/* Live Feedback Toast / Status Banner when Persona or Baseline is triggered */}
       {selectedNotice && (
         <div
@@ -183,412 +182,358 @@ export default function WelcomePage() {
         </div>
       )}
 
-      {/* HERO SECTION: Asymmetric 7:5 Desktop Grid with Matched Vertical Rhythm */}
+      {/* =========================================================================
+          FIRST-RUN HERO VIEWPORT
+          Strictly follows wireframe:
+          - Logo & Skip intro at top
+          - Companion occupying ~40% of the screen height
+          - "Let's map how your mind works in 2 minutes."
+          - "No labels. No scores to fail."
+          - "[ Start my 2-minute baseline ]"
+          - "How your data is used"
+          ========================================================================= */}
       <section
         aria-labelledby="welcome-hero-heading"
-        className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
+        className="min-h-[calc(100vh-6rem)] flex flex-col justify-between items-center text-center px-4 py-6 max-w-3xl mx-auto"
       >
-        {/* Left Column (7 cols): Value Proposition, Mascot Greeting Slot, Primary CTAs, Engine Readiness Strip */}
-        <Card className="lg:col-span-7 p-6 flex flex-col justify-between gap-5">
-          <div className="space-y-5">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge tone="reward" glyph="★">
-                CISTAC 1.0 · Cognitive Growth Agent
-              </Badge>
-              <Badge tone="success" glyph="✓">
-                Mandatory Non-Biometric Mode ON
-              </Badge>
-              <Badge tone="info" glyph="◈">
-                {activeDimensions.length} Dimensions Configured
-              </Badge>
-            </div>
-
-            <div className="space-y-3">
-              <h1
-                id="welcome-hero-heading"
-                className="font-display text-3xl sm:text-4xl font-bold text-ink tracking-tight"
-              >
-                Meet your evolving cognitive twin—mapped with honest confidence
-                ranges, never fixed labels.
-              </h1>
-              <p className="text-base text-ink-muted">
-                Unlike one-off static tests,{' '}
-                <strong>{BRAND_CONFIG.productName}</strong> continuously
-                calibrates your profile across{' '}
-                <strong>{activeDimensions.length} cognitive dimensions</strong>,
-                visualizes epistemic uncertainty (
-                <code className="font-mono-tabular">±CI</code>), and shows the
-                exact telemetry behind every piece of coaching advice.
-              </p>
-            </div>
-
-            {/* Reserved Semantic Mascot Welcome Slot (Upgrades to <Mascot state="hello" /> in Mascot Sprint) */}
-            {showMascot && (
-              <div
-                data-mascot-slot="welcome-hero"
-                className="rounded-md border-2 border-border-strong bg-surface-raised p-4 flex items-start gap-3.5"
-              >
-                <div
-                  aria-hidden="true"
-                  className="h-12 w-12 shrink-0 rounded-md border-2 border-border-strong bg-reward text-reward-ink flex items-center justify-center font-display text-lg font-bold"
-                >
-                  ✦
-                </div>
-                <div className="space-y-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-display text-sm font-bold text-ink">
-                      Friendly Companion Guide · Non-Clinical &amp; Zero-Guilt
-                    </span>
-                    <Badge tone="neutral" glyph="●">
-                      State: Hello
-                    </Badge>
-                  </div>
-                  <p className="text-xs text-ink-muted">
-                    “Welcome! Whether you have 2 minutes for a quick baseline or
-                    want to explore a pre-calibrated 6-week Brain Twin, every
-                    trial helps narrow your confidence range—with zero streak
-                    pressure.”
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Primary & Secondary Action Bar */}
-            <div className="pt-1 flex flex-wrap items-center gap-3">
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={() => {
-                  setActivePersona('new-user')
-                  setPreviewState('calibrated')
-                  setSelectedNotice(
-                    '2-Minute Quick Baseline selected (3 core trials per dimension · Non-biometric telemetry ready).',
-                  )
-                }}
-              >
-                Start 2-Minute Baseline →
-              </Button>
-
-              <a
-                href="#persona-launcher"
-                className="tactile-btn bg-surface text-ink hover:bg-surface-raised px-5 py-3 text-base font-semibold no-underline inline-flex items-center justify-center"
-              >
-                Try a Judge Demo Persona ↓
-              </a>
-
-              <Link
-                to="/design-system"
-                className="focus-ring min-h-11 px-3 py-2 rounded-sm text-sm font-semibold text-ink underline inline-flex items-center"
-              >
-                Inspect Living Design System
-              </Link>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {/* Live CISTAC 1.0 Engine & Telemetry Contract Readiness Strip */}
-            <div className="rounded-md border-2 border-border bg-canvas p-4 space-y-2.5">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="font-display text-xs font-bold uppercase tracking-wider text-ink">
-                  Live Engine &amp; Telemetry Contract Architecture
-                </span>
-                <Badge tone="brand" glyph="●">
-                  8 Task Schemas + 5-Weight Collab Rubric
-                </Badge>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                <div className="rounded-sm border border-border bg-surface p-2">
-                  <span className="font-mono-tabular font-bold text-ink block">
-                    QUEST+ / 85%
-                  </span>
-                  <span className="text-ink-muted">
-                    Psychometric staircase target
-                  </span>
-                </div>
-                <div className="rounded-sm border border-border bg-surface p-2">
-                  <span className="font-mono-tabular font-bold text-ink block">
-                    SAT-JEPA Δc
-                  </span>
-                  <span className="text-ink-muted">
-                    Latent trajectory embedding
-                  </span>
-                </div>
-                <div className="rounded-sm border border-border bg-surface p-2">
-                  <span className="font-mono-tabular font-bold text-ink block">
-                    95% ±CI Bands
-                  </span>
-                  <span className="text-ink-muted">
-                    Hatched when conf &lt; 60%
-                  </span>
-                </div>
-                <div className="rounded-sm border border-border bg-surface p-2">
-                  <span className="font-mono-tabular font-bold text-ink block">
-                    0 Biometrics
-                  </span>
-                  <span className="text-ink-muted">
-                    RT, accuracy &amp; jitter only
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Trust & Epistemic Guarantee Footnote */}
-            <div className="border-t border-border pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-ink-muted">
-              <div>
-                <strong className="text-ink block font-semibold">
-                  ⏱ First Insight ≤ 3 Mins
-                </strong>
-                Quick Baseline (3 trials/dim) or 1-click seeded persona.
-              </div>
-              <div>
-                <strong className="text-ink block font-semibold">
-                  🔒 Privacy by Default
-                </strong>
-                Reaction time &amp; accuracy only—no raw audio or video ever
-                stored.
-              </div>
-              <div>
-                <strong className="text-ink block font-semibold">
-                  📐 Epistemic Honesty
-                </strong>
-                Every score carries a 95% confidence band and “Why this?” trail.
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* Right Column (5 cols): Live Interactive Brain Twin Preview */}
-        <Card className="lg:col-span-5 p-4 flex flex-col justify-between gap-3">
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
-              <div>
-                <h2 className="font-display text-lg font-bold text-ink">
-                  Live Brain Twin Preview
-                </h2>
-                <p className="text-xs text-ink-muted">
-                  Inspect how confidence intervals &amp; states render live:
-                </p>
-              </div>
-              <Badge tone="brand" glyph="◈">
-                Persona: {activePersona}
-              </Badge>
-            </div>
-
-            {/* Interactive Preview State Switcher */}
-            <div
-              role="group"
-              aria-label="Hero Brain Twin preview state switcher"
-              className="flex flex-wrap gap-1.5"
+        {/* Mobile & First-Run Header Quick Bar */}
+        <div className="w-full flex items-center justify-between gap-4 pb-2 md:hidden">
+          <span className="font-display text-sm font-bold text-ink flex items-center gap-2">
+            <span
+              aria-hidden="true"
+              className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-brand text-brand-ink text-xs font-bold"
             >
-              {(
-                [
-                  { id: 'calibrated', label: 'Calibrated (84%)' },
-                  { id: 'low-confidence', label: 'Low-Conf (Hatched)' },
-                  { id: 'partial', label: 'Partial (1 Missing)' },
-                  { id: 'loading', label: 'Loading' },
-                  { id: 'empty', label: 'Empty (New)' },
-                  { id: 'error', label: 'Error' },
-                  { id: 'extreme-text', label: 'Extreme Values' },
-                ] as const
-              ).map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  aria-pressed={previewState === tab.id}
-                  onClick={() => setPreviewState(tab.id)}
-                  className={`focus-ring min-h-11 px-2.5 py-1 rounded-sm border text-xs font-semibold cursor-pointer ${
-                    previewState === tab.id
-                      ? 'bg-brand text-brand-ink border-border-strong'
-                      : 'bg-surface-raised text-ink border-border hover:bg-canvas'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {/* State-Specific Preview Body */}
-            {previewState === 'loading' && (
-              <div
-                role="status"
-                aria-label="Loading Brain Twin preview"
-                className="rounded-md border-2 border-border bg-surface-raised p-6 h-80 flex flex-col justify-between"
-              >
-                <div className="h-5 w-48 rounded-sm bg-canvas" />
-                <div className="h-44 w-44 mx-auto rounded-pill border-4 border-border" />
-                <div className="h-4 w-56 mx-auto rounded-sm bg-canvas" />
-              </div>
-            )}
-
-            {previewState === 'empty' && (
-              <div className="rounded-md border-2 border-dashed border-border-strong bg-surface-raised p-6 text-center space-y-3">
-                <Badge tone="reward" glyph="★">
-                  New Learner · 0 Trials Completed
-                </Badge>
-                <h3 className="font-display text-lg font-bold text-ink">
-                  No Brain Twin snapshot yet—ready for calibration
-                </h3>
-                <p className="text-xs text-ink-muted">
-                  Run the 2-minute Quick Baseline (3 trials across each of the{' '}
-                  {activeDimensions.length} dimensions) to generate your first
-                  uncertainty polygon.
-                </p>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => setPreviewState('calibrated')}
-                >
-                  Preview Calibrated Twin Instead
-                </Button>
-              </div>
-            )}
-
-            {previewState === 'error' && (
-              <div
-                role="alert"
-                className="rounded-md border-2 border-danger bg-danger-subtle p-5 space-y-3"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <strong className="font-display text-base font-bold text-ink">
-                    ✕ Preview Snapshot Unavailable
-                  </strong>
-                  <Badge tone="danger" glyph="!">
-                    Simulated Timeout
-                  </Badge>
-                </div>
-                <p className="text-xs text-ink">
-                  Unable to reach `/v1/dashboard/profile`. Local mock fixtures
-                  and offline task buffering remain available.
-                </p>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => setPreviewState('calibrated')}
-                >
-                  Retry Preview Load
-                </Button>
-              </div>
-            )}
-
-            {previewState === 'extreme-text' && (
-              <div className="rounded-md border-2 border-border-strong bg-surface-raised p-4 space-y-2 min-w-0">
-                <Badge tone="info" glyph="◈">
-                  Overflow &amp; High-Magnitude Stress Check
-                </Badge>
-                <h3 className="font-display text-base font-bold text-ink break-words">
-                  Cross-Modal Visuospatial Relational Pattern Separation &amp;
-                  Executive Interference Suppression
-                </h3>
-                <p className="font-mono-tabular text-xl font-bold text-ink">
-                  99.8% ± 0.2% · 9,999,999 events · 18,450 ms
-                </p>
-                <p className="text-xs text-ink-muted">
-                  Verifies zero horizontal overflow at 375 px and 200% browser
-                  zoom.
-                </p>
-              </div>
-            )}
-
-            {(previewState === 'calibrated' ||
-              previewState === 'low-confidence' ||
-              previewState === 'partial') && (
-              <div className="space-y-3">
-                <UncertaintyRadar
-                  dimensions={activeDimensions}
-                  estimates={previewEstimates}
-                  title="Interactive Twin Radar Preview"
-                />
-                <WhyThisPanel
-                  trail={SAMPLE_WHY_THIS_TRAIL}
-                  title="Sample Coaching Explainability Trail"
-                />
-              </div>
-            )}
-          </div>
-        </Card>
-      </section>
-
-      {/* SECTION 2: THE 4 CHALLENGE PILLARS (Assess -> Understand -> Coach -> Improve) */}
-      <section aria-labelledby="pillars-heading" className="space-y-4">
-        <div className="flex flex-wrap items-end justify-between gap-2">
-          <div>
-            <h2
-              id="pillars-heading"
-              className="font-display text-2xl font-bold text-ink"
-            >
-              How {BRAND_CONFIG.productName} Closes the Cognitive Growth Loop
-            </h2>
-            <p className="text-sm text-ink-muted">
-              Every mandatory CISTAC 1.0 layer is visible, explainable, and
-              connected end-to-end.
-            </p>
-          </div>
-          <Badge tone="neutral" glyph="◈">
-            Layers A · B · C + Collaboration Score
-          </Badge>
+              ST
+            </span>
+            {BRAND_CONFIG.productName}
+          </span>
+          <Link
+            to="/dashboard"
+            className="focus-ring text-xs font-semibold text-ink-muted hover:text-ink px-3 py-1.5 rounded-full border border-border bg-surface no-underline inline-flex items-center gap-1"
+          >
+            <span>Skip intro</span>
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {FOUR_PILLARS.map((pillar) => (
+        {/* Companion: Centered, occupying ~40% of the screen height */}
+        <div className="w-full flex-1 flex items-center justify-center py-2 sm:py-4 my-auto">
+          <div className="flex items-center justify-center max-h-[42vh]">
+            <NodiCompanion
+              size="hero"
+              state="hello"
+              showSpeechBubble={false}
+              className="mx-auto"
+            />
+          </div>
+        </div>
+
+        {/* Core Value Proposition (Fredoka Display + Lexend Body) */}
+        <div className="space-y-3 max-w-xl mx-auto my-auto pt-2">
+          <h1
+            id="welcome-hero-heading"
+            className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-ink tracking-tight leading-tight"
+          >
+            Let's map how your mind works in 2 minutes.
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl text-ink-muted font-normal leading-relaxed">
+            No labels. No scores to fail.
+          </p>
+        </div>
+
+        {/* Primary CTA & Privacy Transparency Link */}
+        <div className="flex flex-col items-center gap-3.5 my-auto pt-6 pb-2">
+          <Button
+            variant="primary"
+            size="lg"
+            className="min-h-12 px-8 py-3.5 text-base sm:text-lg font-bold shadow-md hover:shadow-lg transition-transform hover:scale-[1.02]"
+            onClick={handleStartBaseline}
+          >
+            Start my 2-minute baseline →
+          </Button>
+
+          <Link
+            to="/privacy"
+            className="focus-ring text-xs sm:text-sm font-semibold text-ink-muted hover:text-ink underline transition-colors rounded-sm px-2 py-1"
+          >
+            How your data is used
+          </Link>
+        </div>
+
+        {/* Clean Scroll Cue */}
+        <div className="pt-4">
+          <a
+            href="#how-it-works"
+            className="focus-ring inline-flex items-center gap-1.5 text-xs font-semibold text-ink-muted hover:text-ink transition-colors py-1.5 px-3 rounded-full hover:bg-surface-raised"
+          >
+            <span>Below the fold: how it works (3 steps) &amp; live radar preview</span>
+            <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          BELOW THE FOLD: HOW IT WORKS (3 STEPS)
+          ========================================================================= */}
+      <section
+        id="how-it-works"
+        aria-labelledby="how-it-works-heading"
+        className="pt-12 space-y-8 border-t border-border"
+      >
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted">
+            3-Step Cognitive Feedback Loop
+          </span>
+          <h2
+            id="how-it-works-heading"
+            className="font-display text-2xl sm:text-3xl font-bold text-ink"
+          >
+            How SynapseTwin Works
+          </h2>
+          <p className="text-sm sm:text-base text-ink-muted leading-relaxed">
+            A continuous calibration loop designed with scientific precision,
+            transparent uncertainty bands, and zero camera or microphone requirements.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {THREE_STEPS.map((step) => (
             <Card
-              key={pillar.step}
+              key={step.number}
               as="article"
-              className="flex flex-col justify-between gap-3"
+              className="p-6 flex flex-col justify-between gap-5"
             >
-              <div className="space-y-2">
-                <span className="font-mono-tabular text-xs font-bold uppercase text-ink-muted block">
-                  {pillar.step}
-                </span>
-                <h3 className="font-display text-lg font-bold text-ink">
-                  {pillar.title}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono-tabular text-xs font-bold uppercase text-ink-muted tracking-wider">
+                    {step.stepLabel}
+                  </span>
+                  <Badge tone={step.badgeTone} glyph={step.glyph}>
+                    {step.badge}
+                  </Badge>
+                </div>
+                <h3 className="font-display text-xl font-bold text-ink">
+                  {step.title}
                 </h3>
-                <p className="text-xs text-ink-muted">{pillar.description}</p>
+                <p className="text-sm text-ink-muted leading-relaxed">
+                  {step.description}
+                </p>
               </div>
-              <div className="pt-2 border-t border-border">
-                <Badge tone={pillar.badgeTone} glyph={pillar.glyph}>
-                  {pillar.badge}
-                </Badge>
+
+              <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-ink-muted font-mono-tabular">
+                <span>Phase {step.number}</span>
+                <span className="text-ink font-semibold">100% Non-Biometric</span>
               </div>
             </Card>
           ))}
         </div>
       </section>
 
-      {/* SECTION 3: INSTANT JUDGE & DEMO PERSONA LAUNCHER */}
+      {/* =========================================================================
+          BELOW THE FOLD: LIVE RADAR PREVIEW
+          ========================================================================= */}
       <section
-        id="persona-launcher"
-        aria-labelledby="personas-heading"
-        className="space-y-4"
+        id="radar-preview"
+        aria-labelledby="radar-preview-heading"
+        className="pt-12 space-y-6 border-t border-border"
       >
-        <div className="flex flex-wrap items-end justify-between gap-2">
+        <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
+            <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted">
+              Interactive Epistemic Visualization
+            </span>
             <h2
-              id="personas-heading"
-              className="font-display text-2xl font-bold text-ink"
+              id="radar-preview-heading"
+              className="font-display text-2xl sm:text-3xl font-bold text-ink"
             >
-              Try a Seeded Demo Persona (First Insight in 1 Click)
+              Meet your evolving cognitive twin—Live Radar Preview
             </h2>
-            <p className="text-sm text-ink-muted">
-              For evaluators and demos: switch instantaneously between a 6-week
-              calibrated profile, a noisy low-confidence profile, or a brand-new
-              student.
+            <p className="text-sm text-ink-muted mt-1">
+              Inspect how confidence intervals (<code className="font-mono-tabular">±CI</code>) and hatched low-confidence states render live:
             </p>
           </div>
-          <Badge tone="reward" glyph="★">
-            Deterministic Seeded Fixtures
+          <Badge tone="brand" glyph="◈">
+            Active Persona: {activePersona}
           </Badge>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Interactive Preview State Switcher */}
+        <div
+          role="group"
+          aria-label="Hero Brain Twin preview state switcher"
+          className="flex flex-wrap gap-2"
+        >
+          {(
+            [
+              { id: 'calibrated', label: 'Calibrated (84%)' },
+              { id: 'low-confidence', label: 'Low-Conf (Hatched)' },
+              { id: 'partial', label: 'Partial (1 Missing)' },
+              { id: 'loading', label: 'Loading' },
+              { id: 'empty', label: 'Empty (New)' },
+              { id: 'error', label: 'Error' },
+              { id: 'extreme-text', label: 'Extreme Values' },
+            ] as const
+          ).map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              aria-pressed={previewState === tab.id}
+              onClick={() => setPreviewState(tab.id)}
+              className={`focus-ring min-h-10 px-3 py-1.5 rounded-full border text-xs font-semibold cursor-pointer transition-colors ${
+                previewState === tab.id
+                  ? 'bg-brand text-brand-ink border-border-strong shadow-sm'
+                  : 'bg-surface-raised text-ink border-border hover:bg-canvas'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* State-Specific Preview Body */}
+        {previewState === 'loading' && (
+          <div
+            role="status"
+            aria-label="Loading Brain Twin preview"
+            className="rounded-xl border-2 border-border bg-surface-raised p-8 h-96 flex flex-col justify-between"
+          >
+            <div className="h-5 w-48 rounded bg-canvas animate-pulse" />
+            <div className="h-48 w-48 mx-auto rounded-full border-4 border-border border-t-brand animate-spin" />
+            <div className="h-4 w-56 mx-auto rounded bg-canvas animate-pulse" />
+          </div>
+        )}
+
+        {previewState === 'empty' && (
+          <div className="rounded-xl border-2 border-dashed border-border-strong bg-surface-raised p-8 text-center space-y-4 max-w-lg mx-auto">
+            <Badge tone="reward" glyph="★">
+              New Learner · 0 Trials Completed
+            </Badge>
+            <h3 className="font-display text-xl font-bold text-ink">
+              No Brain Twin snapshot yet—ready for calibration
+            </h3>
+            <p className="text-sm text-ink-muted">
+              Run the 2-minute Quick Baseline (3 micro-trials across each configured dimension) to generate your first uncertainty polygon.
+            </p>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => setPreviewState('calibrated')}
+            >
+              Preview Calibrated Twin Instead
+            </Button>
+          </div>
+        )}
+
+        {previewState === 'error' && (
+          <div
+            role="alert"
+            className="rounded-xl border-2 border-danger bg-danger-subtle p-6 space-y-4 max-w-lg mx-auto"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <strong className="font-display text-base font-bold text-ink">
+                ✕ Preview Snapshot Unavailable
+              </strong>
+              <Badge tone="danger" glyph="!">
+                Simulated Timeout
+              </Badge>
+            </div>
+            <p className="text-xs text-ink">
+              Unable to reach `/v1/dashboard/profile`. Local mock fixtures and offline task buffering remain available.
+            </p>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => setPreviewState('calibrated')}
+            >
+              Retry Preview Load
+            </Button>
+          </div>
+        )}
+
+        {previewState === 'extreme-text' && (
+          <div className="rounded-xl border-2 border-border-strong bg-surface-raised p-6 space-y-3 min-w-0 max-w-lg mx-auto">
+            <Badge tone="info" glyph="◈">
+              Overflow &amp; High-Magnitude Stress Check
+            </Badge>
+            <h3 className="font-display text-base font-bold text-ink break-words">
+              Cross-Modal Visuospatial Relational Pattern Separation &amp; Executive Interference Suppression
+            </h3>
+            <p className="font-mono-tabular text-xl font-bold text-ink">
+              99.8% ± 0.2% · 9,999,999 events · 18,450 ms
+            </p>
+            <p className="text-xs text-ink-muted">
+              Verifies zero horizontal overflow at 375 px and 200% browser zoom.
+            </p>
+          </div>
+        )}
+
+        {(previewState === 'calibrated' ||
+          previewState === 'low-confidence' ||
+          previewState === 'partial') && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div className="lg:col-span-7">
+              <UncertaintyRadar
+                dimensions={activeDimensions}
+                estimates={previewEstimates}
+                title="Interactive Twin Radar Preview"
+              />
+            </div>
+            <div className="lg:col-span-5 space-y-4">
+              <WhyThisPanel
+                trail={SAMPLE_WHY_THIS_TRAIL}
+                title="Sample Coaching Explainability Trail"
+              />
+              <Card className="p-4 space-y-2">
+                <span className="font-display text-xs font-bold uppercase tracking-wider text-ink block">
+                  CISTAC 1.0 Epistemic Guarantee
+                </span>
+                <p className="text-xs text-ink-muted leading-relaxed">
+                  Every score is represented as an interval estimate, never a single point. When data confidence falls below 60%, the polygon switches to diagonal SVG hatching to prevent misleading impressions of precision.
+                </p>
+              </Card>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* =========================================================================
+          BELOW THE FOLD: SEEDED DEMO PERSONA LAUNCHER
+          ========================================================================= */}
+      <section
+        id="persona-launcher"
+        aria-labelledby="personas-heading"
+        className="pt-12 pb-8 space-y-6 border-t border-border"
+      >
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted">
+              Deterministic Seeded Fixtures
+            </span>
+            <h2
+              id="personas-heading"
+              className="font-display text-2xl sm:text-3xl font-bold text-ink"
+            >
+              Try a Seeded Demo Persona
+            </h2>
+            <p className="text-sm text-ink-muted mt-1">
+              For evaluators and defense demonstrations: instantaneously switch between calibrated history, noisy low-confidence telemetry, or a brand-new student.
+            </p>
+          </div>
+          <Badge tone="reward" glyph="★">
+            1-Click Evaluator Presets
+          </Badge>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {PERSONA_CARDS.map((card) => {
             const isSelected = activePersona === card.id
             return (
               <Card
                 key={card.id}
                 as="article"
-                className="flex flex-col justify-between gap-4"
+                className="flex flex-col justify-between gap-4 p-6"
               >
-                <div className="space-y-2.5">
+                <div className="space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <Badge tone={card.badgeTone} glyph={card.badgeGlyph}>
                       {card.badgeLabel}
@@ -603,11 +548,11 @@ export default function WelcomePage() {
                     <h3 className="font-display text-xl font-bold text-ink">
                       {card.name}
                     </h3>
-                    <p className="font-mono-tabular text-xs font-semibold text-ink-muted">
+                    <p className="font-mono-tabular text-xs font-semibold text-ink-muted mt-0.5">
                       {card.roleLabel}
                     </p>
                   </div>
-                  <p className="text-sm text-ink">{card.summary}</p>
+                  <p className="text-sm text-ink-muted leading-relaxed">{card.summary}</p>
                 </div>
 
                 <div className="space-y-3 pt-3 border-t border-border">

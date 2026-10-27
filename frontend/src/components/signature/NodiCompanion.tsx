@@ -168,7 +168,7 @@ export function NodiCompanion({
           ? 'h-24 w-24'
           : size === 'docked'
             ? 'h-28 w-28'
-            : 'h-48 w-48 sm:h-64 sm:w-64'
+            : 'h-52 w-52 sm:h-64 sm:w-64 md:h-72 md:w-72 lg:h-80 lg:w-80 max-h-[38vh]'
 
   const isHero = size === 'hero'
   const isDocked = size === 'docked'

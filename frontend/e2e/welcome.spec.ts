@@ -19,7 +19,7 @@ test.describe('Page 01: Welcome (/) Hero Visual QA & A11y', () => {
       await page.goto('/', { waitUntil: 'networkidle' })
       await expect(
         page.getByRole('heading', {
-          name: /Meet your evolving cognitive twin/i,
+          name: /Let's map how your mind works/i,
         }),
       ).toBeVisible()
 
