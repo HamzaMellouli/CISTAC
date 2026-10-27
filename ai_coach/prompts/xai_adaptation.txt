@@ -1,0 +1,11 @@
+[ADAPTATION EVENT]
+The system detected an archetype transition or latent delta shift:
+- Active Cluster: {{ active_cluster_id }}
+- Differential Shifts (Δc):
+{% for dim, delta in delta_vector.items() %}
+  * {{ dim }}: {{ "%+.1f"|format(delta * 100) }}%
+{% endfor %}
+- Explanatory Rationale: {{ rationale }}
+
+Guidance:
+Explain to the user how this cognitive shift directly triggered their latest task calibration, reinforcing their progress and outlining the strategic benefit of the adaptation.
