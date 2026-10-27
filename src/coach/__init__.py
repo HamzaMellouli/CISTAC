@@ -1,0 +1,41 @@
+"""Source coach package matching README deliverable path: src/coach/."""
+
+from ai_coach import (
+    AICoachAgent,
+    CollaborationScorer,
+    SafetyGuardrailEngine,
+    XAIExplainer,
+    ArchetypeTier,
+    ChatMessage,
+    ChatMessageRole,
+    ChatRequest,
+    CoachingResponse,
+    CognitiveDimension,
+    CollaborationDimension,
+    CollaborationScoreResult,
+    DimensionScores,
+    DimensionWeights,
+    SafetyMetadata,
+    SafetyViolation,
+    StateBusEvent,
+)
+
+__all__ = [
+    "AICoachAgent",
+    "CollaborationScorer",
+    "SafetyGuardrailEngine",
+    "XAIExplainer",
+    "ArchetypeTier",
+    "ChatMessage",
+    "ChatMessageRole",
+    "ChatRequest",
+    "CoachingResponse",
+    "CognitiveDimension",
+    "CollaborationDimension",
+    "CollaborationScoreResult",
+    "DimensionScores",
+    "DimensionWeights",
+    "SafetyMetadata",
+    "SafetyViolation",
+    "StateBusEvent",
+]
