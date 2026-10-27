@@ -1,0 +1,137 @@
+# assessment_engine (Member 1)
+
+Browser exercises that produce per-trial telemetry for the brain twin. The React client runs eight
+exercise screens across six cognitive dimensions and sends one event per trial to a small FastAPI
+endpoint, which appends them to `{TELEMETRY_DIR}/{user_id}.jsonl`. Nothing biometric is collected
+by default.
+
+```
+api/      FastAPI app: POST /v1/telemetry/event -> JSONL sink   (routes/telemetry.py is the source of truth)
+client/   Vite + React 18 + TS: session loop, 8 task screens, tracker, staircase / QUEST+, voice opt-in
+```
+
+## Run
+
+API (Python 3.13):
+
+```bash
+cd assessment_engine/api
+python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # .venv/bin/pip on macOS/Linux
+.venv/Scripts/python -m uvicorn main:app --port 8000
+```
+
+Events go to the repo-root `data/raw/telemetry/` (gitignored), whatever the working directory.
+Set `TELEMETRY_DIR` to override it, e.g. a scratch folder for testing.
+
+Client (Node 24):
+
+```bash
+cd assessment_engine/client
+npm install
+npm run dev                      # http://localhost:5173, proxies /v1 to :8000
+VITE_MOCK_TASKS=1 npm run dev    # mock mode: task n is fixtures.json[n % 8], starting at N-back; no GET /v1/tasks/next
+```
+
+PowerShell: `$env:VITE_MOCK_TASKS='1'; npm run dev` and `$env:TELEMETRY_DIR='C:\path\to\scratch'`.
+
+Tests and checks:
+
+```bash
+cd assessment_engine/api && .venv/Scripts/python -m pytest
+cd assessment_engine/client && npx vitest run && npm run build && npx oxlint
+```
+
+## Endpoints
+
+- `POST /v1/telemetry/event` (ours): one event or a batch of up to 100. Returns `202 {"accepted": n}`.
+  Unknown fields, bad ids, voice fields without opt-in, oversized or nested `trial_meta`, NaN/Infinity
+  all get `422` before any file I/O.
+- `GET /v1/tasks/next?user_id=...` (Member 5): returns `{ task_id, dimension, schema_type, params, surface_seed }`.
+
+## Task payload contract (proposed to Member 5)
+
+Every trial carries its verified `answer`; the client compares against it and never computes truth.
+Staircased exercises send `levels: Trial[][]`, easiest first, and the client picks from `levels[staircase.level]`.
+
+| dimension | schema_type | params |
+|---|---|---|
+| working_memory | `n_back` | `{ n, stimulus_ms, interval_ms, streams: ("position"\|"symbol")[], trials: { pos: [r,c]\|null, symbol: string\|null, rule: "position"\|"symbol"\|"parity", trial_type: "target"\|"standard"\|"lure_minus"\|"lure_plus"\|"switch", answer: { position?: boolean, symbol?: boolean } }[] }`. 3×3 grid. A `switch` trial shows the cue banner for the new rule. |
+| executive_function | `stroop` | `{ colors: string[], trials: {word, ink, answer: string}[], time_limit_ms }` |
+| pattern_induction | `matrix` | `{ cells: (Glyph\|null)[9] /* one null */, options: Glyph[], answer: number, time_limit_ms }`, `Glyph = {shape: "circle"\|"square"\|"triangle"\|"diamond", count: 1..3, color, rotation_deg}` |
+| spatial_orientation | `mental_rotation` | `{ trials: {cells: [x,y][], angle_deg, mirrored, answer: "same"\|"different"}[], time_limit_ms }` |
+| pattern_induction | `relational` | `{ n_trials, time_limit_ms, levels: { premises: {a, rel, b}[], question: {a, rel, b}, inverted: boolean, hops: number, answer: boolean }[][] }`. `rel` ∈ `same, opposite, more, less, before, after, contains`; `more`/`less` drawn as ▷/◁; tokens are nonsense strings. When `inverted`, the frame flashes amber and `answer` already accounts for it. |
+| executive_function | `tower` | `{ capacities: number[], start: string[][], goal: string[][], l_min, optimal_moves: [from,to][], counter_intuitive: number[] /* indices into optimal_moves */ }` |
+| processing_speed | `ufov` | `{ duration_grid_ms: number[], similarity, mask_noise, trials: { central: "A"\|"B", peripheral_dir: 0..7, distractors: {dir, ring}[] }[] }`. `similarity` and `mask_noise` are fixed per block by Member 5. |
+| episodic_memory | `mst` | `{ encode_ms, encode: Poly[], test: { item: Poly, kind: "old"\|"lure"\|"new", delta: number }[] }`, `Poly = {points: [x,y][], edges: [i,j][]}`, perturbation already applied by the generator |
+
+Payloads are data only: rendered with SVG from numbers and strings, no `dangerouslySetInnerHTML`, `eval` or `new Function`.
+
+## Telemetry event (one per trial)
+
+Field names follow the top-level README `x_t` list. The server appends `received_at`.
+
+| field | definition |
+|---|---|
+| `user_id`, `session_id` | anonymous per-browser UUID (localStorage `aura_uid`); one session UUID per page load. `[A-Za-z0-9_-]{1,64}` |
+| `task_id`, `trial_index`, `dimension` | from the task payload; `dimension` is one of the six above |
+| `score_norm` | 1/0 for correct/incorrect. Tower uses `min(1, l_min / l_user)`. Clamped to [0, 1] |
+| `response_time_ms` | stimulus onset to committed response, or the trial window on timeout / non-response; capped at 600000 |
+| `error_flag` | `true` when the trial was wrong |
+| `error_burst` | length of the current run of consecutive errors within the task (0 when correct) |
+| `hesitation_jitter` | population std-dev (ms) of intervals between input timestamps (keydown, pointerdown, pointermove throttled to 50 ms); 0 with fewer than 3 inputs |
+| `keystroke_latency_ms` | onset to first keydown or pointerdown, or `null` |
+| `trial_meta` | flat map, ≤16 keys, values are short strings / numbers / booleans (table below) |
+| `voice_opt_in` | `false` unless the user turned the voice toggle on before the task started |
+| `voice_latency_ms`, `vocal_pace_hz` | `null` unless `voice_opt_in`; Stroop only |
+| `client_ts` | ISO timestamp when the trial finished |
+
+Events are buffered and flushed every 2 s (or at 20 events) without blocking the trial loop. On
+`pagehide` or when the page becomes hidden, the buffer goes out via `sendBeacon`. Network errors,
+5xx, 408 and 429: events stay buffered and retry. Any other 4xx means the server will never accept
+that batch, so it is dropped with a `console.error`. The buffer is capped at 500 and drops the oldest.
+
+Delivery is at-least-once (a retried or beaconed batch may arrive twice); dedupe on
+`(session_id, trial_meta.item_id, trial_meta.stream)`.
+
+### `trial_meta` by schema_type
+
+| schema_type | trial_meta |
+|---|---|
+| all | `item_id` (`${task_id}:${index}`), plus `level` (number) when staircased |
+| n_back | `trial_type`, `rule`, `stream` (one event **per stream** per trial) |
+| relational | `hops`, `inverted` |
+| tower | `l_min`, `l_user`, `predicted_moves`, `planning_time_ms`, `conflict_latency_ms` (mean pause before moves matching a `counter_intuitive` step, 0 if none), `solved` |
+| ufov | `requested_ms`, `shown_ms` (measured), `frames`, `similarity`, `mask_noise`, `central_ok`, `peripheral_ok` |
+| mst | `kind`, `delta`, `response` (`old`/`similar`/`new`, or `none` on timeout) |
+
+UFOV rounds the requested duration to whole display frames and logs the measured `shown_ms`; QUEST+
+is updated with `shown_ms`, not the requested value. QUEST+ estimates the display-duration threshold
+(`quest_threshold_ms`); it picks the most informative duration each trial and does not hold accuracy
+at 85%. The 85% target applies to Relational's weighted staircase.
+
+## Privacy
+
+- Non-biometric by default: reaction time, error bursts, keystroke latency, hesitation jitter. No raw
+  audio or video, no face data.
+- Voice is opt-in, off on every page load and never persisted. When on, the microphone is analysed in
+  the browser and only two numbers (`voice_latency_ms`, `vocal_pace_hz`) are sent. No audio samples
+  leave the browser; the server rejects voice fields without `voice_opt_in` and any unknown field.
+- User-facing text never names brain regions or uses diagnostic words.
+
+## Open questions for the team
+
+1. **Field names** (Member 3): the top-level README has two `x_t` versions; we use `score_norm`,
+   `response_time_ms`, `error_flag`, `hesitation_jitter`. Agree on those and on `trial_meta`.
+2. **New dimensions** (Members 3, 4): `processing_speed` (UFOV) and `episodic_memory` (MST) add two
+   radar axes and two model inputs.
+3. **Payload contract** (Member 5): produce the `answer`s, `levels` ladders and Tower
+   `optimal_moves`/`counter_intuitive` with your solvers. Answers in the payload are readable in
+   devtools; fine for non-clinical self-training, move scoring server-side if that ever matters.
+4. **85% rule granularity**: per-trial 85% adaptation for Relational only; UFOV adapts per trial
+   too, but to estimate a duration threshold (QUEST+), not to hold 85%. N-back `n` and lure
+   density can only change between blocks, so Member 5 adapts them from our telemetry. MST keeps a
+   fixed spread of `delta` for the tuning curve.
+5. **Shared FastAPI app**: does Member 4 own `main.py`? Their delete route removes
+   `{TELEMETRY_DIR}/{user_id}.jsonl`.
+6. **Identity**: anonymous per-browser UUID for now; no accounts.
+7. **Science wording**: keep brain-region names and "neuroplastic" claims out of the UI.

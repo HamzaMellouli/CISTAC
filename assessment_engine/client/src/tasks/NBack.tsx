@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { tracker } from '../telemetry/tracker'
 import { useInputCapture } from '../telemetry/useInputCapture'
 import { pressProps } from '../telemetry/useTimedTrials'
@@ -144,11 +144,21 @@ export function NBack({ params, recorder, onDone }: TaskProps<NBackParams>) {
       </svg>
       <div>
         {params.streams.map((s) => (
-          <button key={s} type="button" {...pressProps(() => respond(s))}>
+          <PressButton key={s} onPress={() => respond(s)}>
             {LABEL[s]}
-          </button>
+          </PressButton>
         ))}
       </div>
     </section>
+  )
+}
+
+// respond() reads refs, so it is handed over as a prop (an event handler) rather than passed to
+// pressProps during NBack's render.
+function PressButton({ onPress, children }: { onPress: () => void; children: ReactNode }) {
+  return (
+    <button type="button" {...pressProps(onPress)}>
+      {children}
+    </button>
   )
 }

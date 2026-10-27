@@ -127,3 +127,32 @@ def test_nan_in_hesitation_jitter_returns_422_not_500(client, tmp_path):
 def test_trial_meta_long_string_rejected(client, tmp_path):
     assert post(client, trial_meta={"x": "a" * 65}).status_code == 422
     assert list(tmp_path.iterdir()) == []
+
+
+def test_default_telemetry_dir_is_repo_root_data_raw(monkeypatch):
+    from pathlib import Path
+
+    from routes.telemetry import telemetry_dir
+
+    monkeypatch.delenv("TELEMETRY_DIR", raising=False)
+    repo_root = Path(__file__).resolve().parents[3]
+    d = telemetry_dir()
+    assert d.is_absolute()
+    assert d == repo_root / "data" / "raw" / "telemetry"
+
+
+def test_telemetry_dir_env_overrides(monkeypatch, tmp_path):
+    from routes.telemetry import telemetry_dir
+
+    monkeypatch.setenv("TELEMETRY_DIR", str(tmp_path))
+    assert telemetry_dir() == tmp_path
+
+
+def test_max_task_id_with_item_id_fits_meta_limit(client):
+    tid = "t" * 48
+    assert post(client, task_id=tid, trial_meta={"item_id": f"{tid}:99999"}).status_code == 202
+
+
+def test_task_id_over_48_rejected(client, tmp_path):
+    assert post(client, task_id="t" * 49).status_code == 422
+    assert list(tmp_path.iterdir()) == []

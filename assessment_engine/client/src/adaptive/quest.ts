@@ -18,8 +18,10 @@ export class QuestPlus {
   private readonly guess: number
   private readonly lapse: number
   private post: number[][] // [θ][β], sums to 1
+  private readonly durationsMs: number[]
 
-  constructor(private readonly durationsMs: number[], opts: Opts = {}) {
+  constructor(durationsMs: number[], opts: Opts = {}) {
+    this.durationsMs = durationsMs
     this.thresholds = opts.thresholds ?? logGrid(17, 500, 20)
     this.slopes = opts.slopes ?? [1, 2, 3, 4]
     this.guess = opts.guess ?? 1 / 16
