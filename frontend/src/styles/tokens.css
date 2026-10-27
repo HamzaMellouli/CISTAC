@@ -1,83 +1,72 @@
 @import "tailwindcss";
 
 @theme {
-  --color-canvas: #FFF8EE;
+  --color-canvas: #FFF5EE;
   --color-surface: #FFFFFF;
-  --color-surface-raised: #F7EFE2;
-  --color-ink: #1F1B3B;
-  --color-ink-muted: #5B5675;
-  --color-border: #8C86A0;
-  --color-border-strong: #1F1B3B;
-  --color-brand: #0F766E;
-  --color-brand-hover: #115E59;
-  --color-brand-subtle: #ECFDF9;
-  --color-brand-ink: #FFFFFF;
+  --color-surface-raised: #FDF0E7;
+  --color-ink: #111827;
+  --color-ink-muted: #4B5E78;
+  --color-border: #E7DFD8;
+  --color-border-strong: #263D5B;
+  --color-brand: #E86A33;
+  --color-brand-hover: #D55823;
+  --color-brand-subtle: #FDF2EB;
+  --color-brand-ink: #111827;
+  --color-secondary: #263D5B;
   --color-reward: #FFC83D;
-  --color-reward-ink: #1F1B3B;
-  --color-accent: #FF6B6B;
-  --color-accent-ink: #1F1B3B;
-  --color-success: #15803D;
-  --color-success-subtle: #DCFCE7;
-  --color-warning: #B45309;
-  --color-warning-subtle: #FEF3C7;
-  --color-danger: #C62828;
-  --color-danger-subtle: #FEE2E2;
-  --color-info: #0369A1;
-  --color-info-subtle: #E0F2FE;
+  --color-reward-ink: #111827;
+  --color-accent: #E86A33;
+  --color-accent-ink: #111827;
+  --color-success: #16A34A;
+  --color-success-subtle: #F0FDF4;
+  --color-warning: #D97706;
+  --color-warning-subtle: #FFFBEB;
+  --color-danger: #DC2626;
+  --color-danger-subtle: #FEF2F2;
+  --color-info: #E86A33;
+  --color-info-subtle: #FDF2EB;
 
-  --font-display: 'Fredoka', system-ui, -apple-system, sans-serif;
-  --font-sans: 'Lexend', system-ui, -apple-system, sans-serif;
+  --font-display: 'Delius Swash Caps', 'Delius', cursive, sans-serif;
+  --font-sans: 'Delius', 'Delius Swash Caps', cursive, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.25rem;
-  --radius-2xl: 1.5rem;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
   --radius-pill: 9999px;
 }
 
 :root,
 [data-theme="light"] {
-  /* OKLCH 10-step Warm Paper & Ink Neutral Ramp */
-  --oklch-neutral-50: oklch(0.982 0.016 82);
-  --oklch-neutral-100: oklch(0.958 0.022 80);
-  --oklch-neutral-200: oklch(0.912 0.024 78);
-  --oklch-neutral-300: oklch(0.825 0.026 285);
-  --oklch-neutral-400: oklch(0.625 0.035 288);
-  --oklch-neutral-500: oklch(0.515 0.042 288);
-  --oklch-neutral-600: oklch(0.452 0.045 288);
-  --oklch-neutral-700: oklch(0.350 0.052 286);
-  --oklch-neutral-800: oklch(0.245 0.055 284);
-  --oklch-neutral-900: oklch(0.195 0.048 265);
-  --oklch-neutral-950: oklch(0.145 0.042 265);
-
-  /* Semantic Color Roles — Playful Lab (Light Default) */
-  --color-canvas: #FFF8EE;
+  /* Doodle (Hand Drawn) Design System Semantic Color Roles */
+  --color-canvas: #FFF5EE;
   --color-surface: #FFFFFF;
-  --color-surface-raised: #F7EFE2;
-  --color-ink: #1F1B3B;
-  --color-ink-muted: #5B5675;
-  --color-border: #8C86A0;
-  --color-border-strong: #1F1B3B;
-  --color-brand: #0F766E;
-  --color-brand-hover: #115E59;
-  --color-brand-subtle: #ECFDF9;
-  --color-brand-ink: #FFFFFF;
+  --color-surface-raised: #FDF0E7;
+  --color-ink: #111827;
+  --color-ink-muted: #4B5E78;
+  --color-border: #E7DFD8;
+  --color-border-strong: #263D5B;
+  --color-brand: #E86A33;
+  --color-brand-hover: #D55823;
+  --color-brand-subtle: #FDF2EB;
+  --color-brand-ink: #111827;
+  --color-secondary: #263D5B;
   --color-reward: #FFC83D;
-  --color-reward-ink: #1F1B3B;
-  --color-accent: #FF6B6B;
-  --color-accent-ink: #1F1B3B;
-  --color-success: #15803D;
-  --color-success-subtle: #DCFCE7;
-  --color-warning: #B45309;
-  --color-warning-subtle: #FEF3C7;
-  --color-danger: #C62828;
-  --color-danger-subtle: #FEE2E2;
-  --color-info: #0369A1;
-  --color-info-subtle: #E0F2FE;
+  --color-reward-ink: #111827;
+  --color-accent: #E86A33;
+  --color-accent-ink: #111827;
+  --color-success: #16A34A;
+  --color-success-subtle: #F0FDF4;
+  --color-warning: #D97706;
+  --color-warning-subtle: #FFFBEB;
+  --color-danger: #DC2626;
+  --color-danger-subtle: #FEF2F2;
+  --color-info: #E86A33;
+  --color-info-subtle: #FDF2EB;
 
-  /* Okabe-Ito WCAG ≥3:1 Adapted Dimension Palette (3 to 10 Dimensions) */
+  /* Okabe-Ito WCAG >= 3:1 Dimension Palette (3 to 10 Dimensions) */
   --dim-1: #0072B2;
   --dim-2: #C45100;
   --dim-3: #008662;
@@ -90,25 +79,31 @@
   --dim-10: #831843;
 
   /* Uncertainty Tokens */
-  --uncertainty-band-fill: rgba(15, 118, 110, 0.18);
+  --uncertainty-band-fill: rgba(232, 106, 51, 0.20);
   --uncertainty-low-stroke: #9E4778;
-  --uncertainty-low-tint: #FDF2F8;
+  --uncertainty-low-tint: #FDF2EB;
 
-  /* Soft Editorial Layering & Elevations */
-  --border-card-subtle: rgba(15, 23, 42, 0.09);
-  --border-card-hover: rgba(15, 118, 110, 0.22);
-  --shadow-soft: 0 10px 30px -5px rgba(15, 23, 42, 0.05), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-  --shadow-soft-hover: 0 16px 36px -6px rgba(15, 23, 42, 0.08), 0 6px 16px -3px rgba(15, 23, 42, 0.04);
-  --shadow-hero: 0 20px 40px -10px rgba(15, 23, 42, 0.07), 0 8px 20px -4px rgba(15, 23, 42, 0.03);
-  --bg-hero-gradient: linear-gradient(135deg, #ffffff 0%, #fdfbf7 100%);
-  --bg-card-gradient: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  /* Hand-Drawn Sketch Borders & Hard Offset Shadows */
+  --border-card-subtle: #263D5B;
+  --border-card-hover: #263D5B;
+  --shadow-doodle: 3px 3px 0 #263D5B;
+  --shadow-doodle-sm: 2px 2px 0 #263D5B;
+  --shadow-doodle-lg: 4px 4px 0 #263D5B;
+  --shadow-tactile: 3px 3px 0 #263D5B;
+  --shadow-tactile-active: 1px 1px 0 #263D5B;
+  --shadow-card: 4px 4px 0 #263D5B;
+  --shadow-soft: 3px 3px 0 #263D5B;
+  --shadow-soft-hover: 4px 4px 0 #263D5B;
+  --shadow-hero: 5px 5px 0 #263D5B;
+  --bg-hero-gradient: linear-gradient(135deg, #FFFFFF 0%, #FDF0E7 100%);
+  --bg-card-gradient: linear-gradient(135deg, #FFFFFF 0%, #FFF5EE 100%);
 
   /* Typography Families */
-  --font-display: 'Fredoka', system-ui, -apple-system, sans-serif;
-  --font-sans: 'Lexend', system-ui, -apple-system, sans-serif;
+  --font-display: 'Delius Swash Caps', 'Delius', cursive, sans-serif;
+  --font-sans: 'Delius', 'Delius Swash Caps', cursive, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* Typography Scale (4px baseline grid) */
+  /* Typography Scale (Doodle 14/16/18/24/32/40 px) */
   --text-xs: 0.75rem;
   --leading-xs: 1rem;
   --text-sm: 0.875rem;
@@ -137,49 +132,45 @@
   --space-16: 4rem;
 
   /* Radius Scale */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --radius-pill: 9999px;
-
-  /* Tactile Elevation Scale */
-  --shadow-tactile: 0 3px 0 var(--color-border-strong);
-  --shadow-tactile-active: 0 1px 0 var(--color-border-strong);
-  --shadow-card: 0 4px 0 var(--color-border-strong);
 
   /* Motion Scale */
   --duration-fast: 120ms;
-  --duration-base: 220ms;
-  --duration-slow: 360ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 [data-theme="dark"] {
-  /* Semantic Color Roles — Night Lab (Dark Theme) */
-  --color-canvas: #0B1020;
-  --color-surface: #131B33;
-  --color-surface-raised: #1C2747;
-  --color-ink: #E8ECFF;
-  --color-ink-muted: #A3ABCB;
-  --color-border: #3B4A78;
-  --color-border-strong: #E8ECFF;
-  --color-brand: #22D3EE;
-  --color-brand-hover: #67E8F9;
-  --color-brand-subtle: #112A40;
-  --color-brand-ink: #0B1020;
-  --color-reward: #A3E635;
-  --color-reward-ink: #0B1020;
-  --color-accent: #F472B6;
-  --color-accent-ink: #0B1020;
+  /* Blackboard Sketch (Dark Theme) */
+  --color-canvas: #131B2E;
+  --color-surface: #1E293B;
+  --color-surface-raised: #27354A;
+  --color-ink: #FFFFFF;
+  --color-ink-muted: #94A3B8;
+  --color-border: #3B4D68;
+  --color-border-strong: #FF8C5A;
+  --color-brand: #FF8C5A;
+  --color-brand-hover: #FFA47A;
+  --color-brand-subtle: #2D1A14;
+  --color-brand-ink: #131B2E;
+  --color-secondary: #E7DFD8;
+  --color-reward: #FFC83D;
+  --color-reward-ink: #131B2E;
+  --color-accent: #FF8C5A;
+  --color-accent-ink: #131B2E;
   --color-success: #4ADE80;
   --color-success-subtle: #0F2E1E;
   --color-warning: #FBBF24;
   --color-warning-subtle: #332409;
   --color-danger: #F87171;
   --color-danger-subtle: #381418;
-  --color-info: #38BDF8;
-  --color-info-subtle: #0D2840;
+  --color-info: #FF8C5A;
+  --color-info-subtle: #2D1A14;
 
   /* Okabe-Ito Dark Theme Dimension Palette */
   --dim-1: #56B4E9;
@@ -193,21 +184,23 @@
   --dim-9: #34D399;
   --dim-10: #F472B6;
 
-  --uncertainty-band-fill: rgba(34, 211, 238, 0.20);
+  --uncertainty-band-fill: rgba(255, 140, 90, 0.22);
   --uncertainty-low-stroke: #F472B6;
-  --uncertainty-low-tint: #2D162B;
-  --shadow-tactile: 0 3px 0 var(--color-border);
-  --shadow-tactile-active: 0 1px 0 var(--color-border);
-  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --uncertainty-low-tint: #2D1A14;
 
-  /* Soft Editorial Dark Layering & Elevations */
-  --border-card-subtle: rgba(232, 236, 255, 0.10);
-  --border-card-hover: rgba(34, 211, 238, 0.30);
-  --shadow-soft: 0 10px 30px -5px rgba(0, 0, 0, 0.45), 0 4px 12px -2px rgba(0, 0, 0, 0.25);
-  --shadow-soft-hover: 0 16px 36px -6px rgba(0, 0, 0, 0.55), 0 6px 16px -3px rgba(0, 0, 0, 0.35);
-  --shadow-hero: 0 20px 40px -10px rgba(0, 0, 0, 0.60), 0 8px 20px -4px rgba(0, 0, 0, 0.40);
-  --bg-hero-gradient: linear-gradient(135deg, #131B33 0%, #0F172A 100%);
-  --bg-card-gradient: linear-gradient(135deg, #131B33 0%, #16203D 100%);
+  --border-card-subtle: #FF8C5A;
+  --border-card-hover: #FFA47A;
+  --shadow-doodle: 3px 3px 0 #FF8C5A;
+  --shadow-doodle-sm: 2px 2px 0 #FF8C5A;
+  --shadow-doodle-lg: 4px 4px 0 #FF8C5A;
+  --shadow-tactile: 3px 3px 0 #FF8C5A;
+  --shadow-tactile-active: 1px 1px 0 #FF8C5A;
+  --shadow-card: 4px 4px 0 #FF8C5A;
+  --shadow-soft: 3px 3px 0 #FF8C5A;
+  --shadow-soft-hover: 4px 4px 0 #FFA47A;
+  --shadow-hero: 5px 5px 0 #FF8C5A;
+  --bg-hero-gradient: linear-gradient(135deg, #1E293B 0%, #172234 100%);
+  --bg-card-gradient: linear-gradient(135deg, #1E293B 0%, #223046 100%);
 }
 
 @layer base {
@@ -220,6 +213,10 @@
   html,
   body {
     background-color: var(--color-canvas);
+    /* Subtle sketchbook / whiteboard dot grid background */
+    background-image: radial-gradient(rgba(38, 61, 91, 0.09) 0.8px, transparent 0.8px);
+    background-size: 24px 24px;
+    background-position: 0 0;
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: var(--text-base);
@@ -229,11 +226,17 @@
     overflow-x: hidden;
   }
 
+  [data-theme="dark"] html,
+  [data-theme="dark"] body {
+    background-image: radial-gradient(rgba(255, 140, 90, 0.12) 0.8px, transparent 0.8px);
+  }
+
   h1,
   h2,
   h3,
   h4 {
     font-family: var(--font-display);
+    letter-spacing: -0.01em;
   }
 }
 
@@ -247,44 +250,52 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Tactile & Soft Editorial Surface Primitives */
+  /* Doodle Hand-Drawn Card Primitives */
   .tactile-card {
     background-color: var(--color-surface);
-    border: 1px solid var(--border-card-subtle);
-    border-radius: 1.25rem;
-    box-shadow: var(--shadow-soft);
-    transition: transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out), border-color var(--duration-base) var(--ease-out);
+    border: 2px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-doodle);
+    transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
   }
 
   .tactile-card:hover {
-    box-shadow: var(--shadow-soft-hover);
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-doodle-lg);
   }
 
   .editorial-card {
     background: var(--bg-card-gradient);
-    border: 1px solid var(--border-card-subtle);
-    border-radius: 1.25rem;
+    border: 2px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
     padding: 1.5rem;
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-doodle);
+    transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .editorial-card:hover {
+    box-shadow: var(--shadow-doodle-lg);
   }
 
   .hero-card {
     background: var(--bg-hero-gradient);
-    border: 1px solid var(--border-card-subtle);
-    border-radius: 1.25rem;
+    border: 2.5px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     box-shadow: var(--shadow-hero);
+    position: relative;
   }
 
   .glass-dock {
-    background: color-mix(in srgb, var(--color-surface) 94%, transparent);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border-card-subtle);
+    background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid var(--color-border-strong);
     box-shadow: var(--shadow-hero);
-    border-radius: 1.25rem;
+    border-radius: var(--radius-md);
   }
 
+  /* Doodle Buttons with Hand-Drawn Hard Offset Shadow & Tactile Press */
   .tactile-btn {
     min-height: 2.75rem;
     min-width: 2.75rem;
@@ -294,10 +305,17 @@
     transition-property: transform, background-color, box-shadow, border-color;
     transition-duration: var(--duration-fast);
     transition-timing-function: var(--ease-out);
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+
+  .tactile-btn:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-doodle-lg);
   }
 
   .tactile-btn:active:not(:disabled) {
-    transform: translateY(2px);
+    transform: translate(2px, 2px);
     box-shadow: var(--shadow-tactile-active);
   }
 
@@ -305,6 +323,30 @@
   .focus-ring:focus-visible {
     outline: 3px solid var(--color-brand);
     outline-offset: 2px;
+  }
+
+  /* Doodle Sketch Utilities */
+  .doodle-tape {
+    position: absolute;
+    top: -8px;
+    left: 20px;
+    width: 60px;
+    height: 16px;
+    background-color: rgba(255, 200, 61, 0.45);
+    border: 1px dashed rgba(38, 61, 91, 0.4);
+    transform: rotate(-3deg);
+    pointer-events: none;
+  }
+
+  .doodle-highlight {
+    background: linear-gradient(104deg, rgba(232, 106, 51, 0) 0%, rgba(232, 106, 51, 0.22) 3%, rgba(232, 106, 51, 0.22) 97%, rgba(232, 106, 51, 0) 100%);
+    padding: 0 4px;
+    border-radius: 2px;
+  }
+
+  .doodle-wobble-border {
+    border: 2px solid var(--color-border-strong);
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   }
 }
 
@@ -318,7 +360,8 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .tactile-btn:active:not(:disabled) {
+  .tactile-btn:active:not(:disabled),
+  .tactile-card:hover {
     transform: none !important;
   }
 }
@@ -331,6 +374,8 @@
 }
 
 [data-reduced-motion="true"] .tactile-btn:active:not(:disabled),
-[data-timed-trial="true"] .tactile-btn:active:not(:disabled) {
+[data-timed-trial="true"] .tactile-btn:active:not(:disabled),
+[data-reduced-motion="true"] .tactile-card:hover,
+[data-timed-trial="true"] .tactile-card:hover {
   transform: none !important;
 }

@@ -16,15 +16,15 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const TONE_CLASSES: Record<BadgeTone, string> = {
-  brand: 'bg-brand text-brand-ink border-border-strong',
+  brand: 'bg-brand text-brand-ink border-border-strong font-bold',
   reward: 'bg-reward text-reward-ink border-border-strong font-bold',
-  neutral: 'bg-surface-raised text-ink border-border',
-  success: 'bg-success text-brand-ink border-border-strong',
-  warning: 'bg-warning text-brand-ink border-border-strong',
-  danger: 'bg-danger text-brand-ink border-border-strong',
-  info: 'bg-info text-brand-ink border-border-strong',
+  neutral: 'bg-surface-raised text-ink border-border-strong font-semibold',
+  success: 'bg-success text-brand-ink border-border-strong font-bold',
+  warning: 'bg-warning text-brand-ink border-border-strong font-bold',
+  danger: 'bg-danger text-surface border-border-strong font-bold',
+  info: 'bg-info text-brand-ink border-border-strong font-bold',
   'low-confidence':
-    'bg-surface-raised text-ink border-dashed border-border-strong',
+    'bg-surface-raised text-ink border-dashed border-border-strong font-medium',
 }
 
 export function Badge({
@@ -36,7 +36,7 @@ export function Badge({
 }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill border text-xs font-medium max-w-full whitespace-normal sm:whitespace-nowrap text-start leading-snug sm:leading-none ${TONE_CLASSES[tone]} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm border-2 text-xs font-medium max-w-full whitespace-normal sm:whitespace-nowrap text-start leading-snug sm:leading-none ${TONE_CLASSES[tone]} ${className}`}
       {...rest}
     >
       {glyph && <span aria-hidden="true" className="shrink-0">{glyph}</span>}

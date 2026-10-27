@@ -129,15 +129,15 @@ export function JudgeModeDock({
 
   return (
     <Card
-      className={`p-5 border-2 border-border-strong bg-surface shadow-md space-y-5 ${className}`}
+      className={`p-5 border-2 border-border-strong bg-surface shadow-doodle space-y-5 ${className}`}
       aria-label="Judge Mode Quick Dock"
     >
       {/* Header Badge & Title */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-border">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b-2 border-border-strong">
         <div className="flex items-center gap-2">
           <span
             aria-hidden="true"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-reward text-reward-ink font-display font-bold text-sm"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-border-strong bg-reward text-reward-ink font-display font-bold text-sm shadow-doodle-sm"
           >
             ⚖
           </span>

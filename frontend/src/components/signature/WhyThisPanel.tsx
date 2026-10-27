@@ -23,12 +23,12 @@ export function WhyThisPanel({
   const isLowConf = trail.confidence < 0.6
 
   return (
-    <div className="editorial-card rounded-2xl bg-surface p-5 space-y-4">
+    <div className="editorial-card rounded-md bg-surface p-5 space-y-4 shadow-doodle">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
           <span
             aria-hidden="true"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-pill bg-brand text-brand-ink text-xs font-bold shadow-sm"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-sm border border-border-strong bg-brand text-brand-ink text-xs font-bold shadow-xs"
           >
             ✦
           </span>
@@ -46,7 +46,7 @@ export function WhyThisPanel({
           type="button"
           aria-expanded={expanded}
           onClick={() => setExpanded((prev) => !prev)}
-          className="focus-ring min-h-11 px-3.5 py-1.5 rounded-pill border border-border bg-surface-raised text-xs font-semibold text-ink cursor-pointer hover:bg-canvas transition-colors shadow-sm"
+          className="focus-ring min-h-11 px-3.5 py-1.5 rounded-sm border-2 border-border-strong bg-surface text-xs font-bold text-ink cursor-pointer hover:bg-surface-raised transition-colors shadow-doodle-sm"
         >
           {showSummaryUpfront
             ? (expanded ? 'Hide 5-Part Reasoning Trail ▲' : 'Inspect 5-Part Reasoning Trail ▼')

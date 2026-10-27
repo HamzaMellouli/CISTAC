@@ -7,6 +7,7 @@ import { useAppStore, type PersonaId } from '../store/useAppStore'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 import { CollaborationScoreCard } from '../components/signature/CollaborationScoreCard'
 import { Mascot } from '../components/signature/Mascot'
 
@@ -117,6 +118,7 @@ export function CollaborationScorePage() {
             >
               AI Collaboration Score Deep-Dive
             </h1>
+            <DoodleSquiggle className="max-w-xs mt-1" />
             <p className="text-base text-ink-muted max-w-2xl leading-relaxed">
               Evaluating human-AI synergy through empirical telemetry. Rewards critical inquiry, explainability auditing, and autonomous goal regulation over passive compliance.
             </p>

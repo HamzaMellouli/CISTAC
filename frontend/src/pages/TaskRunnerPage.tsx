@@ -905,7 +905,7 @@ export default function TaskRunnerPage() {
             </div>
 
             {/* Stimulus Canvas */}
-            <div className="w-full max-w-sm sm:max-w-md aspect-square rounded-3xl border-2 border-border-strong bg-surface p-6 sm:p-8 flex flex-col items-center justify-center relative shadow-sm text-center">
+            <div className="w-full max-w-sm sm:max-w-md aspect-square rounded-md border-2 border-border-strong bg-surface p-6 sm:p-8 flex flex-col items-center justify-center relative shadow-doodle text-center">
               {renderStimulusGraphic(currentTrial)}
 
               <div className="mt-4 space-y-1">
@@ -933,12 +933,12 @@ export default function TaskRunnerPage() {
                 key={opt.key}
                 type="button"
                 onClick={() => handleSelectOption(opt)}
-                className="tactile-btn bg-surface hover:bg-brand-subtle active:scale-[0.98] text-ink p-3.5 sm:p-5 rounded-2xl border-2 border-border hover:border-brand flex flex-col items-center justify-center gap-1.5 cursor-pointer min-h-[5.5rem] transition-all group"
+                className="tactile-btn bg-surface hover:bg-brand active:scale-[0.98] text-ink p-3.5 sm:p-5 rounded-md border-2 border-border-strong flex flex-col items-center justify-center gap-1.5 cursor-pointer min-h-[5.5rem] shadow-doodle hover:shadow-doodle-lg group"
               >
                 <span className="font-display text-base sm:text-xl font-bold text-ink group-hover:text-brand-ink">
                   {opt.label}
                 </span>
-                <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-surface-raised border border-border text-xs font-mono-tabular font-bold text-ink-muted group-hover:bg-brand group-hover:text-brand-ink transition-colors">
+                <span className="inline-flex items-center justify-center w-7 h-7 rounded-sm bg-surface-raised border border-border-strong text-xs font-mono-tabular font-bold text-ink group-hover:bg-brand group-hover:text-brand-ink transition-colors">
                   {opt.key}
                 </span>
               </button>
@@ -1021,7 +1021,7 @@ export default function TaskRunnerPage() {
           </div>
 
           {/* Nodi Companion celebrate */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 p-5 rounded-2xl bg-surface-raised border border-border">
+          <div className="flex flex-col sm:flex-row items-center gap-4 p-5 rounded-2xl bg-surface-raised border-2 border-border-strong shadow-doodle">
             <NodiCompanion size="md" state="celebrate" />
             <div className="space-y-1 text-center sm:text-start">
               <span className="font-display text-base font-bold text-ink">
@@ -1031,6 +1031,24 @@ export default function TaskRunnerPage() {
                 “Awesome focus! Across {recordedEvents.length} trials your normalized mean reaction time was {meanNormalizedRt} ms with {meanJitterMs} ms jitter. Your confidence jumped from {initialConfidencePct}% to {updatedConfidencePct}%!”
               </p>
             </div>
+          </div>
+
+          {/* Stitch Screen 1: Confidence Band Tightening Card */}
+          <div className="w-full bg-surface-raised border-2 border-border-strong rounded-xl p-4 shadow-doodle-sm space-y-2">
+            <div className="flex items-center justify-between text-xs font-mono-tabular">
+              <span className="text-ink-muted font-bold uppercase tracking-wider">Confidence Band Tightening</span>
+              <span className="text-success font-bold">OPTIMIZED</span>
+            </div>
+            <div className="flex items-center justify-between gap-3 font-mono-tabular">
+              <span className="text-sm text-ink-muted line-through opacity-70">±14%</span>
+              <div className="flex-1 h-2.5 bg-surface border border-border-strong rounded-full overflow-hidden flex items-center">
+                <div className="h-full bg-brand rounded-full w-full" />
+              </div>
+              <span className="text-sm font-bold text-brand">±9%</span>
+            </div>
+            <p className="text-xs text-ink-muted">
+              Fidelity score tightened by 35% through high discriminatory consistency across {recordedEvents.length} trials.
+            </p>
           </div>
 
           {/* Metrics grid */}

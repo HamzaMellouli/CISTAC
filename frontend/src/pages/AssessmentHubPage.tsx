@@ -11,6 +11,7 @@ import { Mascot } from '../components/signature/Mascot'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 
 type HubViewState =
   | 'calibrated'
@@ -205,6 +206,7 @@ export default function AssessmentHubPage() {
               Calibrate your cognitive twin—2-minute adaptive micro-tasks with
               zero biometric tracking.
             </h1>
+            <DoodleSquiggle className="max-w-xs mt-1" />
             <p className="text-base text-ink-muted">
               Every micro-block uses Bayesian QUEST+ and 85%-accuracy staircase
               scheduling to narrow your 95% confidence intervals (

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 import { Mascot } from '../components/signature/Mascot'
 import { WhyThisPanel } from '../components/signature/WhyThisPanel'
 import { useAppStore } from '../store/useAppStore'
@@ -175,6 +176,7 @@ export function LayerDPage() {
           <h1 className="font-display text-3xl md:text-4xl font-black tracking-tight text-ink">
             Layer D: Voice Coaching &amp; Scenario Projections
           </h1>
+          <DoodleSquiggle className="max-w-xs mt-1" />
           <p className="text-ink-muted text-base max-w-3xl mt-1">
             Experience conversational multimodal voice guidance and simulate counterfactual cognitive twin futures.
             Test schedule trade-offs before committing your study calendar.

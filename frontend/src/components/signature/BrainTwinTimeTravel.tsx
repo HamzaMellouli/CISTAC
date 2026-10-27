@@ -219,7 +219,7 @@ export function BrainTwinTimeTravel({
       <Card
         as="section"
         aria-labelledby="time-travel-scrubber-heading"
-        className="p-6 space-y-5 min-w-0"
+        className="p-6 space-y-5 min-w-0 shadow-doodle"
       >
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-1">

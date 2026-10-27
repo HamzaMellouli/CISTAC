@@ -223,3 +223,92 @@ export interface PurgeCertificate {
   storagePurged: string[]
   status: 'CONFIRMED_PERMANENT'
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Inter-Member Integrated Contracts (Member 1 Assessment, Member 2 AI Coach, Member 3 Clustering)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Member 1 Task Delivery Contract (mirrors assessment_engine/HANDOVER.md)
+export interface TaskPayload {
+  task_id: string
+  dimension: BackendDimensionKey
+  schema_type: TaskSchemaType
+  params: Record<string, unknown>
+  surface_seed?: number
+}
+
+// Member 2 AI Coach & Collaboration Engine (mirrors ai_coach/schemas.py)
+export type ArchetypeTier = 'explorer' | 'practitioner' | 'strategist'
+
+export interface StateBusEvent {
+  user_id: string
+  transition_occurred: boolean
+  active_cluster_id: number // 0..8
+  delta_vector: Record<string, number>
+  uncertainty: number
+  timestamp?: string
+}
+
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system'
+  content: string
+  timestamp?: string
+}
+
+export interface ChatRequest {
+  user_id: string
+  message: string
+  session_id?: string
+  chat_history?: ChatMessage[]
+  active_cluster_id?: number
+  delta_vector?: Record<string, number>
+}
+
+export interface SafetyViolation {
+  detected_phrase: string
+  rule_category: string
+  remediation_applied: string
+}
+
+export interface SafetyMetadata {
+  is_safe: boolean
+  clinical_terms_detected: string[]
+  sanitized: boolean
+  violations: SafetyViolation[]
+}
+
+export interface CollaborationScoreResult {
+  composite_score: number // 0..100
+  archetype_id: number // 0..8
+  archetype_tier: ArchetypeTier
+  dimension_scores: Record<string, number>
+  dimension_weights: Record<string, number>
+  weighted_contributions: Record<string, number>
+  growth_recommendation: string
+  calculated_at?: string
+}
+
+export interface CoachingResponse {
+  reply_text: string
+  xai_explanation?: string
+  suggested_actions: string[]
+  collab_score_snapshot?: CollaborationScoreResult
+  safety_metadata: SafetyMetadata
+  timestamp?: string
+}
+
+// Member 3 Clustering & Archetype Transitions (mirrors clustering_engine/evaluator.py)
+export interface ClusteringEvaluationResult {
+  user_id: string
+  active_cluster_id: number
+  archetype_name: string
+  archetype_tier: ArchetypeTier
+  transition_occurred: boolean
+  responsibilities: number[]
+  radar_scores: Record<string, number>
+  uncertainty_band: number
+  dominant_driver?: string
+  growth_narrative?: string
+  delta_vector?: Record<string, number>
+}
+

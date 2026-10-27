@@ -5,6 +5,7 @@ import { WhyThisPanel } from '../components/signature/WhyThisPanel'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 import { getDimensionsByPreset } from '../config/dimensions'
 import type { DimensionConfig, WhyThisTrail } from '../contracts'
 import { buildEstimatesForDimensions } from '../services/mocks/fixtures'
@@ -352,6 +353,7 @@ export function DimensionDetailPage() {
               </span>
               {currentDim.code} · {currentDim.name}
             </h1>
+            <DoodleSquiggle className="max-w-xs mt-1" />
 
             <p className="text-base text-ink-muted">
               {currentDim.scientificDefinition} Inspect how behavioral task

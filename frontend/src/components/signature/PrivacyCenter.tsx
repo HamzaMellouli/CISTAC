@@ -119,12 +119,12 @@ export function PrivacyCenter({
     <div className="space-y-6">
       {/* 1. Permanent Non-Biometric Hardware Lock Banner */}
       <Card
-        className="p-5 border-2 border-brand/30 bg-brand/5 shadow-sm"
+        className="p-5 border-2 border-border-strong bg-brand-subtle shadow-doodle"
         aria-label="Hardware Lock Guarantee"
       >
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-start gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-brand text-brand-ink flex items-center justify-center shrink-0 shadow-sm font-bold text-lg">
+            <div className="w-10 h-10 rounded-sm border-2 border-border-strong bg-brand text-brand-ink flex items-center justify-center shrink-0 shadow-doodle-sm font-bold text-lg">
               🔒
             </div>
             <div>

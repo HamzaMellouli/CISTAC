@@ -10,6 +10,7 @@ import { lintCopyText } from '../utils/copyLinter'
 import { UncertaintyRadar } from '../components/signature/UncertaintyRadar'
 import { WhyThisPanel } from '../components/signature/WhyThisPanel'
 import { Mascot } from '../components/signature/Mascot'
+import { BrianMascot } from '../components/brand/BrianMascot'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
@@ -51,6 +52,7 @@ export default function DesignSystemPage() {
 
   const [tokenFilter, setTokenFilter] = useState('')
   const [stateMode, setStateMode] = useState<ShowcaseStateMode>('ready')
+  const [selectedBattery, setSelectedBattery] = useState<'sharp' | 'steady' | 'winding'>('sharp')
   const [linterInput, setLinterInput] = useState(
     SAMPLE_LINTER_PRESETS[0]?.text ?? '',
   )
@@ -107,11 +109,11 @@ export default function DesignSystemPage() {
               id="ds-hero-heading"
               className="font-display text-3xl font-bold text-ink"
             >
-              SynapseTwin Living Design System
+              SynapseTwin Living Design System · Doodle (Hand Drawn)
             </h1>
             <p className="text-base text-ink-muted">
               Token-first architecture combining{' '}
-              <strong>Playful Lab</strong> warmth with epistemic and
+              <strong>Doodle (Hand Drawn)</strong> sketch warmth with epistemic and
               accessibility rigor. Every color ratio is computed via WCAG 2.1
               relative luminance, and every chart adapts from 3 to 10 cognitive
               dimensions.
@@ -149,6 +151,7 @@ export default function DesignSystemPage() {
           className="mt-5 flex flex-wrap gap-2 border-t border-border pt-4"
         >
           {[
+            { href: '#sec-mascot', label: '00 · Axolotl Companion Sheet (5 States)' },
             { href: '#sec-colors', label: '01 · Colors & Contrast' },
             { href: '#sec-dimensions', label: '02 · Dimension Scale (3–10)' },
             { href: '#sec-typography', label: '03 · Typography' },
@@ -166,6 +169,447 @@ export default function DesignSystemPage() {
             </a>
           ))}
         </nav>
+      </Card>
+
+      {/* SECTION 00: Brian The Axolotl — Companion Component Sheet (Stitch Screen 2) */}
+      <Card as="section" id="sec-mascot" aria-labelledby="heading-mascot" className="p-6 space-y-8">
+        <div className="border-b border-border pb-5 space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge tone="reward" glyph="★">
+              Axolotl Character v2.0
+            </Badge>
+            <Badge tone="brand" glyph="●">
+              5 Emotional States
+            </Badge>
+            <Badge tone="success" glyph="✓">
+              Non-Clinical Guidance
+            </Badge>
+          </div>
+          <h2
+            id="heading-mascot"
+            className="font-display text-2xl sm:text-3xl font-bold text-ink"
+          >
+            BRIAN The Axolotl — Companion Component Sheet
+          </h2>
+          <p className="text-base text-ink-muted max-w-4xl">
+            Translating cognitive neuroscience into warm, zero-guilt micro-interactions with an expressive axolotl guide. Designed to balance artisanal sketchbook tactility with rigorous behavioral telemetry.
+          </p>
+
+          {/* Quick Spec Rules Bar */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3">
+            <div className="p-4 rounded-xl border-2 border-border-strong bg-surface-raised space-y-1">
+              <span className="font-display text-sm font-bold text-ink flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-brand border border-border-strong" />
+                Mascot Scale Rules
+              </span>
+              <p className="text-xs text-ink-muted">
+                Hero cards: 180px–200px. Inline telemetry cards &amp; modals: 140px–150px. Preserves silhouette clarity.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border-2 border-border-strong bg-surface-raised space-y-1">
+              <span className="font-display text-sm font-bold text-ink flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-reward border border-border-strong" />
+                Doodle Speech Tail
+              </span>
+              <p className="text-xs text-ink-muted">
+                Directional hand-drawn speech beak points directly to Brian's head fin center at tactile elevation offset.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border-2 border-border-strong bg-surface-raised space-y-1">
+              <span className="font-display text-sm font-bold text-ink flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-accent border border-border-strong" />
+                Zero-Guilt Tone
+              </span>
+              <p className="text-xs text-ink-muted">
+                Fatigue is framed as adaptive protection, calibration as co-exploration, and latency drift as natural bio-rhythm.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 5 Emotional Moments Showcase Stream */}
+        <div className="space-y-8">
+          {/* MOMENT 1: MORNING READINESS FLOW */}
+          <div className="rounded-2xl border-2 border-border-strong bg-surface p-6 shadow-doodle space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+              <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted">
+                01 / Morning Readiness Flow
+              </span>
+              <Badge tone="brand" glyph="●">
+                Scale: Large Hero (190px)
+              </Badge>
+            </div>
+            <div className="flex flex-col lg:flex-row items-center gap-6">
+              <BrianMascot
+                pose="waving"
+                scale="hero"
+                showHalo
+                haloColor="brand"
+                statusPip="active"
+              />
+              <div className="flex-1 space-y-4 w-full">
+                <div className="relative rounded-2xl border-2 border-border-strong bg-surface-raised p-4 shadow-doodle-sm">
+                  <span className="text-xs font-mono-tabular font-bold text-brand uppercase block mb-1">
+                    ☀ Morning Synchronization
+                  </span>
+                  <p className="font-display text-lg font-bold text-ink">
+                    “Good morning, Youssef! Your Working Memory clarity tightened to ±5% this week—today is prime for high-focus strategy.”
+                  </p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <span className="text-xs font-mono-tabular font-bold text-ink-muted uppercase tracking-wider block">
+                    Current Cognitive Charge
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedBattery('sharp')}
+                      className={`px-4 py-2 rounded-xl border-2 border-border-strong text-sm font-bold transition-all shadow-doodle-sm cursor-pointer ${
+                        selectedBattery === 'sharp'
+                          ? 'bg-brand text-brand-ink'
+                          : 'bg-surface-raised text-ink hover:bg-surface'
+                      }`}
+                    >
+                      ⚡ Sharp
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedBattery('steady')}
+                      className={`px-4 py-2 rounded-xl border-2 border-border-strong text-sm font-bold transition-all shadow-doodle-sm cursor-pointer ${
+                        selectedBattery === 'steady'
+                          ? 'bg-brand text-brand-ink'
+                          : 'bg-surface-raised text-ink hover:bg-surface'
+                      }`}
+                    >
+                      🌤️ Steady
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedBattery('winding')}
+                      className={`px-4 py-2 rounded-xl border-2 border-border-strong text-sm font-bold transition-all shadow-doodle-sm cursor-pointer ${
+                        selectedBattery === 'winding'
+                          ? 'bg-brand text-brand-ink'
+                          : 'bg-surface-raised text-ink hover:bg-surface'
+                      }`}
+                    >
+                      🌙 Winding Down
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <Button variant="primary" size="md">
+                    Start 2-Min Flow →
+                  </Button>
+                  <span className="text-xs font-mono-tabular text-ink-muted flex items-center gap-1.5">
+                    ⏱ 120s • Zen Focus Session
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* MOMENT 2: STILL CALIBRATING (LOW CONFIDENCE) */}
+          <div className="rounded-2xl border-2 border-border-strong bg-surface p-6 shadow-doodle space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+              <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted">
+                02 / Co-Exploration In-Progress State
+              </span>
+              <Badge tone="warning" glyph="⚡">
+                Scale: Mid-Telemetry (150px)
+              </Badge>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div className="md:col-span-4 flex flex-col items-center">
+                <BrianMascot
+                  pose="explorer"
+                  scale="telemetry"
+                  showHalo
+                  haloColor="calm"
+                  statusPip="calibrating"
+                />
+                <span className="mt-2 text-xs font-mono-tabular px-2.5 py-0.5 rounded-full border border-border-strong bg-surface-raised text-ink font-semibold">
+                  Mode: Curious Explorer
+                </span>
+              </div>
+              <div className="md:col-span-8 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="font-display text-xl font-bold text-ink">
+                    Spatial Recall: Still Calibrating
+                  </h3>
+                  <Badge tone="neutral" glyph="ℹ">
+                    4 / 8 calibration trials complete
+                  </Badge>
+                </div>
+
+                {/* Hatched uncertainty progress band */}
+                <div className="space-y-1.5">
+                  <div className="flex justify-between items-center text-xs font-mono-tabular text-ink-muted">
+                    <span>Confidence Halo Bandwidth</span>
+                    <span className="text-danger font-bold">±16% Range Variance</span>
+                  </div>
+                  <div className="w-full h-8 bg-surface-raised border-2 border-border-strong rounded-xl overflow-hidden relative flex items-center p-1">
+                    <div className="h-full bg-brand rounded-lg w-[45%] flex items-center px-2">
+                      <span className="text-xs font-mono-tabular text-brand-ink font-bold">Solid 45%</span>
+                    </div>
+                    <div className="h-full w-[35%] bg-warning-subtle rounded-lg ml-1 relative overflow-hidden flex items-center justify-center border border-border-strong">
+                      <svg className="absolute inset-0 w-full h-full opacity-35" aria-hidden="true">
+                        <rect width="100%" height="100%" fill="url(#diagonalHatch)" />
+                      </svg>
+                      <span className="text-xs font-mono-tabular text-ink font-bold relative z-10">±16% Float Area</span>
+                    </div>
+                    <div className="flex-1 text-end pe-2 text-xs font-mono-tabular text-ink-muted">Target ±4%</div>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-border-strong bg-surface-raised p-3 text-sm text-ink">
+                  “We only have 4 trials here so far—let’s play a quick 90-second round to narrow your range!”
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button variant="secondary" size="sm">
+                    Sharpen Range (90s)
+                  </Button>
+                  <span className="text-xs font-mono-tabular text-ink-muted">
+                    No impact on streak score if skipped.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* MOMENT 3: COACH "WHY THIS?" X-RAY */}
+          <div className="rounded-2xl border-2 border-border-strong bg-surface p-6 shadow-doodle space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+              <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted">
+                03 / Transparent Pedagogical X-Ray
+              </span>
+              <Badge tone="success" glyph="✓">
+                Scale: Mentor Inline (145px)
+              </Badge>
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="font-display text-xl font-bold text-ink">
+                Why Brian Suggests This
+              </h3>
+              <Badge tone="success" glyph="★">
+                86% Model Confidence
+              </Badge>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              <div className="lg:col-span-3 flex flex-col items-center">
+                <BrianMascot
+                  pose="mentor"
+                  scale="telemetry"
+                  showHalo
+                  haloColor="reward"
+                  statusPip="syncing"
+                />
+                <span className="mt-2 text-xs font-mono-tabular px-2.5 py-0.5 rounded-full border border-border-strong bg-surface-raised text-ink font-semibold">
+                  Role: Cognitive Coach
+                </span>
+              </div>
+              <div className="lg:col-span-9 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="p-3 rounded-xl border border-border-strong bg-surface-raised space-y-1">
+                    <span className="font-mono-tabular text-xs font-bold text-brand uppercase">Step 01</span>
+                    <h4 className="font-display text-sm font-bold text-ink">Your Pacing</h4>
+                    <span className="font-mono-tabular text-sm font-bold text-ink block">585ms rhythm</span>
+                    <p className="text-xs text-ink-muted">88% baseline response accuracy recorded across 14 trials.</p>
+                  </div>
+                  <div className="p-3 rounded-xl border border-border-strong bg-surface-raised space-y-1">
+                    <span className="font-mono-tabular text-xs font-bold text-brand uppercase">Step 02</span>
+                    <h4 className="font-display text-sm font-bold text-ink">Twin Shift</h4>
+                    <span className="font-mono-tabular text-sm font-bold text-success block">+18% Stability Halo</span>
+                    <p className="text-xs text-ink-muted">Working memory boundary narrowed from ±14% down to ±5%.</p>
+                  </div>
+                  <div className="p-3 rounded-xl border border-border-strong bg-surface-raised space-y-1">
+                    <span className="font-mono-tabular text-xs font-bold text-brand uppercase">Step 03</span>
+                    <h4 className="font-display text-sm font-bold text-ink">Next Step</h4>
+                    <span className="font-mono-tabular text-sm font-bold text-ink block">90s Visual Flow</span>
+                    <p className="text-xs text-ink-muted">Queued for Thursday afternoon peak alertness interval.</p>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-xl border-2 border-border-strong bg-surface-raised flex items-start gap-3">
+                  <span className="text-lg">💡</span>
+                  <p className="text-sm text-ink">
+                    <strong>Brian's Mentor Note:</strong> “Because your spatial band is wider than your memory reserve, gentle pattern exposure yields maximum consolidation without cognitive exhaustion.”
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* MOMENT 4: CIRCADIAN COMPASSION & REST */}
+          <div className="rounded-2xl border-2 border-border-strong bg-surface p-6 shadow-doodle space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+              <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted">
+                04 / Circadian Compassion &amp; Rest
+              </span>
+              <Badge tone="neutral" glyph="🌙">
+                Scale: Inline Snooze (140px)
+              </Badge>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div className="md:col-span-4 flex flex-col items-center">
+                <BrianMascot
+                  pose="sleepy"
+                  scale="telemetry"
+                  showHalo
+                  haloColor="calm"
+                  statusPip="resting"
+                />
+                <span className="mt-2 text-xs font-mono-tabular px-2.5 py-0.5 rounded-full border border-border-strong bg-surface-raised text-ink font-semibold">
+                  Mode: Recharge &amp; Rest
+                </span>
+              </div>
+              <div className="md:col-span-8 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <span className="font-mono-tabular text-xs uppercase tracking-wider text-ink-muted block">
+                      Circadian Bio-Rhythm Guard
+                    </span>
+                    <h3 className="font-display text-xl font-bold text-ink">
+                      Evening Latency Drift Detected
+                    </h3>
+                  </div>
+                  <Badge tone="warning" glyph="📉">
+                    +140ms Reaction Delay
+                  </Badge>
+                </div>
+
+                {/* Mini Evening Heatmap Visual */}
+                <div className="p-3 rounded-xl border border-border-strong bg-surface-raised space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono-tabular text-ink-muted">
+                    <span>Evening Heatmap (8 PM – 11 PM)</span>
+                    <span className="text-danger font-bold">Optimal Window Passed</span>
+                  </div>
+                  <div className="grid grid-cols-7 gap-1">
+                    {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, idx) => (
+                      <div
+                        key={idx}
+                        className={`h-7 rounded-lg border border-border-strong flex items-center justify-center font-mono-tabular text-xs font-bold ${
+                          idx === 4
+                            ? 'bg-warning-subtle text-danger'
+                            : idx < 2
+                              ? 'bg-brand text-brand-ink'
+                              : 'bg-surface text-ink-muted'
+                        }`}
+                      >
+                        {idx === 4 ? 'F · Tonight' : day}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl border border-border-strong bg-surface-raised text-sm text-ink">
+                  “Your reaction pacing slows down after 8 PM. Skip practice tonight and recharge! Scheduled rest protects your 12-day streak without friction.”
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <Button variant="secondary" size="sm">
+                    Activate Recovery Mode (Protected)
+                  </Button>
+                  <Button variant="secondary" size="sm">
+                    Review Tomorrow’s Peak
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* MOMENT 5: MILESTONE CELEBRATION MODAL */}
+          <div className="rounded-2xl border-2 border-border-strong bg-surface p-6 shadow-doodle space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+              <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted">
+                05 / Milestone Graduation Dialog Pattern
+              </span>
+              <Badge tone="reward" glyph="🎉">
+                Scale: Joyful Celebration (170px)
+              </Badge>
+            </div>
+
+            <div className="rounded-2xl border-2 border-border-strong bg-surface-raised p-6 shadow-doodle-lg flex flex-col items-center text-center space-y-4">
+              <Badge tone="reward" glyph="★">
+                🎉 Skill Graduated to High Clarity!
+              </Badge>
+              <BrianMascot
+                pose="celebrating"
+                scale="hero"
+                showHalo
+                haloColor="reward"
+                statusPip="active"
+              />
+              <div className="max-w-md p-4 rounded-xl border border-border-strong bg-surface shadow-doodle-sm">
+                <p className="font-display text-base font-bold text-ink">
+                  “Woohoo! We've collected enough data to lock in your spatial navigation baseline. Your cognitive twin is now 96% synced!”
+                </p>
+              </div>
+
+              {/* Before vs After Benchmark */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg text-start">
+                <div className="p-3 rounded-xl border border-border-strong bg-surface space-y-1">
+                  <span className="text-xs font-mono-tabular uppercase tracking-wider text-ink-muted block">
+                    Before Calibration
+                  </span>
+                  <strong className="text-sm text-ink block">Spatial Recall ±16%</strong>
+                  <div className="w-full h-2.5 bg-surface-raised border border-border-strong rounded-full overflow-hidden">
+                    <div className="h-full w-3/4 bg-ink-muted rounded-full opacity-60" />
+                  </div>
+                  <span className="text-xs font-mono-tabular text-ink-muted">Loose exploratory bounds</span>
+                </div>
+                <div className="p-3 rounded-xl border-2 border-border-strong bg-brand text-brand-ink space-y-1">
+                  <span className="text-xs font-mono-tabular uppercase tracking-wider text-brand-ink block font-bold">
+                    After Calibration (Now)
+                  </span>
+                  <strong className="text-sm block">Spatial Recall ±4% Confirmed</strong>
+                  <div className="w-full h-2.5 bg-brand-container border border-border-strong rounded-full overflow-hidden">
+                    <div className="h-full w-[94%] bg-reward rounded-full" />
+                  </div>
+                  <span className="text-xs font-mono-tabular opacity-90">96% confidence baseline active</span>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-3 pt-2">
+                <Button variant="primary" size="md">
+                  View Updated Brain Twin →
+                </Button>
+                <Button variant="secondary" size="md">
+                  Dismiss
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Component Anatomy & Token Guide */}
+          <div className="rounded-xl border-2 border-border-strong bg-surface-raised p-5 space-y-4">
+            <h3 className="font-display text-lg font-bold text-ink">
+              Mascot Integration Rules &amp; Token Guide
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div className="p-3 rounded-lg border border-border-strong bg-surface space-y-1">
+                <span className="font-bold text-brand uppercase block">Scale &amp; Optical Sizing</span>
+                <p className="text-ink-muted">
+                  Brian is vector-aligned with a distinct outer die-cut border. Always isolate him on his dedicated background aura: Hero views (180–200px), Telemetry (140–150px), Badges (32–40px).
+                </p>
+              </div>
+              <div className="p-3 rounded-lg border border-border-strong bg-surface space-y-1">
+                <span className="font-bold text-brand uppercase block">Color Harmonization</span>
+                <p className="text-ink-muted">
+                  Body tones match terracotta (<code className="font-mono-tabular">--color-brand</code>), ink contours match navy (<code className="font-mono-tabular">--color-border-strong</code>), and halos use brand and reward tints.
+                </p>
+              </div>
+              <div className="p-3 rounded-lg border border-border-strong bg-surface space-y-1">
+                <span className="font-bold text-brand uppercase block">Neuroscience Copy Guardrails</span>
+                <p className="text-ink-muted">
+                  Brian never communicates shame, failure, or clinical certainty. Replace "Score Dropped" with "Latency Drift / Rest Protected".
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </Card>
 
       {/* SECTION 01: Semantic Color Tokens & Computed Contrast Table */}
@@ -208,10 +652,10 @@ export default function DesignSystemPage() {
               --color-canvas / --color-ink
             </span>
             <p className="font-display text-lg font-bold mt-1">
-              Warm Paper Canvas
+              Seashell Sketch Canvas
             </p>
             <p className="text-xs text-ink-muted mt-1">
-              15.61:1 (Light) · 16.12:1 (Dark) · AAA
+              16.51:1 (Light AAA) · 17.16:1 (Dark AAA)
             </p>
           </div>
 
@@ -220,10 +664,10 @@ export default function DesignSystemPage() {
               --color-brand / --color-brand-ink
             </span>
             <p className="font-display text-lg font-bold mt-1">
-              Confident Brand Teal
+              Warm Terracotta / Synaptic Amber
             </p>
             <p className="text-xs opacity-90 mt-1">
-              5.48:1 (Light AA) · 10.51:1 (Dark AAA)
+              5.37:1 (Light AA) · 7.48:1 (Dark AAA)
             </p>
           </div>
 
@@ -232,10 +676,10 @@ export default function DesignSystemPage() {
               --color-reward / --color-reward-ink
             </span>
             <p className="font-display text-lg font-bold mt-1">
-              Celebration Gold
+              Warm Golden Amber
             </p>
             <p className="text-xs opacity-90 mt-1">
-              10.64:1 (Light AAA) · 12.60:1 (Dark AAA)
+              11.47:1 (Light AAA) · 11.10:1 (Dark AAA)
             </p>
           </div>
 
@@ -244,10 +688,10 @@ export default function DesignSystemPage() {
               --color-accent (Fill Only)
             </span>
             <p className="font-display text-lg font-bold mt-1">
-              Warm Coral Fill
+              Terracotta Marker Accent
             </p>
             <p className="text-xs opacity-90 mt-1">
-              5.89:1 with Ink text · Never used as lone text
+              5.37:1 with Ink text · Never used as lone text
             </p>
           </div>
         </div>
@@ -449,10 +893,10 @@ export default function DesignSystemPage() {
         <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="rounded-md border-2 border-border-strong bg-surface-raised p-4">
             <span className="font-mono-tabular text-xs font-semibold uppercase text-ink-muted">
-              --font-display · Fredoka (SIL OFL)
+              --font-display · Delius Swash Caps (SIL OFL)
             </span>
             <p className="font-display text-2xl font-bold mt-2">
-              Friendly, Tactile Headings Without Clinical Coldness
+              Hand-Drawn Headings with Swash Capitals
             </p>
             <p className="text-xs text-ink-muted mt-2">
               Used for page titles, celebration milestones, and mascot voice
@@ -462,10 +906,10 @@ export default function DesignSystemPage() {
 
           <div className="rounded-md border-2 border-border-strong bg-surface-raised p-4">
             <span className="font-mono-tabular text-xs font-semibold uppercase text-ink-muted">
-              --font-sans · Lexend (SIL OFL)
+              --font-sans · Delius (SIL OFL)
             </span>
             <p className="text-base font-medium mt-2">
-              Engineered to reduce visual crowding and improve reading fluency
+              Handwritten body text bringing sketch warmth to instructions
               during cognitive task instructions and explainability panels.
             </p>
             <p className="text-xs text-ink-muted mt-2">

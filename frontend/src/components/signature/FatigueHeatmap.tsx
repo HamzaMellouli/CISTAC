@@ -41,8 +41,8 @@ export function FatigueHeatmap({ persona }: FatigueHeatmapProps) {
     cells.find((c) => c.windowId === windowId && c.dayKey === dayKey) ?? null
 
   return (
-    <Card className="p-5 space-y-4">
-      <div className="flex flex-wrap items-start justify-between gap-2 border-b border-border pb-3">
+    <Card className="p-5 space-y-4 shadow-doodle">
+      <div className="flex flex-wrap items-start justify-between gap-2 border-b-2 border-border-strong pb-3">
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <h3 className="font-display text-lg font-bold text-ink">

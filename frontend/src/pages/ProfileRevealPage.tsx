@@ -12,6 +12,7 @@ import { Mascot, type MascotState } from '../components/signature/Mascot'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 
 type RevealViewState =
   | 'calibrated'
@@ -214,6 +215,7 @@ export default function ProfileRevealPage() {
               Meet your initial Cognitive Twin—calibrated strengths, honest
               confidence bands, and your first 2-minute next step.
             </h1>
+            <DoodleSquiggle className="max-w-xs mt-1" />
             <p className="text-base text-ink-muted">
               Your scores are evolving percentage estimates with a 95%
               confidence interval (<code className="font-mono-tabular">±CI</code>

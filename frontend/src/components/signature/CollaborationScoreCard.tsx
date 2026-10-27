@@ -118,7 +118,7 @@ export function CollaborationScoreCard({
     <Card
       as="section"
       variant="default"
-      className={`border-2 border-border-strong space-y-6 ${className}`}
+      className={`border-2 border-border-strong space-y-6 shadow-doodle ${className}`}
       aria-labelledby="collab-score-title"
     >
       {/* Top Banner & Mandatory Non-Validated Badge */}

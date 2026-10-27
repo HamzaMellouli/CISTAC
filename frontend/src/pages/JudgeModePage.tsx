@@ -6,6 +6,7 @@ import { Mascot } from '../components/signature/Mascot'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 import type { WhyThisTrail } from '../contracts'
 
 interface RubricCriterionProof {
@@ -264,6 +265,7 @@ export default function JudgeModePage() {
             <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink tracking-tight">
               Demo & Judge Mode Console
             </h1>
+            <DoodleSquiggle className="max-w-xs mt-1" />
             <p className="text-sm sm:text-base text-ink-muted max-w-3xl mt-1 leading-relaxed">
               Comprehensive evaluation console for competition jury and technical evaluators. Test live seeded personas, inject fault conditions, verify dimension generalisation, and trace all 11 rubric criteria directly to executable screens.
             </p>

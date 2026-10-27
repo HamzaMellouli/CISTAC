@@ -13,8 +13,8 @@ const CARD_VARIANTS: Record<CardVariant, string> = {
   editorial: 'editorial-card text-ink',
   hero: 'hero-card text-ink',
   'low-confidence':
-    'rounded-2xl border-2 border-dashed border-border-strong bg-surface text-ink shadow-sm',
-  danger: 'rounded-2xl border border-danger bg-danger-subtle text-ink shadow-sm',
+    'rounded-md border-2 border-dashed border-border-strong bg-surface text-ink shadow-sm',
+  danger: 'rounded-md border-2 border-danger bg-danger-subtle text-ink shadow-sm',
 }
 
 export function Card({

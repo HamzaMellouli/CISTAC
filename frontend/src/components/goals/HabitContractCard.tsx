@@ -22,14 +22,15 @@ export function HabitContractCard({
     <Card
       as="article"
       variant={isPacingRest ? 'raised' : 'default'}
-      className={`border-2 border-border-strong space-y-4 ${className}`}
+      className={`border-2 border-border-strong space-y-4 relative shadow-doodle ${className}`}
       aria-labelledby={`contract-title-${contract.id}`}
     >
+      <div className="doodle-tape" />
       {/* Card Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-border pb-3">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b-2 border-border-strong pb-3 pt-1">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono font-semibold uppercase tracking-wider text-brand">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand">
               {contract.dimensionName}
             </span>
             <Badge
@@ -72,7 +73,7 @@ export function HabitContractCard({
         </div>
 
         {/* Streak Counter Pill */}
-        <div className="flex items-center gap-2 self-start sm:self-auto rounded-pill border border-border-strong bg-canvas px-3 py-1.5 shrink-0 shadow-xs">
+        <div className="flex items-center gap-2 self-start sm:self-auto rounded-sm border-2 border-border-strong bg-canvas px-3 py-1.5 shrink-0 shadow-doodle-sm">
           <span aria-hidden="true" className="text-base text-brand">
             🛡️
           </span>

@@ -11,6 +11,7 @@ import {
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 
 type OnboardingStep = 1 | 2 | 3
 type ViewStateMode =
@@ -195,6 +196,7 @@ export default function OnboardingPage() {
             <h1 className="font-display text-3xl font-bold text-ink tracking-tight">
               Configure your cognitive twin on your own terms.
             </h1>
+            <DoodleSquiggle className="max-w-xs mt-1" />
             <p className="text-sm text-ink-muted">
               Before a single trial begins, choose your focus goal, inspect the
               exact telemetry fields {BRAND_CONFIG.productName} logs, and verify

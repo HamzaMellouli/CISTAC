@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 import { Mascot } from '../components/signature/Mascot'
 import { WhyThisPanel } from '../components/signature/WhyThisPanel'
 import type { WhyThisTrail } from '../contracts'
@@ -193,6 +194,7 @@ export default function SystemPage({ defaultTab = '404' }: SystemPageProps) {
             <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink tracking-tight">
               System States & Fault Resilience Console
             </h1>
+            <DoodleSquiggle className="max-w-xs mt-1" />
             <p className="text-sm sm:text-base text-ink-muted max-w-3xl mt-1 leading-relaxed">
               Comprehensive fault containment, 404 route wayfinding, offline telemetry queueing, and component error boundaries for resilient cognitive training.
             </p>

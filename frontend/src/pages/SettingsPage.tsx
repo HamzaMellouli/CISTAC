@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 import { Mascot } from '../components/signature/Mascot'
 import { WhyThisPanel } from '../components/signature/WhyThisPanel'
 import { useAppStore, type TextScale } from '../store/useAppStore'
@@ -143,6 +144,7 @@ export function SettingsPage() {
           <h1 className="font-display text-3xl md:text-4xl font-black tracking-tight text-ink">
             Settings &amp; Accessibility Controls
           </h1>
+          <DoodleSquiggle className="max-w-xs mt-1" />
           <p className="text-ink-muted text-base max-w-3xl mt-1">
             Personalize sensory presentation, keyboard ergonomics, non-punitive study boundaries,
             and cognitive dimension pools. Every preference persists client-side in real time.

@@ -147,10 +147,10 @@ export function ProjectionFanChart({
           type="button"
           aria-pressed={selectedTarget === 'composite'}
           onClick={() => setSelectedTarget('composite')}
-          className={`focus-ring min-h-11 px-2.5 py-1 rounded-sm border text-xs font-semibold cursor-pointer ${
+          className={`focus-ring min-h-11 px-2.5 py-1 rounded-sm border-2 text-xs font-bold cursor-pointer ${
             selectedTarget === 'composite'
-              ? 'bg-brand text-brand-ink border-border-strong'
-              : 'bg-surface-raised text-ink border-border hover:bg-canvas'
+              ? 'bg-brand text-brand-ink border-border-strong shadow-xs'
+              : 'bg-surface-raised text-ink border-border-strong hover:bg-canvas'
           }`}
         >
           ★ Composite Twin
@@ -163,10 +163,10 @@ export function ProjectionFanChart({
               type="button"
               aria-pressed={active}
               onClick={() => setSelectedTarget(dim.id)}
-              className={`focus-ring min-h-11 px-2.5 py-1 rounded-sm border text-xs font-semibold cursor-pointer ${
+              className={`focus-ring min-h-11 px-2.5 py-1 rounded-sm border-2 text-xs font-bold cursor-pointer ${
                 active
-                  ? 'bg-brand text-brand-ink border-border-strong'
-                  : 'bg-surface-raised text-ink border-border hover:bg-canvas'
+                  ? 'bg-brand text-brand-ink border-border-strong shadow-xs'
+                  : 'bg-surface-raised text-ink border-border-strong hover:bg-canvas'
               }`}
             >
               {dim.markerGlyph} {dim.code}

@@ -115,7 +115,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Skip link for keyboard users (Tab stop 1) */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:start-2 focus:z-50 focus:px-4 focus:py-2 focus:rounded-md focus:bg-brand focus:text-brand-ink focus:font-semibold"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:start-2 focus:z-50 focus:px-4 focus:py-2 focus:rounded-sm focus:border-2 focus:border-border-strong focus:bg-brand focus:text-brand-ink focus:font-bold focus:shadow-doodle"
       >
         Skip to main content
       </a>
@@ -125,10 +125,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div
           role="status"
           aria-live="polite"
-          className="bg-warning-subtle border-b border-border px-4 py-2 text-xs md:text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
+          className="bg-warning-subtle border-b-2 border-border-strong px-4 py-2 text-xs md:text-sm font-bold text-ink flex flex-wrap items-center justify-between gap-2"
         >
           <span className="flex items-center gap-1.5">
-            <WifiOff size={16} aria-hidden="true" className="text-warning-ink" />
+            <WifiOff size={16} aria-hidden="true" className="text-warning" />
             {isRealOffline ? (
               <span>
                 <strong>Connection dropped:</strong> Your answers are saved locally on this device ({queueStatus.queuedCount} in buffer).
@@ -149,10 +149,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div
           role="status"
           aria-live="polite"
-          className="bg-info-subtle border-b border-border px-4 py-2 text-xs md:text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
+          className="bg-info-subtle border-b-2 border-border-strong px-4 py-2 text-xs md:text-sm font-bold text-ink flex flex-wrap items-center justify-between gap-2"
         >
           <span className="flex items-center gap-1.5">
-            <Cpu size={16} aria-hidden="true" className="text-info-ink" />
+            <Cpu size={16} aria-hidden="true" className="text-brand" />
             <span>
               <strong>Deterministic Fallback:</strong> Cognitive assessment and coaching operating via verified rule templates.
             </span>
@@ -163,22 +163,35 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      {/* Top Consumer Navigation Header (Strict 64px height on desktop, content starts <= 80px) */}
+      {/* Global Hand-Ink Wobble and Diagonal Hatch Filter Definitions */}
+      <svg aria-hidden="true" className="absolute w-0 h-0 pointer-events-none">
+        <defs>
+          <filter id="hand-ink" x="-2%" y="-2%" width="104%" height="104%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.4" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <pattern id="diagonalHatch" width="8" height="8" patternUnits="userSpaceOnUse">
+            <path d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2" stroke="var(--color-secondary)" strokeWidth="1.2" strokeOpacity="0.35" />
+          </pattern>
+        </defs>
+      </svg>
+
+      {/* Top Consumer Navigation Header with Doodle Sketch Border */}
       {!isTaskRoute && (
         <header
           role="banner"
-          className="sticky top-0 z-40 h-16 bg-surface/95 backdrop-blur-md border-b border-border px-4 transition-colors flex items-center"
+          className="sticky top-0 z-40 h-16 bg-surface/95 backdrop-blur-md border-b-2 border-border-strong px-4 transition-colors flex items-center"
         >
           <div className="max-w-6xl w-full mx-auto flex items-center justify-between gap-4">
             {/* Product Brand Mark */}
             <Link
               to="/"
               title={`${BRAND_CONFIG.productName} Home`}
-              className="focus-ring rounded-xl flex items-center gap-2.5 text-ink no-underline group"
+              className="focus-ring rounded-md flex items-center gap-2.5 text-ink no-underline group"
             >
               <span
                 aria-hidden="true"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-brand-ink shadow-sm transition-transform group-hover:scale-105"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-sm bg-brand text-brand-ink border-2 border-border-strong shadow-doodle-sm transition-transform group-hover:scale-105"
               >
                 <BrianLogo size={22} className="text-brand-ink" />
               </span>
@@ -197,7 +210,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <div className="flex-1 flex justify-end items-center mr-2">
                 <Link
                   to="/dashboard"
-                  className="focus-ring px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline inline-flex items-center gap-1.5 border border-border"
+                  className="focus-ring px-3.5 py-1.5 rounded-sm text-xs sm:text-sm font-bold text-ink hover:bg-brand-subtle transition-colors no-underline inline-flex items-center gap-1.5 border-2 border-border-strong shadow-doodle-sm"
                 >
                   <span>Skip intro</span>
                   <span aria-hidden="true">→</span>
@@ -206,7 +219,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             ) : (
               <nav
                 aria-label="Primary product navigation"
-                className="hidden md:flex items-center gap-1 p-1 rounded-full bg-surface-raised border border-border"
+                className="hidden md:flex items-center gap-1 p-1 rounded-pill bg-surface-raised border-2 border-border-strong shadow-doodle-sm"
               >
                 {consumerNavItems.map((item) => {
                   const Icon = item.icon
@@ -220,19 +233,25 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       key={item.path}
                       to={item.path}
                       aria-current={isActive ? 'page' : undefined}
-                      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold no-underline transition-all ${
+                      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-pill text-xs font-bold no-underline transition-all ${
                         isActive
-                          ? 'bg-brand text-brand-ink shadow-sm'
+                          ? 'bg-brand text-brand-ink border border-border-strong shadow-doodle-sm'
                           : 'text-ink-muted hover:text-ink hover:bg-canvas'
                       }`}
                     >
-                      <Icon size={15} aria-hidden="true" />
+                      <Icon size={14} aria-hidden="true" />
                       <span>{item.label}</span>
                     </Link>
                   )
                 })}
               </nav>
             )}
+
+            {/* Protected Streak Pill matching Stitch */}
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-surface-raised border-2 border-border-strong rounded-pill shadow-doodle-sm">
+              <span className="text-danger text-xs" aria-hidden="true">🔥</span>
+              <span className="font-mono text-xs text-ink font-semibold">12d · Wed Rest</span>
+            </div>
 
             {/* Utility Controls & Floating Judge Drawer Toggle */}
             <div className="flex items-center gap-2">
@@ -241,7 +260,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 aria-label={reducedMotion ? 'Motion: Off' : 'Motion: On'}
                 title={reducedMotion ? 'Animations: Reduced' : 'Animations: Standard'}
                 onClick={() => setReducedMotion(!reducedMotion)}
-                className="focus-ring px-2.5 py-1 rounded-full text-xs font-semibold text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors cursor-pointer hidden lg:inline-flex"
+                className="focus-ring px-2.5 py-1 rounded-sm text-xs font-bold text-ink-muted hover:text-ink hover:bg-surface-raised border border-border-strong transition-colors cursor-pointer hidden lg:inline-flex"
               >
                 {reducedMotion ? 'Motion: Off' : 'Motion: On'}
               </button>
@@ -251,27 +270,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 aria-label={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
                 title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
                 onClick={toggleTheme}
-                className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors cursor-pointer"
+                className="focus-ring p-2 rounded-sm border border-border-strong bg-surface text-ink hover:bg-surface-raised shadow-doodle-sm transition-colors cursor-pointer"
               >
-                {theme === 'light' ? <Moon size={18} aria-hidden="true" /> : <Sun size={18} aria-hidden="true" />}
+                {theme === 'light' ? <Moon size={16} aria-hidden="true" /> : <Sun size={16} aria-hidden="true" />}
               </button>
 
               <Link
                 to="/privacy"
                 title="Privacy Center & Non-Biometric Lock"
                 aria-label="Privacy Center"
-                className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center"
+                className="focus-ring p-2 rounded-sm border border-border-strong bg-surface text-ink hover:bg-surface-raised shadow-doodle-sm transition-colors no-underline hidden sm:inline-flex items-center justify-center"
               >
-                <ShieldCheck size={18} aria-hidden="true" />
+                <ShieldCheck size={16} aria-hidden="true" />
               </Link>
 
               <Link
                 to="/settings"
                 title="Settings & Accessibility Controls"
                 aria-label="Settings"
-                className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center"
+                className="focus-ring p-2 rounded-sm border border-border-strong bg-surface text-ink hover:bg-surface-raised shadow-doodle-sm transition-colors no-underline hidden sm:inline-flex items-center justify-center"
               >
-                <Settings size={18} aria-hidden="true" />
+                <Settings size={16} aria-hidden="true" />
               </Link>
             </div>
           </div>
@@ -290,11 +309,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             aria-controls="judge-devtools-drawer"
             onClick={() => toggleJudgeDrawer()}
             title="Evaluator Mode & Dimension Presets (Shift+J)"
-            className="focus-ring inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-medium text-ink bg-surface border border-border shadow-sm hover:bg-surface-raised transition-colors cursor-pointer"
+            className="focus-ring inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-xs font-mono font-bold text-ink bg-surface border-2 border-border-strong shadow-doodle-sm hover:bg-surface-raised transition-colors cursor-pointer"
           >
             <Scale size={12} aria-hidden="true" className="text-ink" />
             <span>Judge Mode</span>
-            <kbd className="text-xs font-mono text-ink font-semibold">⇧J</kbd>
+            <kbd className="text-xs font-mono text-ink font-bold">⇧J</kbd>
           </button>
         </aside>
       )}
@@ -308,12 +327,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             initial={reducedMotion ? undefined : { height: 0, opacity: 0 }}
             animate={reducedMotion ? undefined : { height: 'auto', opacity: 1 }}
             exit={reducedMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
-            className="border-b border-border bg-surface-raised/95 backdrop-blur-md px-4 py-3 shadow-md"
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="border-b-2 border-border-strong bg-surface-raised/95 backdrop-blur-md px-4 py-3 shadow-doodle-lg"
           >
             <div className="max-w-6xl mx-auto space-y-3">
               {/* Drawer Header & Quick Jump */}
-              <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b-2 border-border-strong">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="font-display text-xs font-bold text-ink flex items-center gap-1">
                     <Scale size={14} aria-hidden="true" />
@@ -333,7 +352,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
                     title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
                     onClick={toggleTheme}
-                    className="focus-ring px-2.5 py-1 rounded-full text-xs font-semibold text-ink-muted hover:text-ink hover:bg-surface border border-border transition-colors cursor-pointer inline-flex items-center gap-1"
+                    className="focus-ring px-2.5 py-1 rounded-sm text-xs font-bold text-ink hover:bg-surface border-2 border-border-strong transition-colors cursor-pointer inline-flex items-center gap-1 shadow-doodle-sm"
                   >
                     {theme === 'light' ? <Moon size={13} aria-hidden="true" /> : <Sun size={13} aria-hidden="true" />}
                     <span>{theme === 'light' ? 'Dark (Night Lab)' : 'Light (Playful Lab)'}</span>
@@ -347,7 +366,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <button
                     type="button"
                     onClick={() => setIsJudgeDrawerOpen(false)}
-                    className="text-xs text-ink-muted hover:text-ink cursor-pointer px-2 py-0.5 rounded hover:bg-canvas"
+                    className="text-xs text-ink-muted hover:text-ink cursor-pointer px-2 py-0.5 rounded-sm hover:bg-canvas"
                   >
                     Close Dock ▲
                   </button>
@@ -356,13 +375,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
               {/* Dimension Generalisation Switcher (3, 6, 7, 8, 10 Dimensions) */}
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold text-ink-muted">
+                <span className="text-xs font-bold text-ink">
                   Dimension Preset:
                 </span>
                 <div
                   role="group"
                   aria-label="Cognitive dimension count preset"
-                  className="inline-flex flex-wrap items-center gap-1 rounded-full border border-border bg-canvas p-1"
+                  className="inline-flex flex-wrap items-center gap-1 rounded-sm border-2 border-border-strong bg-canvas p-1"
                 >
                   {DIMENSION_PRESETS.map((item) => {
                     const active = dimensionPreset === item.key
@@ -372,9 +391,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         type="button"
                         aria-pressed={active}
                         onClick={() => setDimensionPreset(item.key)}
-                        className={`focus-ring px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition-all ${
+                        className={`focus-ring px-3 py-1 rounded-sm text-xs font-bold cursor-pointer transition-all ${
                           active
-                            ? 'bg-brand text-brand-ink shadow-sm'
+                            ? 'bg-brand text-brand-ink border border-border-strong shadow-xs'
                             : 'bg-transparent text-ink hover:bg-surface-raised'
                         }`}
                       >
@@ -393,7 +412,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
                 {deepLinkCategories.map((cat) => (
                   <div key={cat.group} className="space-y-1">
-                    <span className="font-mono-tabular text-xs font-semibold uppercase tracking-wider text-ink-muted block">
+                    <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted block">
                       {cat.group}
                     </span>
                     <div className="flex flex-wrap items-center gap-1">
@@ -403,10 +422,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                           <Link
                             key={link.path}
                             to={link.path}
-                            className={`px-2.5 py-1 text-xs font-medium rounded-md no-underline inline-flex items-center transition-all ${
+                            className={`px-2.5 py-1 text-xs font-bold rounded-sm no-underline inline-flex items-center transition-all ${
                               isCurrent
-                                ? 'bg-brand text-brand-ink font-semibold'
-                                : 'bg-surface text-ink hover:bg-canvas border border-border/50'
+                                ? 'bg-brand text-brand-ink border border-border-strong shadow-xs'
+                                : 'bg-surface text-ink hover:bg-canvas border border-border'
                             }`}
                           >
                             {link.label}
@@ -422,7 +441,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Main Content Column (Max width 1120px / 70rem per visual rules, distraction-free container on practice tasks) */}
+      {/* Main Content Column */}
       <main
         id="main-content"
         className={`flex-1 w-full min-w-0 mx-auto px-4 ${
@@ -434,15 +453,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      {/* Product Footer with Quiet Demo Data Badge & Evaluator Link (Hidden during distraction-free practice) */}
+      {/* Product Footer with Quiet Demo Data Badge & Evaluator Link */}
       {!isTaskRoute && (
         <footer
           role="contentinfo"
-          className="border-t border-border bg-surface px-4 py-4 text-xs text-ink-muted"
+          className="border-t-2 border-border-strong bg-surface px-4 py-4 text-xs text-ink-muted"
         >
           <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-raised border border-border text-ink-muted">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-bold bg-surface-raised border border-border-strong text-ink">
                 Demo Data Mode
               </span>
               <p className="m-0">{BRAND_CONFIG.nonClinicalNotice}</p>
@@ -452,11 +471,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <button
                 type="button"
                 onClick={() => setIsJudgeDrawerOpen(true)}
-                className="text-xs font-medium text-ink-muted hover:text-ink inline-flex items-center gap-1 cursor-pointer transition-colors"
+                className="text-xs font-bold text-ink hover:text-brand inline-flex items-center gap-1 cursor-pointer transition-colors"
               >
                 <Scale size={13} aria-hidden="true" />
                 <span>Judge Mode</span>
-                <kbd className="hidden lg:inline text-xs font-mono text-ink font-semibold">⇧J</kbd>
+                <kbd className="hidden lg:inline text-xs font-mono text-ink font-bold">⇧J</kbd>
               </button>
               <span className="font-mono-tabular text-ink-muted">
                 Registry: {dimensionPreset} dims · Theme: {theme}
@@ -466,11 +485,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </footer>
       )}
 
-      {/* Mobile Bottom Tab Bar (Fixed, native app style ergonomics - hidden on first-run Welcome & Practice) */}
+      {/* Mobile Bottom Tab Bar */}
       {location.pathname !== '/' && !isTaskRoute && (
         <nav
           aria-label="Mobile bottom navigation"
-          className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md border-t border-border flex items-center justify-around py-1.5 px-2"
+          className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md border-t-2 border-border-strong flex items-center justify-around py-1.5 px-2"
         >
           {consumerNavItems.map((item) => {
             const Icon = item.icon
@@ -484,7 +503,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 key={item.path}
                 to={item.path}
                 aria-current={isActive ? 'page' : undefined}
-                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-xs no-underline transition-all ${
+                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-sm text-xs no-underline transition-all ${
                   isActive
                     ? 'text-brand font-bold'
                     : 'text-ink-muted hover:text-ink'

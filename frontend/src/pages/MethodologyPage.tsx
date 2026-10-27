@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 import { Mascot } from '../components/signature/Mascot'
 import { WhyThisPanel } from '../components/signature/WhyThisPanel'
 import { lintCopyText, SAMPLE_CLINICAL_DEMO_INPUT, SAMPLE_GUILT_DEMO_INPUT } from '../utils/copyLinter'
@@ -178,6 +179,7 @@ export function MethodologyPage() {
           <h1 className="font-display text-3xl md:text-4xl font-black tracking-tight text-ink">
             Methodology, Limits &amp; Ethical Charter
           </h1>
+          <DoodleSquiggle className="max-w-xs mt-1" />
           <p className="text-ink-muted text-base max-w-3xl mt-1">
             Complete scientific disclosure of Bayesian cognitive modeling, measurement limits,
             known environmental confounders, and non-clinical ethical guardrails.

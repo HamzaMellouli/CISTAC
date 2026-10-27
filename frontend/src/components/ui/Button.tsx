@@ -13,15 +13,15 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:
-    'tactile-btn bg-brand text-brand-ink hover:bg-brand-hover font-semibold',
+    'tactile-btn bg-brand text-brand-ink hover:bg-brand-hover font-bold',
   secondary:
-    'tactile-btn bg-surface text-ink hover:bg-surface-raised font-semibold',
+    'tactile-btn bg-surface text-ink hover:bg-surface-raised font-bold',
   reward:
     'tactile-btn bg-reward text-reward-ink hover:opacity-95 font-bold',
   danger:
-    'tactile-btn bg-danger text-brand-ink hover:opacity-95 font-semibold',
+    'tactile-btn bg-danger text-surface hover:opacity-95 font-bold',
   ghost:
-    'focus-ring min-h-11 min-w-11 rounded-md border-2 border-transparent bg-transparent text-ink hover:bg-surface-raised hover:border-border font-medium',
+    'focus-ring min-h-11 min-w-11 rounded-sm border-2 border-transparent bg-transparent text-ink hover:bg-surface-raised hover:border-border font-medium',
 }
 
 const SIZE_CLASSES: Record<ButtonSize, string> = {

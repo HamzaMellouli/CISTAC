@@ -9,6 +9,7 @@ import { getDimensionsByPreset } from '../config/dimensions'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 import { HabitContractCard } from '../components/goals/HabitContractCard'
 import { WhyThisPanel } from '../components/signature/WhyThisPanel'
 import { Mascot } from '../components/signature/Mascot'
@@ -167,6 +168,7 @@ export function GoalsPage() {
             >
               Goals &amp; Habit Contracts Studio
             </h1>
+            <DoodleSquiggle className="max-w-xs mt-1" />
             <p className="text-base text-ink-muted max-w-2xl leading-relaxed">
               Self-directed micro-commitments with Bayesian Epistemic ETA Intervals. Built on the belief that neural recovery is essential for memory consolidation—taking a rest day preserves your streak with zero penalty.
             </p>

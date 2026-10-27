@@ -6,6 +6,7 @@ import { Mascot } from '../components/signature/Mascot'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
 import { useAppStore } from '../store/useAppStore'
 import { MOCK_PRIVACY_AUDIT_LOG } from '../services/mocks/fixtures'
 import type { PrivacyAuditEvent, PurgeCertificate, WhyThisTrail } from '../contracts'
@@ -215,6 +216,7 @@ export default function PrivacyPage() {
             <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink tracking-tight">
               Privacy Center &amp; Sovereign Audit Log
             </h1>
+            <DoodleSquiggle className="max-w-xs mt-1" />
             <p className="text-sm sm:text-base text-ink-muted max-w-3xl mt-1 leading-relaxed">
               Verify mathematical hardware locks, inspect live AI telemetry payloads, manage granular consent, and execute statutory GDPR rights with tamper-evident audit receipts.
             </p>
