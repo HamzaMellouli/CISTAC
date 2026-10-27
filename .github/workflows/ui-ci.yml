@@ -50,5 +50,5 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Playwright E2E & Axe-core A11y Suite (19/19)
+      - name: Playwright E2E & Axe-core A11y Suite (18/18)
         run: npx playwright test

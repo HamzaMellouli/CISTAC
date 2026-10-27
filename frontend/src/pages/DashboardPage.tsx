@@ -30,7 +30,6 @@ export default function DashboardPage() {
     dimensionPreset,
     activePersona,
     setActivePersona,
-    isJudgeDrawerOpen,
   } = useAppStore()
 
   const [viewState, setViewState] = useState<DashboardViewState>(() => {
@@ -581,13 +580,9 @@ export default function DashboardPage() {
                       },
                       { id: 'partial', label: 'Partial (1 Missing Dim)' },
                       { id: 'empty', label: 'Empty (New Learner)' },
-                      ...(isJudgeDrawerOpen
-                        ? ([
-                            { id: 'loading', label: 'Loading Skeleton' },
-                            { id: 'error', label: 'Error Recovery' },
-                            { id: 'extreme-text', label: 'Extreme Values' },
-                          ] as const)
-                        : []),
+                      { id: 'loading', label: 'Loading Skeleton' },
+                      { id: 'error', label: 'Error Recovery' },
+                      { id: 'extreme-text', label: 'Extreme Values' },
                     ] as const
                   ).map((tab) => (
                     <button

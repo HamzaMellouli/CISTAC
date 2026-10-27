@@ -123,7 +123,6 @@ export default function WelcomePage() {
     dimensionPreset,
     activePersona,
     setActivePersona,
-    isJudgeDrawerOpen,
   } = useAppStore()
 
   const [previewState, setPreviewState] = useState<HeroPreviewState>('calibrated')
@@ -503,14 +502,10 @@ export default function WelcomePage() {
               { id: 'calibrated', label: 'Calibrated (84%)' },
               { id: 'low-confidence', label: 'Low-Conf (Hatched)' },
               { id: 'partial', label: 'Partial (1 Missing)' },
-              ...(isJudgeDrawerOpen
-                ? ([
-                    { id: 'loading', label: 'Loading' },
-                    { id: 'empty', label: 'Empty (New)' },
-                    { id: 'error', label: 'Error' },
-                    { id: 'extreme-text', label: 'Extreme Values' },
-                  ] as const)
-                : []),
+              { id: 'loading', label: 'Loading' },
+              { id: 'empty', label: 'Empty (New)' },
+              { id: 'error', label: 'Error' },
+              { id: 'extreme-text', label: 'Extreme Values' },
             ] as const
           ).map((tab) => (
             <button
