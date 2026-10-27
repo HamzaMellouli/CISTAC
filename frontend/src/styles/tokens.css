@@ -1,0 +1,412 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #FFF5EE;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #FDF0E7;
+  --color-ink: #111827;
+  --color-ink-muted: #4B5E78;
+  --color-border: #E7DFD8;
+  --color-border-strong: #263D5B;
+  --color-brand: #E86A33;
+  --color-brand-hover: #D55823;
+  --color-brand-subtle: #FDF2EB;
+  --color-brand-ink: #111827;
+  --color-secondary: #263D5B;
+  --color-reward: #FFC83D;
+  --color-reward-ink: #111827;
+  --color-accent: #E86A33;
+  --color-accent-ink: #111827;
+  --color-success: #16A34A;
+  --color-success-subtle: #F0FDF4;
+  --color-warning: #D97706;
+  --color-warning-subtle: #FFFBEB;
+  --color-danger: #DC2626;
+  --color-danger-subtle: #FEF2F2;
+  --color-info: #E86A33;
+  --color-info-subtle: #FDF2EB;
+
+  --font-display: 'Delius Swash Caps', 'Delius', cursive, sans-serif;
+  --font-sans: 'Delius', 'Delius Swash Caps', cursive, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-pill: 9999px;
+}
+
+:root,
+[data-theme="light"] {
+  /* Doodle (Hand Drawn) Design System Semantic Color Roles */
+  --color-canvas: #FFF5EE;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #FDF0E7;
+  --color-ink: #111827;
+  --color-ink-muted: #4B5E78;
+  --color-border: #E7DFD8;
+  --color-border-strong: #263D5B;
+  --color-brand: #E86A33;
+  --color-brand-hover: #D55823;
+  --color-brand-subtle: #FDF2EB;
+  --color-brand-ink: #111827;
+  --color-secondary: #263D5B;
+  --color-reward: #FFC83D;
+  --color-reward-ink: #111827;
+  --color-accent: #E86A33;
+  --color-accent-ink: #111827;
+  --color-success: #16A34A;
+  --color-success-subtle: #F0FDF4;
+  --color-warning: #D97706;
+  --color-warning-subtle: #FFFBEB;
+  --color-danger: #DC2626;
+  --color-danger-subtle: #FEF2F2;
+  --color-info: #E86A33;
+  --color-info-subtle: #FDF2EB;
+
+  /* Okabe-Ito WCAG >= 3:1 Dimension Palette (3 to 10 Dimensions) */
+  --dim-1: #0072B2;
+  --dim-2: #C45100;
+  --dim-3: #008662;
+  --dim-4: #9E4778;
+  --dim-5: #A86E00;
+  --dim-6: #0B76A8;
+  --dim-7: #7D7300;
+  --dim-8: #4F46E5;
+  --dim-9: #0F766E;
+  --dim-10: #831843;
+
+  /* Uncertainty Tokens */
+  --uncertainty-band-fill: rgba(232, 106, 51, 0.20);
+  --uncertainty-low-stroke: #9E4778;
+  --uncertainty-low-tint: #FDF2EB;
+
+  /* Hand-Drawn Sketch Borders & Hard Offset Shadows */
+  --border-card-subtle: #263D5B;
+  --border-card-hover: #263D5B;
+  --shadow-doodle: 3px 3px 0 #263D5B;
+  --shadow-doodle-sm: 2px 2px 0 #263D5B;
+  --shadow-doodle-lg: 4px 4px 0 #263D5B;
+  --shadow-tactile: 3px 3px 0 #263D5B;
+  --shadow-tactile-active: 1px 1px 0 #263D5B;
+  --shadow-card: 4px 4px 0 #263D5B;
+  --shadow-soft: 3px 3px 0 #263D5B;
+  --shadow-soft-hover: 4px 4px 0 #263D5B;
+  --shadow-hero: 5px 5px 0 #263D5B;
+  --bg-hero-gradient: linear-gradient(135deg, #FFFFFF 0%, #FDF0E7 100%);
+  --bg-card-gradient: linear-gradient(135deg, #FFFFFF 0%, #FFF5EE 100%);
+
+  /* Typography Families */
+  --font-display: 'Delius Swash Caps', 'Delius', cursive, sans-serif;
+  --font-sans: 'Delius', 'Delius Swash Caps', cursive, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Typography Scale (Doodle 14/16/18/24/32/40 px) */
+  --text-xs: 0.75rem;
+  --leading-xs: 1rem;
+  --text-sm: 0.875rem;
+  --leading-sm: 1.25rem;
+  --text-base: 1rem;
+  --leading-base: 1.5rem;
+  --text-lg: 1.125rem;
+  --leading-lg: 1.75rem;
+  --text-xl: 1.375rem;
+  --leading-xl: 1.75rem;
+  --text-2xl: 1.75rem;
+  --leading-2xl: 2.25rem;
+  --text-3xl: 2.25rem;
+  --leading-3xl: 2.75rem;
+
+  /* 4px Base Spacing Scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radius Scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  /* Motion Scale */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+[data-theme="dark"] {
+  /* Blackboard Sketch (Dark Theme) */
+  --color-canvas: #131B2E;
+  --color-surface: #1E293B;
+  --color-surface-raised: #27354A;
+  --color-ink: #FFFFFF;
+  --color-ink-muted: #CBD5E1;
+  --color-border: #3B4D68;
+  --color-border-strong: #FF8C5A;
+  --color-brand: #FF8C5A;
+  --color-brand-hover: #FFA47A;
+  --color-brand-subtle: #2D1A14;
+  --color-brand-ink: #131B2E;
+  --color-secondary: #E7DFD8;
+  --color-reward: #FFC83D;
+  --color-reward-ink: #131B2E;
+  --color-accent: #FF8C5A;
+  --color-accent-ink: #131B2E;
+  --color-success: #4ADE80;
+  --color-success-subtle: #0F2E1E;
+  --color-warning: #FBBF24;
+  --color-warning-subtle: #332409;
+  --color-danger: #F87171;
+  --color-danger-subtle: #381418;
+  --color-info: #FF8C5A;
+  --color-info-subtle: #2D1A14;
+
+  /* Okabe-Ito Dark Theme Dimension Palette */
+  --dim-1: #56B4E9;
+  --dim-2: #FF8C3B;
+  --dim-3: #2DD4BF;
+  --dim-4: #E899C8;
+  --dim-5: #FACC15;
+  --dim-6: #38BDF8;
+  --dim-7: #F0E442;
+  --dim-8: #818CF8;
+  --dim-9: #34D399;
+  --dim-10: #F472B6;
+
+  --uncertainty-band-fill: rgba(255, 140, 90, 0.22);
+  --uncertainty-low-stroke: #F472B6;
+  --uncertainty-low-tint: #2D1A14;
+
+  --border-card-subtle: #FF8C5A;
+  --border-card-hover: #FFA47A;
+  --shadow-doodle: 3px 3px 0 #FF8C5A;
+  --shadow-doodle-sm: 2px 2px 0 #FF8C5A;
+  --shadow-doodle-lg: 4px 4px 0 #FF8C5A;
+  --shadow-tactile: 3px 3px 0 #FF8C5A;
+  --shadow-tactile-active: 1px 1px 0 #FF8C5A;
+  --shadow-card: 4px 4px 0 #FF8C5A;
+  --shadow-soft: 3px 3px 0 #FF8C5A;
+  --shadow-soft-hover: 4px 4px 0 #FFA47A;
+  --shadow-hero: 5px 5px 0 #FF8C5A;
+  --bg-hero-gradient: linear-gradient(135deg, #1E293B 0%, #172234 100%);
+  --bg-card-gradient: linear-gradient(135deg, #1E293B 0%, #223046 100%);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    background-color: var(--color-canvas);
+    /* Subtle sketchbook / whiteboard dot grid background */
+    background-image: radial-gradient(rgba(38, 61, 91, 0.09) 0.8px, transparent 0.8px);
+    background-size: 24px 24px;
+    background-position: 0 0;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-base);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  [data-theme="dark"] html,
+  [data-theme="dark"] body {
+    background-image: radial-gradient(rgba(255, 140, 90, 0.12) 0.8px, transparent 0.8px);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-mono-tabular {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Doodle Hand-Drawn Card Primitives */
+  .tactile-card {
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-doodle);
+    transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .tactile-card:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-doodle-lg);
+  }
+
+  .editorial-card {
+    background: var(--bg-card-gradient);
+    border: 2px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-doodle);
+    transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .editorial-card:hover {
+    box-shadow: var(--shadow-doodle-lg);
+  }
+
+  .hero-card {
+    background: var(--bg-hero-gradient);
+    border: 2.5px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-hero);
+    position: relative;
+  }
+
+  .glass-dock {
+    background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid var(--color-border-strong);
+    box-shadow: var(--shadow-hero);
+    border-radius: var(--radius-md);
+  }
+
+  /* Doodle Buttons with Hand-Drawn Hard Offset Shadow & Tactile Press */
+  .tactile-btn {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--color-border-strong);
+    box-shadow: var(--shadow-tactile);
+    transition-property: transform, background-color, box-shadow, border-color;
+    transition-duration: var(--duration-fast);
+    transition-timing-function: var(--ease-out);
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+
+  .tactile-btn:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-doodle-lg);
+  }
+
+  .tactile-btn:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: var(--shadow-tactile-active);
+  }
+
+  .tactile-btn:focus-visible,
+  .focus-ring:focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  /* Doodle Sketch Utilities */
+  .doodle-tape {
+    position: absolute;
+    top: -8px;
+    left: 20px;
+    width: 60px;
+    height: 16px;
+    background-color: rgba(255, 200, 61, 0.45);
+    border: 1px dashed rgba(38, 61, 91, 0.4);
+    transform: rotate(-3deg);
+    pointer-events: none;
+  }
+
+  .doodle-highlight {
+    background: linear-gradient(104deg, rgba(232, 106, 51, 0) 0%, rgba(232, 106, 51, 0.22) 3%, rgba(232, 106, 51, 0.22) 97%, rgba(232, 106, 51, 0) 100%);
+    padding: 0 4px;
+    border-radius: 2px;
+  }
+
+  .doodle-wobble-border {
+    border: 2px solid var(--color-border-strong);
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  }
+
+}
+
+/* Reduced Motion & Timed-Trial Zero-Distraction Lock */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .tactile-btn:active:not(:disabled),
+  .tactile-card:hover {
+    transform: none !important;
+  }
+}
+
+[data-reduced-motion="true"] *,
+[data-timed-trial="true"] * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+[data-reduced-motion="true"] .tactile-btn:active:not(:disabled),
+[data-timed-trial="true"] .tactile-btn:active:not(:disabled),
+[data-reduced-motion="true"] .tactile-card:hover,
+[data-timed-trial="true"] .tactile-card:hover {
+  transform: none !important;
+}
+
+/* Accessible text contrast overrides for light theme status & brand text tokens (WCAG 2.1 AA ≥4.5:1) */
+.text-brand {
+  color: #C2410C !important;
+}
+[data-theme="dark"] .text-brand {
+  color: var(--color-brand) !important;
+}
+
+.text-warning {
+  color: #92400E !important;
+}
+[data-theme="dark"] .text-warning {
+  color: var(--color-warning) !important;
+}
+
+.text-success {
+  color: #166534 !important;
+}
+[data-theme="dark"] .text-success {
+  color: var(--color-success) !important;
+}
+
+.text-danger {
+  color: #B91C1C !important;
+}
+[data-theme="dark"] .text-danger {
+  color: var(--color-danger) !important;
+}
+
