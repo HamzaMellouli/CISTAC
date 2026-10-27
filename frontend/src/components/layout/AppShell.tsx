@@ -15,7 +15,7 @@ import {
 } from 'lucide-react'
 import { BRAND_CONFIG } from '../../config/brand'
 import { DIMENSION_PRESETS } from '../../config/dimensions'
-import { BrianLogo } from '../brand/BrianLogo'
+import conceptALockup from '../../assets/branding/concept-a-lockup.svg'
 import { useAppStore } from '../../store/useAppStore'
 import { telemetryQueue } from '../../services/telemetryQueue'
 import { Badge } from '../ui/Badge'
@@ -132,22 +132,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <Link
               to="/"
               title={`${BRAND_CONFIG.productName} Home`}
-              className="focus-ring rounded-md flex items-center gap-2.5 text-ink no-underline group"
+              aria-label={`${BRAND_CONFIG.productName} Home`}
+              className="focus-ring rounded-md flex items-center text-ink no-underline group py-1"
             >
-              <span
-                aria-hidden="true"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-sm bg-brand text-brand-ink border-2 border-border-strong shadow-doodle-sm transition-transform group-hover:scale-105"
-              >
-                <BrianLogo size={22} className="text-brand-ink" />
-              </span>
-              <div>
-                <span className="font-display text-base font-bold tracking-tight block leading-none">
-                  {BRAND_CONFIG.productName}
-                </span>
-                <span className="text-xs text-ink-muted block mt-0.5">
-                  {BRAND_CONFIG.challengeBadge}
-                </span>
-              </div>
+              <img
+                src={conceptALockup}
+                alt={BRAND_CONFIG.productName}
+                className={`h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-105 ${
+                  theme === 'dark' ? 'brightness-0 invert' : ''
+                }`}
+              />
             </Link>
 
             {/* 5 Primary Consumer Destinations Navbar (Desktop) or Skip intro on Welcome first run */}
