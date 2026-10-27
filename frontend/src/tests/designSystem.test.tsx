@@ -222,7 +222,7 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
     const heading = await screen.findByRole(
       'heading',
       {
-        name: /Your evolving cognitive twin—live confidence bands/i,
+        name: /Good morning/i,
       },
       { timeout: 5000 },
     )

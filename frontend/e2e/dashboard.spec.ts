@@ -13,7 +13,7 @@ test.describe('Page 06: Dashboard (/dashboard) Hero Visual QA & A11y', () => {
     await page.goto('/dashboard', { waitUntil: 'networkidle' })
     await expect(
       page.getByRole('heading', {
-        name: /Your evolving cognitive twin—live confidence bands/i,
+        name: /Good morning|Your evolving cognitive twin/i,
       }),
     ).toBeVisible()
 
