@@ -16,6 +16,7 @@ import {
   Cpu,
 } from 'lucide-react'
 import { BRAND_CONFIG } from '../../config/brand'
+import { BrianLogo } from '../brand/BrianLogo'
 import { DIMENSION_PRESETS } from '../../config/dimensions'
 import { useAppStore } from '../../store/useAppStore'
 import { telemetryQueue } from '../../services/telemetryQueue'
@@ -172,14 +173,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             {/* Product Brand Mark */}
             <Link
               to="/"
-              title="SynapseTwin Home"
+              title={`${BRAND_CONFIG.productName} Home`}
               className="focus-ring rounded-xl flex items-center gap-2.5 text-ink no-underline group"
             >
               <span
                 aria-hidden="true"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-brand-ink font-display text-sm font-bold shadow-sm transition-transform group-hover:scale-105"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-brand-ink shadow-sm transition-transform group-hover:scale-105"
               >
-                ST
+                <BrianLogo size={22} className="text-brand-ink" />
               </span>
               <div>
                 <span className="font-display text-base font-bold tracking-tight block leading-none">

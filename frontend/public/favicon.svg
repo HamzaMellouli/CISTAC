@@ -1,9 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect x="4" y="4" width="56" height="56" rx="16" fill="#FFF8EE" stroke="#1F1B3B" stroke-width="4"/>
-  <path d="M20 38C20 28 25 22 32 22C39 22 44 28 44 38" stroke="#0F766E" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="26" cy="34" r="3" fill="#1F1B3B"/>
-  <circle cx="38" cy="34" r="3" fill="#1F1B3B"/>
-  <path d="M28 42C30 44 34 44 36 42" stroke="#1F1B3B" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="14" cy="22" r="4" fill="#FFC83D" stroke="#1F1B3B" stroke-width="2.5"/>
-  <circle cx="50" cy="22" r="4" fill="#FFC83D" stroke="#1F1B3B" stroke-width="2.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <rect width="256" height="256" rx="56" fill="#0F172A"/>
+  <path fill="#F8FAFC" fill-rule="evenodd" d="
+    M 56,32
+    H 136
+    C 176,32 206,56 206,90
+    C 206,112 192,122 168,124
+    C 148,126 124,126 100,126
+    C 124,130 148,130 168,132
+    C 192,134 212,146 212,174
+    C 212,206 178,224 136,224
+    H 56
+    C 48,224 44,220 44,212
+    V 44
+    C 44,36 48,32 56,32
+    Z
+    M 84,60
+    H 132
+    C 156,60 172,70 172,88
+    C 172,106 156,114 132,114
+    H 84
+    Z
+    M 84,142
+    H 132
+    C 158,142 176,152 176,170
+    C 176,188 158,196 132,196
+    H 84
+    Z
+  "/>
 </svg>
