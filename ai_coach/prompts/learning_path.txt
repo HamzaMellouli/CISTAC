@@ -1,0 +1,14 @@
+[COGNITIVE LEARNING PATH RECOMMENDATION]
+User Profile State:
+- Archetype Tier: {{ archetype_tier }}
+- Target Growth Areas: {{ target_dimensions | join(', ') }}
+- AI Collaboration Index: {{ collab_score }} / 100
+
+Recommended Skill-Building Modules:
+1. {{ modules[0].title }}: {{ modules[0].description }}
+2. {{ modules[1].title }}: {{ modules[1].description }}
+3. {{ modules[2].title }}: {{ modules[2].description }}
+
+Actionable Cognitive Exercise Routine:
+- Recommended session cadence: {{ session_cadence }}
+- Collaborative Reflection Focus: {{ reflection_prompt }}
