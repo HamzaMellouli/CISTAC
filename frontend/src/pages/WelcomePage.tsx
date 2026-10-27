@@ -117,6 +117,7 @@ export default function WelcomePage() {
     dimensionPreset,
     activePersona,
     setActivePersona,
+    isJudgeDrawerOpen,
   } = useAppStore()
 
   const [previewState, setPreviewState] =
@@ -368,10 +369,14 @@ export default function WelcomePage() {
               { id: 'calibrated', label: 'Calibrated (84%)' },
               { id: 'low-confidence', label: 'Low-Conf (Hatched)' },
               { id: 'partial', label: 'Partial (1 Missing)' },
-              { id: 'loading', label: 'Loading' },
-              { id: 'empty', label: 'Empty (New)' },
-              { id: 'error', label: 'Error' },
-              { id: 'extreme-text', label: 'Extreme Values' },
+              ...(isJudgeDrawerOpen
+                ? ([
+                    { id: 'loading', label: 'Loading' },
+                    { id: 'empty', label: 'Empty (New)' },
+                    { id: 'error', label: 'Error' },
+                    { id: 'extreme-text', label: 'Extreme Values' },
+                  ] as const)
+                : []),
             ] as const
           ).map((tab) => (
             <button
@@ -485,7 +490,7 @@ export default function WelcomePage() {
               />
               <Card className="p-4 space-y-2">
                 <span className="font-display text-xs font-bold uppercase tracking-wider text-ink block">
-                  CISTAC 1.0 Epistemic Guarantee
+                  Honest Uncertainty Guarantee
                 </span>
                 <p className="text-xs text-ink-muted leading-relaxed">
                   Every score is represented as an interval estimate, never a single point. When data confidence falls below 60%, the polygon switches to diagonal SVG hatching to prevent misleading impressions of precision.
@@ -507,20 +512,20 @@ export default function WelcomePage() {
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <span className="font-mono-tabular text-xs font-bold uppercase tracking-wider text-ink-muted">
-              Deterministic Seeded Fixtures
+              Interactive Profiles
             </span>
             <h2
               id="personas-heading"
               className="font-display text-2xl sm:text-3xl font-bold text-ink"
             >
-              Try a Seeded Demo Persona
+              Explore Example Mind Profiles
             </h2>
             <p className="text-sm text-ink-muted mt-1">
-              For evaluators and defense demonstrations: instantaneously switch between calibrated history, noisy low-confidence telemetry, or a brand-new student.
+              See how SynapseTwin personalizes to distinct learning styles and cognitive rhythms—from steady improvement to early calibration.
             </p>
           </div>
-          <Badge tone="reward" glyph="★">
-            1-Click Evaluator Presets
+          <Badge tone="neutral" glyph="✦">
+            Interactive Profiles
           </Badge>
         </div>
 

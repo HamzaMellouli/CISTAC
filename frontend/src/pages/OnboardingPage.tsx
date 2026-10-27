@@ -69,6 +69,7 @@ export default function OnboardingPage() {
     updateConsentPreferences,
     applyFastTrackConsent,
     resetConsentPreferences,
+    isJudgeDrawerOpen,
   } = useAppStore()
 
   const [activeStep, setActiveStep] = useState<OnboardingStep>(1)
@@ -205,16 +206,17 @@ export default function OnboardingPage() {
             <Button
               variant="reward"
               size="md"
+              aria-label="Quick Setup: Safe Defaults & Go (Judge Fast-Track: Safe Defaults & Go)"
               onClick={() => {
                 applyFastTrackConsent()
                 setViewMode('wizard')
                 setActiveStep(3)
                 setStatusMessage(
-                  '⚡ Judge Fast-Track applied: Safe default consent locked (CONSENT-ST-2026-FAST) and 2-Minute Baseline ready.',
+                  '⚡ Quick Setup applied: Safe default consent locked (CONSENT-ST-2026-FAST) and 2-Minute Baseline ready.',
                 )
               }}
             >
-              ⚡ Judge Fast-Track: Safe Defaults &amp; Go →
+              ⚡ Quick Setup: Safe Defaults &amp; Go →
             </Button>
             <Link
               to="/"
@@ -272,9 +274,13 @@ export default function OnboardingPage() {
               [
                 { id: 'wizard', label: 'Step Wizard' },
                 { id: 'all-steps', label: 'View All 3 Steps' },
-                { id: 'validation-error', label: 'Missing Ack Alert' },
-                { id: 'loading', label: 'Saving State' },
-                { id: 'extreme-text', label: 'Extreme Values' },
+                ...(isJudgeDrawerOpen
+                  ? ([
+                      { id: 'validation-error', label: 'Missing Ack Alert' },
+                      { id: 'loading', label: 'Saving State' },
+                      { id: 'extreme-text', label: 'Extreme Values' },
+                    ] as const)
+                  : []),
               ] as const
             ).map((mode) => (
               <button

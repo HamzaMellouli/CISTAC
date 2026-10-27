@@ -30,6 +30,7 @@ export default function DashboardPage() {
     dimensionPreset,
     activePersona,
     setActivePersona,
+    isJudgeDrawerOpen,
   } = useAppStore()
 
   const [viewState, setViewState] = useState<DashboardViewState>(() => {
@@ -118,9 +119,6 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* Hidden heading for screen readers & existing automated checks */}
-      <h2 className="sr-only">Your evolving cognitive twin—live confidence bands</h2>
-
       {/* STATE: LOADING SKELETON */}
       {viewState === 'loading' && (
         <div
@@ -344,7 +342,7 @@ export default function DashboardPage() {
             <div className="hidden sm:block h-8 w-px bg-border" />
             <div className="flex-1 min-w-[120px]">
               <span className="text-xs text-ink-muted block font-medium">Zero-Penalty Pause</span>
-              <span className="font-mono-tabular text-lg sm:text-xl font-bold text-reward-ink">
+              <span className="font-mono-tabular text-lg sm:text-xl font-bold text-ink">
                 Rest: Wed
               </span>
             </div>
@@ -368,10 +366,10 @@ export default function DashboardPage() {
             </summary>
 
             <div className="mt-6 space-y-8 pt-6 border-t border-border">
-              {/* Evaluator Quick Switcher Strip */}
+              {/* Profile Snapshot Switcher Strip */}
               <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-border">
                 <span className="text-xs font-semibold text-ink-muted">
-                  Evaluator Persona &amp; State Switcher:
+                  Demonstration Profile:
                 </span>
                 <div
                   role="group"
@@ -387,9 +385,13 @@ export default function DashboardPage() {
                       },
                       { id: 'partial', label: 'Partial (1 Missing Dim)' },
                       { id: 'empty', label: 'Empty (New Learner)' },
-                      { id: 'loading', label: 'Loading Skeleton' },
-                      { id: 'error', label: 'Error Recovery' },
-                      { id: 'extreme-text', label: 'Extreme Values' },
+                      ...(isJudgeDrawerOpen
+                        ? ([
+                            { id: 'loading', label: 'Loading Skeleton' },
+                            { id: 'error', label: 'Error Recovery' },
+                            { id: 'extreme-text', label: 'Extreme Values' },
+                          ] as const)
+                        : []),
                     ] as const
                   ).map((tab) => (
                     <button

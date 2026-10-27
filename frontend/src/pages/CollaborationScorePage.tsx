@@ -103,8 +103,8 @@ export function CollaborationScorePage() {
             <Badge tone="warning" glyph="⚠">
               Design proposal, not validated
             </Badge>
-            <Badge tone="brand" glyph="★">
-              Official Rubric: Relevance (12%)
+            <Badge tone="brand" glyph="✦">
+              Human-AI Synergy Framework
             </Badge>
           </div>
         </div>
@@ -122,14 +122,14 @@ export function CollaborationScorePage() {
             </p>
           </div>
 
-          {/* Persona Switcher for Jury Evaluations */}
+          {/* Example Profile Switcher */}
           <div className="space-y-1.5 self-start lg:self-auto">
             <span className="text-xs font-mono uppercase tracking-wider text-ink-muted block">
-              Persona Preset:
+              Example Profile:
             </span>
             <div
               role="group"
-              aria-label="Persona Preset Switcher"
+              aria-label="Profile Preset Switcher"
               className="flex flex-wrap items-center gap-1.5 rounded-pill border-2 border-border-strong bg-surface p-1"
             >
               {PERSONA_OPTIONS.map((p) => {

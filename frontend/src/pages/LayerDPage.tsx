@@ -163,14 +163,8 @@ export function LayerDPage() {
           </div>
           <div className="flex items-center gap-2">
             <Link
-              to="/judge-mode"
-              className="tactile-btn bg-reward text-reward-ink px-3 py-1.5 text-xs font-bold inline-flex items-center no-underline"
-            >
-              ⚖ Jump to Judge Mode →
-            </Link>
-            <Link
               to="/coach"
-              className="tactile-btn bg-surface text-ink px-3 py-1.5 text-xs font-semibold inline-flex items-center no-underline"
+              className="tactile-btn bg-surface text-ink px-3.5 py-1.5 text-xs font-semibold inline-flex items-center no-underline border border-border"
             >
               AI Coach →
             </Link>

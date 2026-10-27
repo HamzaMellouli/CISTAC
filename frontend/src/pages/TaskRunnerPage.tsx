@@ -1280,14 +1280,13 @@ export default function TaskRunnerPage() {
       )}
 
       {/* =========================================================
-          EVALUATOR CONTROLS TOOLBAR (Available across all stages for testing & verification)
+          TEST & DIMENSION CONTROLS TOOLBAR
           ========================================================= */}
       <aside
         aria-label="Evaluator Controls"
-        className="pt-3 border-t border-border/40 flex flex-wrap items-center justify-between gap-2 text-xs text-ink-muted mt-auto"
+        className="pt-2 border-t border-border/30 flex flex-wrap items-center justify-between gap-1.5 text-xs text-ink-muted mt-auto"
       >
-        <div className="flex flex-wrap items-center gap-1.5">
-          <span className="font-mono-tabular text-ink-muted me-1">Evaluator:</span>
+        <div className="flex flex-wrap items-center gap-1">
           <Button
             variant="secondary"
             size="sm"

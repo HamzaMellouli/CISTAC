@@ -9,6 +9,7 @@ export interface UncertaintyRadarProps {
   estimates: readonly DimensionEstimate[]
   title?: string
   defaultShowTable?: boolean
+  headingLevel?: 'h2' | 'h3'
 }
 
 function regularPolygonPoints(
@@ -156,6 +157,7 @@ export function UncertaintyRadar({
   estimates,
   title = 'Brain Twin Uncertainty Radar',
   defaultShowTable = false,
+  headingLevel = 'h2',
 }: UncertaintyRadarProps) {
   const [showTable, setShowTable] = useState(defaultShowTable)
 
@@ -225,7 +227,11 @@ export function UncertaintyRadar({
     <div className="tactile-card p-5">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
         <div>
-          <h3 className="font-display text-lg font-bold text-ink">{title}</h3>
+          {headingLevel === 'h3' ? (
+            <h3 className="font-display text-lg font-bold text-ink">{title}</h3>
+          ) : (
+            <h2 className="font-display text-lg font-bold text-ink">{title}</h2>
+          )}
           <p className="text-xs text-ink-muted">
             Showing {dimensions.length} cognitive dimensions with 95% confidence bands
             {hasAnyLowConfidence ? ' (hatched = preliminary low-confidence range)' : ''}.

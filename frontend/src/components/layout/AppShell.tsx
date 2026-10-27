@@ -14,8 +14,6 @@ import {
   Scale,
   WifiOff,
   Cpu,
-  ChevronDown,
-  ChevronUp,
 } from 'lucide-react'
 import { BRAND_CONFIG } from '../../config/brand'
 import { DIMENSION_PRESETS } from '../../config/dimensions'
@@ -35,17 +33,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     setDimensionPreset,
     simulateOffline,
     simulateLlmDown,
+    isJudgeDrawerOpen,
+    setIsJudgeDrawerOpen,
+    toggleJudgeDrawer,
   } = useAppStore()
-
-  // Judge DevTools Drawer: Closed by default per product design principle.
-  // Opt-in via Shift+J, URL query ?judge=1, or header/footer toggle.
-  const [isJudgeDrawerOpen, setIsJudgeDrawerOpen] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search)
-      if (params.get('judge') === '1') return true
-    }
-    return false
-  })
 
   // Real offline queue status
   const [queueStatus, setQueueStatus] = useState(() => telemetryQueue.getStatus())
@@ -61,7 +52,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.shiftKey && (e.key === 'J' || e.key === 'j')) {
         e.preventDefault()
-        setIsJudgeDrawerOpen((prev) => !prev)
+        toggleJudgeDrawer()
       }
     }
     window.addEventListener('keydown', handleKeyDown)
@@ -256,7 +247,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
               <button
                 type="button"
-                aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
+                aria-label={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
                 title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
                 onClick={toggleTheme}
                 className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors cursor-pointer"
@@ -281,44 +272,28 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               >
                 <Settings size={18} aria-hidden="true" />
               </Link>
-
-              {/* Glowing Judge Mode Drawer Toggle Pill */}
-              <button
-                type="button"
-                aria-expanded={isJudgeDrawerOpen}
-                aria-controls="judge-devtools-drawer"
-                onClick={() => setIsJudgeDrawerOpen(!isJudgeDrawerOpen)}
-                title="Evaluator Mode & Dimension Presets (Shift+J)"
-                className="focus-ring relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-reward bg-reward-subtle text-ink font-display text-xs font-semibold transition-all shadow-sm cursor-pointer hover:bg-reward hover:text-reward-ink"
-              >
-                <Scale size={14} aria-hidden="true" className="text-reward-ink" />
-                <span className="hidden sm:inline">Judge Mode</span>
-                <kbd className="hidden lg:inline text-xs font-mono-tabular opacity-70">⇧J</kbd>
-                {isJudgeDrawerOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-              </button>
             </div>
           </div>
         </header>
       )}
 
-      {/* Floating Judge Mode Toggle for Practice Mode */}
+      {/* Discreet Judge Mode Trigger for Practice Mode */}
       {isTaskRoute && (
         <aside
           aria-label="Competition evaluator drawer toggle"
-          className="fixed bottom-3 right-3 z-50"
+          className="fixed bottom-2 right-2 z-50"
         >
           <button
             type="button"
             aria-expanded={isJudgeDrawerOpen}
             aria-controls="judge-devtools-drawer"
-            onClick={() => setIsJudgeDrawerOpen(!isJudgeDrawerOpen)}
+            onClick={() => toggleJudgeDrawer()}
             title="Evaluator Mode & Dimension Presets (Shift+J)"
-            className="focus-ring relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-reward bg-reward-subtle text-ink font-display text-xs font-semibold shadow-md cursor-pointer hover:bg-reward hover:text-reward-ink"
+            className="focus-ring inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-medium text-ink bg-surface border border-border shadow-sm hover:bg-surface-raised transition-colors cursor-pointer"
           >
-            <Scale size={14} aria-hidden="true" className="text-reward-ink" />
+            <Scale size={12} aria-hidden="true" className="text-ink" />
             <span>Judge Mode</span>
-            <kbd className="hidden lg:inline text-xs font-mono-tabular opacity-70">⇧J</kbd>
-            {isJudgeDrawerOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            <kbd className="text-xs font-mono text-ink font-semibold">⇧J</kbd>
           </button>
         </aside>
       )}
@@ -476,10 +451,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <button
                 type="button"
                 onClick={() => setIsJudgeDrawerOpen(true)}
-                className="text-xs font-medium text-brand hover:underline inline-flex items-center gap-1 cursor-pointer"
+                className="text-xs font-medium text-ink-muted hover:text-ink inline-flex items-center gap-1 cursor-pointer transition-colors"
               >
                 <Scale size={13} aria-hidden="true" />
-                <span>Evaluator Mode</span>
+                <span>Judge Mode</span>
+                <kbd className="hidden lg:inline text-xs font-mono text-ink font-semibold">⇧J</kbd>
               </button>
               <span className="font-mono-tabular text-ink-muted">
                 Registry: {dimensionPreset} dims · Theme: {theme}

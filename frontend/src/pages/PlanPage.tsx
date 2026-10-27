@@ -331,15 +331,15 @@ export function PlanPage() {
           </div>
         </div>
 
-        {/* Persona & Preview State Switcher Toolbar */}
+        {/* Profile & Preview State Switcher Toolbar */}
         <div className="pt-3 border-t border-border flex flex-wrap items-center justify-between gap-3">
           <div
             role="group"
-            aria-label="Judge persona switcher"
+            aria-label="Profile selector"
             className="flex flex-wrap items-center gap-1.5"
           >
             <span className="font-mono-tabular text-xs font-semibold uppercase text-ink-muted me-1">
-              Persona:
+              Learner Profile:
             </span>
             {PERSONA_OPTIONS.map((p) => {
               const isSelected = activePersona === p.id

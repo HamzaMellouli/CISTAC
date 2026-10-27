@@ -2,7 +2,7 @@
 
 export const BRAND_CONFIG = {
   productName: 'SynapseTwin',
-  challengeBadge: 'CISTAC 1.0 · AI4Brain Challenge',
+  challengeBadge: 'Personal Cognitive Twin',
   tagline: 'Your uncertainty-aware, non-clinical cognitive growth companion.',
   version: '1.0.0-phase1',
   nonClinicalNotice:

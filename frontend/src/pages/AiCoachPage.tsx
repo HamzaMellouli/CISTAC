@@ -107,15 +107,15 @@ const SEEDED_COACH_TURNS: CoachTurnSpec[] = [
   },
   {
     id: 'turn-collab-verify',
-    topicChipLabel: '3 · AI Verification (25% Weight)',
+    topicChipLabel: '3 · Verification Habits',
     userPrompt: 'How can I raise my AI Collaboration Verification sub-score?',
     dimensionCode: 'IC',
     dimensionId: 'inhibition_control',
     headline:
-      'Boost Your Verification Sub-Score (25% Rubric Weight) with Counter-Example Checks',
+      'Strengthen Your Verification Habits with Counter-Example Checks',
     coachingBody:
-      'In the 0–100 AI Collaboration rubric, Verification carries the highest base weight (25%) and dynamically scales to 28% when Inhibition Control is active. Before accepting an AI-generated synthesis or code block, run one explicit boundary-case check or ask for a disconfirming test case.',
-    actionLabel: 'Open AI Collaboration Rubric →',
+      'In your Human-AI Collaboration index, Verification carries high importance (25%) and dynamically scales to 28% when Inhibition Control is active. Before accepting an AI-generated synthesis or code block, run one explicit boundary-case check or ask for a disconfirming test case.',
+    actionLabel: 'Explore Collaboration Metrics →',
     actionRoute: '/collaboration',
     mascotState: 'hello',
     whyThis: {

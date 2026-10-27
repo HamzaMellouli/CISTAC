@@ -255,9 +255,9 @@ export default function AssessmentHubPage() {
               },
               {
                 id: 'sandbox-untimed',
-                title: '3 · Evaluator Schema Sandbox',
+                title: '3 · Free Practice & Task Sandbox',
                 badge: '8 Task Schemas',
-                desc: 'Inspect N-Back, Stroop, UFOV, MST, Matrix, Relational, Tower & Rotation without timer pressure.',
+                desc: 'Explore N-Back, Stroop, UFOV, MST, Matrix, Relational, Tower & Rotation without timer pressure.',
               },
             ] as const
           ).map((mode) => {

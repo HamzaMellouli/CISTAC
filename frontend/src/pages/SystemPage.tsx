@@ -194,16 +194,8 @@ export default function SystemPage({ defaultTab = '404' }: SystemPageProps) {
               System States & Fault Resilience Console
             </h1>
             <p className="text-sm sm:text-base text-ink-muted max-w-3xl mt-1 leading-relaxed">
-              Comprehensive fault containment, 404 route wayfinding, offline telemetry queueing, and component error boundaries for technical evaluators.
+              Comprehensive fault containment, 404 route wayfinding, offline telemetry queueing, and component error boundaries for resilient cognitive training.
             </p>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <Link to="/judge-mode">
-              <Button variant="reward" size="sm">
-                ⚖ Evaluator Judge Mode →
-              </Button>
-            </Link>
           </div>
         </div>
       </div>
@@ -383,7 +375,7 @@ export default function SystemPage({ defaultTab = '404' }: SystemPageProps) {
                 Traditional assessment platforms present intimidating 404 error codes that trigger user disorientation. SynapseTwin reframes route misses as uncalibrated synaptic pathways, preserving user agency and motivation.
               </p>
               <div className="p-3 rounded-xl border border-border bg-canvas/40 space-y-1.5 text-xs">
-                <div className="font-semibold text-ink">Evaluator Check:</div>
+                <div className="font-semibold text-ink">Resilience Note:</div>
                 <div className="text-ink-muted">
                   Entering any invalid URL (e.g. <code>/random-link</code>) automatically mounts this wayfinder inside <code>AppShell</code> without crashing the router.
                 </div>

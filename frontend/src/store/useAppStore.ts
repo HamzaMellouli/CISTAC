@@ -59,6 +59,9 @@ interface AppState {
   simulateLlmDown: boolean
   consentPreferences: ConsentPreferences
   textScale: TextScale
+  isJudgeDrawerOpen: boolean
+  setIsJudgeDrawerOpen: (isOpen: boolean) => void
+  toggleJudgeDrawer: () => void
   enhancedGlyphs: boolean
   soundEffects: boolean
   blurAutoPause: boolean
@@ -107,6 +110,13 @@ export const useAppStore = create<AppState>((set) => ({
   simulateLlmDown: false,
   consentPreferences: DEFAULT_CONSENT_PREFERENCES,
   textScale: '100',
+  isJudgeDrawerOpen:
+    typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('judge') === '1'
+      : false,
+  setIsJudgeDrawerOpen: (isJudgeDrawerOpen) => set({ isJudgeDrawerOpen }),
+  toggleJudgeDrawer: () =>
+    set((state) => ({ isJudgeDrawerOpen: !state.isJudgeDrawerOpen })),
   enhancedGlyphs: true,
   soundEffects: true,
   blurAutoPause: true,
@@ -136,6 +146,7 @@ export const useAppStore = create<AppState>((set) => ({
         reducedMotion: false,
         dimensionPreset: '7',
         textScale: '100',
+        isJudgeDrawerOpen: false,
         enhancedGlyphs: true,
         soundEffects: true,
         blurAutoPause: true,
@@ -207,6 +218,7 @@ export const useAppStore = create<AppState>((set) => ({
         simulateLlmDown: false,
         consentPreferences: DEFAULT_CONSENT_PREFERENCES,
         textScale: '100',
+        isJudgeDrawerOpen: false,
         enhancedGlyphs: true,
         soundEffects: true,
         blurAutoPause: true,
