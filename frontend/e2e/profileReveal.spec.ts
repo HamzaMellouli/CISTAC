@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { openJudgeMode, closeJudgeMode } from './testUtils'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -31,6 +32,7 @@ test.describe('Page 05: Profile Reveal (/profile-reveal) + Mascot Sprint Visual 
     })
 
     // 2. Switch to First-Session Hatched (Salma) + Open Snapshot JSON + 10 Dimensions Stress Mode
+    await openJudgeMode(page)
     await page.getByRole('button', { name: /10 Dims \(Stress\)/i }).click()
     await page
       .getByRole('button', { name: /First-Session Hatched \(Salma/i })
@@ -52,6 +54,7 @@ test.describe('Page 05: Profile Reveal (/profile-reveal) + Mascot Sprint Visual 
 
     // 3. Dark Theme (Night Lab) @ 1440px
     await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.waitForTimeout(300)
     const a11yDark = await new AxeBuilder({ page }).analyze()
     expect(a11yDark.violations).toEqual([])
 
@@ -63,9 +66,11 @@ test.describe('Page 05: Profile Reveal (/profile-reveal) + Mascot Sprint Visual 
     // Reset back to Light + 7 Dims + Calibrated for Tablet & Mobile checks
     await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
     await page.getByRole('button', { name: /7 Dims \(Default\)/i }).click()
+    await closeJudgeMode(page)
     await page
       .getByRole('button', { name: /Calibrated Reveal \(Youssef/i })
       .click()
+    await page.waitForTimeout(300)
 
     // 4. Tablet 768px
     await page.setViewportSize({ width: 768, height: 1024 })

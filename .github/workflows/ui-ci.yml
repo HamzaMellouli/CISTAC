@@ -1,0 +1,54 @@
+name: UI Verification & Quality Gates
+
+on:
+  push:
+    branches: [main, ui/main, 'ui/**']
+  pull_request:
+    branches: [main, ui/main]
+
+jobs:
+  verify:
+    name: Typecheck, Token Lint, Copy Guardrail, Contrast, Unit & E2E
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (matches .nvmrc 22)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: TypeScript Typecheck
+        run: npm run typecheck
+
+      - name: Design Token Linter
+        run: npm run lint:tokens
+
+      - name: Non-Clinical Copy Guardrail Linter
+        run: npm run lint:copy
+
+      - name: WCAG 2.1 AA/AAA Contrast Checker
+        run: npm run check:contrast
+
+      - name: Vitest Unit Suite (22/22)
+        run: npm test
+
+      - name: Production Bundle Build
+        run: npm run build
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright E2E & Axe-core A11y Suite (19/19)
+        run: npx playwright test

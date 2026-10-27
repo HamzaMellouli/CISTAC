@@ -15,7 +15,7 @@ const PRIVACY_WHY_THIS_TRAIL: WhyThisTrail = {
   confidence: 0.99,
   observedData: [
     'IEEE P7000 / EDPB Granular Consent Architecture active',
-    'Local IndexedDB Encrypted Keyring (WebCrypto AES-GCM) verified',
+    'This preview keeps your answers in memory only and stores nothing in your browser',
     'Zero-Biometrics Software Isolation Proof passed',
   ],
   inference:
@@ -168,7 +168,7 @@ export default function PrivacyPage() {
         .toUpperCase()}`,
       timestampIso: new Date().toISOString(),
       userHash: 'ANON_USER_SALT_8F4A',
-      recordsPurged: 142,
+      recordsPurged: 0,
       storagePurged: [
         'data/raw/telemetry/*.jsonl',
         'sat_jepa_latent_snapshots',

@@ -1,13 +1,13 @@
 import type { CopyLintResult, CopyLintViolation } from '../contracts'
 
-interface BannedTermRule {
+export interface BannedTermRule {
   pattern: RegExp
   termLabel: string
   category: 'clinical_diagnostic' | 'punitive_guilt'
   replacementSuggestion: string
 }
 
-const BANNED_RULES: readonly BannedTermRule[] = [
+export const BANNED_RULES: readonly BannedTermRule[] = [
   {
     pattern: /\badhd\b/gi,
     termLabel: 'ADHD',
@@ -27,7 +27,7 @@ const BANNED_RULES: readonly BannedTermRule[] = [
     replacementSuggestion: 'individual processing profile',
   },
   {
-    pattern: /\bdiagnos(?:is|e|ed|tic)\b/gi,
+    pattern: /(?<!(?:not a|no|not|non-)\s*)\bdiagnos(?:is|e|ed|tic)\b/gi,
     termLabel: 'diagnosis / diagnostic',
     category: 'clinical_diagnostic',
     replacementSuggestion: 'non-clinical profile estimate',
@@ -73,6 +73,66 @@ const BANNED_RULES: readonly BannedTermRule[] = [
     termLabel: 'IQ',
     category: 'clinical_diagnostic',
     replacementSuggestion: 'dimension percentage estimate',
+  },
+  {
+    pattern: /\banxiety\b/gi,
+    termLabel: 'anxiety',
+    category: 'clinical_diagnostic',
+    replacementSuggestion: 'temporary tension / stress',
+  },
+  {
+    pattern: /\bdepression\b/gi,
+    termLabel: 'depression',
+    category: 'clinical_diagnostic',
+    replacementSuggestion: 'low energy / fatigue',
+  },
+  {
+    pattern: /\bdyslexia\b/gi,
+    termLabel: 'dyslexia',
+    category: 'clinical_diagnostic',
+    replacementSuggestion: 'reading / visual pace variation',
+  },
+  {
+    pattern: /\balzheimer(?:'s)?\b/gi,
+    termLabel: "Alzheimer's",
+    category: 'clinical_diagnostic',
+    replacementSuggestion: 'memory recall variation',
+  },
+  {
+    pattern: /\bdecline\b/gi,
+    termLabel: 'decline',
+    category: 'clinical_diagnostic',
+    replacementSuggestion: 'temporary variance',
+  },
+  {
+    pattern: /\babnormal\b/gi,
+    termLabel: 'abnormal',
+    category: 'clinical_diagnostic',
+    replacementSuggestion: 'atypical pattern',
+  },
+  {
+    pattern: /\bbelow average\b/gi,
+    termLabel: 'below average',
+    category: 'clinical_diagnostic',
+    replacementSuggestion: 'developing range',
+  },
+  {
+    pattern: /\blazy\b/gi,
+    termLabel: 'lazy',
+    category: 'punitive_guilt',
+    replacementSuggestion: 'needs recovery / rest',
+  },
+  {
+    pattern: /\bweak\b/gi,
+    termLabel: 'weak',
+    category: 'punitive_guilt',
+    replacementSuggestion: 'early-stage skill',
+  },
+  {
+    pattern: /\bbehind\b/gi,
+    termLabel: 'behind',
+    category: 'punitive_guilt',
+    replacementSuggestion: 'progressing at own pace',
   },
   {
     pattern: /\bbroke your (?:[\w-]+\s+)?streak\b/gi,
@@ -123,7 +183,6 @@ export function lintCopyText(input: string): CopyLintResult {
     sanitizedPreview,
   }
 }
-
 
 export const SAMPLE_GUARDRAIL_INTERCEPTION_INPUT =
   'Patient shows working-memory deficit and broke your 4-day streak after a slow block.'

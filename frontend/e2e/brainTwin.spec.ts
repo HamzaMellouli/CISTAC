@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { openJudgeMode, closeJudgeMode } from './testUtils'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -40,6 +41,7 @@ test.describe('Page 08: Brain Twin & Historical Timeline (/brain-twin) Hero Visu
     })
 
     // 2. Switch to 10-Dimensions + Scrub to Early Snapshot (#1 Day 1 Cold Baseline) + Open Table View
+    await openJudgeMode(page)
     await page.getByRole('button', { name: '10 Dims (Stress)' }).click()
     await page
       .getByRole('button', { name: /2 · Scrub to Snap #1 \(Hatched\)/i })
@@ -72,6 +74,7 @@ test.describe('Page 08: Brain Twin & Historical Timeline (/brain-twin) Hero Visu
       .getByRole('button', { name: /#7 · Day 7 \(Oct 17\)/i })
       .click()
     await page.getByRole('button', { name: /Dark \(Night Lab\)/i }).click()
+    await page.waitForTimeout(300)
 
     const a11yDark = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -86,9 +89,11 @@ test.describe('Page 08: Brain Twin & Historical Timeline (/brain-twin) Hero Visu
     // Restore Light Mode + 7 Dims Default + Snap #14 Live
     await page.getByRole('button', { name: /Light \(Playful Lab\)/i }).click()
     await page.getByRole('button', { name: '7 Dims (Default)' }).click()
+    await closeJudgeMode(page)
     await page
       .getByRole('button', { name: /1 · Snap #14 vs #1 \(Live\)/i })
       .click()
+    await page.waitForTimeout(300)
 
     // 4. Tablet 768px check
     await page.setViewportSize({ width: 768, height: 1024 })

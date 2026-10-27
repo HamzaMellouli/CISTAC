@@ -1,11 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Compass,
+  Target,
+  Bot,
+  TrendingUp,
+  User,
+  ShieldCheck,
+  Settings,
+  Moon,
+  Sun,
+  Scale,
+  WifiOff,
+  Cpu,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react'
 import { BRAND_CONFIG } from '../../config/brand'
 import { DIMENSION_PRESETS } from '../../config/dimensions'
 import { useAppStore } from '../../store/useAppStore'
+import { telemetryQueue } from '../../services/telemetryQueue'
 import { Badge } from '../ui/Badge'
-import { Button } from '../ui/Button'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const location = useLocation()
@@ -20,59 +36,90 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     simulateLlmDown,
   } = useAppStore()
 
-  // Collapsible Judge DevTools Drawer (open by default for judge access and automated test suites)
-  const [isJudgeDrawerOpen, setIsJudgeDrawerOpen] = useState(true)
+  // Judge DevTools Drawer: Closed by default per product design principle.
+  // Opt-in via Shift+J, URL query ?judge=1, or header/footer toggle.
+  const [isJudgeDrawerOpen, setIsJudgeDrawerOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('judge') === '1') return true
+    }
+    return false
+  })
 
-  // 5 Consumer Primary Destinations
+  // Real offline queue status
+  const [queueStatus, setQueueStatus] = useState(() => telemetryQueue.getStatus())
+
+  useEffect(() => {
+    return telemetryQueue.subscribe(() => {
+      setQueueStatus(telemetryQueue.getStatus())
+    })
+  }, [])
+
+  // Keyboard shortcut: Shift+J toggles Judge Mode
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.shiftKey && (e.key === 'J' || e.key === 'j')) {
+        e.preventDefault()
+        setIsJudgeDrawerOpen((prev) => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  // 5 Primary Consumer Destinations
   const consumerNavItems = [
-    { path: '/', label: 'Welcome', subtitle: 'Home' },
-    { path: '/dashboard', label: 'Dashboard', subtitle: 'My Twin' },
-    { path: '/assessment', label: 'Assess', subtitle: '2-Min Practice' },
-    { path: '/coach', label: 'AI Coach', subtitle: 'Coach & Collab' },
-    { path: '/plan', label: 'Plan', subtitle: 'Plan & Goals' },
+    { path: '/dashboard', label: 'Today', icon: Compass },
+    { path: '/assessment', label: 'Practice', icon: Target },
+    { path: '/coach', label: 'Coach', icon: Bot },
+    { path: '/brain-twin', label: 'Progress', icon: TrendingUp },
+    { path: '/settings', label: 'You', icon: User },
   ]
 
-  // Deep-Links to All Views for Judge Drawer
+  // Deep-Links to All 19 Views for Judge Console
   const deepLinkCategories = [
     {
       group: 'Core Experience',
       links: [
         { path: '/', label: 'Welcome' },
         { path: '/onboarding', label: 'Onboarding' },
-        { path: '/assessment', label: 'Assess' },
+        { path: '/assessment', label: 'Assess Hub' },
         { path: '/task/episodic_pattern_separation', label: 'Task Runner' },
-        { path: '/profile-reveal', label: 'Reveal' },
-        { path: '/dashboard', label: 'Dashboard' },
+        { path: '/profile-reveal', label: 'Profile Reveal' },
+        { path: '/dashboard', label: 'Today (Dashboard)' },
       ],
     },
     {
       group: 'Cognitive Intelligence',
       links: [
-        { path: '/dimensions/working_memory', label: 'Dim Detail' },
+        { path: '/dimensions/working_memory', label: 'Dimension Detail' },
         { path: '/brain-twin', label: 'Brain Twin' },
         { path: '/coach', label: 'AI Coach' },
-        { path: '/plan', label: 'Plan' },
-        { path: '/goals', label: 'Goals' },
-        { path: '/collaboration', label: 'Collab Score' },
+        { path: '/plan', label: 'Plan & Staircase' },
+        { path: '/goals', label: 'Goals & Habit Contracts' },
+        { path: '/collaboration', label: 'AI Collaboration Score' },
       ],
     },
     {
       group: 'Standards, Ethics & Defense',
       links: [
-        { path: '/privacy', label: 'Privacy' },
-        { path: '/judge-mode', label: '⚖ Judge Mode' },
-        { path: '/settings', label: '⚙ Settings' },
-        { path: '/methodology', label: '🔬 Science & Ethics' },
-        { path: '/layer-d', label: '🌟 Layer D Bonus' },
+        { path: '/privacy', label: 'Privacy Center' },
+        { path: '/judge-mode', label: 'Judge Console' },
+        { path: '/settings', label: 'Settings & A11y' },
+        { path: '/methodology', label: 'Science & Ethics' },
+        { path: '/layer-d', label: 'Layer D Voice Studio' },
         { path: '/design-system', label: 'Style Guide' },
-        { path: '/system', label: 'System States' },
+        { path: '/system', label: 'System States & 404' },
       ],
     },
   ]
 
+  const isRealOffline = !queueStatus.isOnline
+  const showOfflineBanner = simulateOffline || isRealOffline
+
   return (
-    <div className="min-h-screen flex flex-col bg-canvas text-ink">
-      {/* Skip link for keyboard users */}
+    <div className="min-h-screen flex flex-col bg-canvas text-ink pb-16 md:pb-0">
+      {/* Skip link for keyboard users (Tab stop 1) */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:start-2 focus:z-50 focus:px-4 focus:py-2 focus:rounded-md focus:bg-brand focus:text-brand-ink focus:font-semibold"
@@ -80,20 +127,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         Skip to main content
       </a>
 
-      {/* Global Robustness Banners (Offline & LLM-Down fallback) */}
-      {simulateOffline && (
+      {/* Global Robustness Banner (Truth in claims: Real queue status) */}
+      {showOfflineBanner && (
         <div
           role="status"
           aria-live="polite"
-          className="bg-warning-subtle border-b border-border px-4 py-2.5 text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
+          className="bg-warning-subtle border-b border-border px-4 py-2 text-xs md:text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
         >
-          <span>
-            <strong>▲ Offline Mode Active:</strong> Trial telemetry is buffered
-            locally (up to 500 events) and will sync automatically when your
-            connection returns.
+          <span className="flex items-center gap-1.5">
+            <WifiOff size={16} aria-hidden="true" className="text-warning-ink" />
+            {isRealOffline ? (
+              <span>
+                <strong>Connection dropped:</strong> Your answers are saved locally on this device ({queueStatus.queuedCount} in buffer).
+              </span>
+            ) : (
+              <span>
+                <strong>Offline Mode Active:</strong> Trial telemetry is buffered locally (up to 500 events) and will sync automatically when your connection returns ({queueStatus.queuedCount} queued).
+              </span>
+            )}
           </span>
           <Badge tone="warning" glyph="⚡">
-            Local Queue Ready
+            Queue Ready ({queueStatus.queuedCount} / {queueStatus.maxCapacity})
           </Badge>
         </div>
       )}
@@ -102,56 +156,58 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div
           role="status"
           aria-live="polite"
-          className="bg-warning-subtle border-b border-border px-4 py-2.5 text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
+          className="bg-info-subtle border-b border-border px-4 py-2 text-xs md:text-sm font-medium text-ink flex flex-wrap items-center justify-between gap-2"
         >
-          <span>
-            <strong>◈ Deterministic Fallback:</strong> Cognitive assessment
-            and scoring are operating via verified offline rule templates.
+          <span className="flex items-center gap-1.5">
+            <Cpu size={16} aria-hidden="true" className="text-info-ink" />
+            <span>
+              <strong>Deterministic Fallback:</strong> Cognitive assessment and coaching operating via verified rule templates.
+            </span>
           </span>
-          <Badge tone="brand" glyph="◈">
+          <Badge tone="info" glyph="◈">
             Deterministic Engine
           </Badge>
         </div>
       )}
 
-      {/* Top Consumer Navigation Header */}
+      {/* Top Consumer Navigation Header (Strict 64px height on desktop, content starts <= 80px) */}
       <header
         role="banner"
-        className="sticky top-0 z-40 bg-surface/90 backdrop-blur-md border-b border-border px-4 py-2.5 transition-colors"
+        className="sticky top-0 z-40 h-16 bg-surface/95 backdrop-blur-md border-b border-border px-4 transition-colors flex items-center"
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <div className="max-w-6xl w-full mx-auto flex items-center justify-between gap-4">
           {/* Product Brand Mark */}
-          <div className="flex items-center gap-3">
-            <Link
-              to="/"
-              className="focus-ring rounded-xl flex items-center gap-2.5 text-ink no-underline group"
+          <Link
+            to="/"
+            title="SynapseTwin Home"
+            className="focus-ring rounded-xl flex items-center gap-2.5 text-ink no-underline group"
+          >
+            <span
+              aria-hidden="true"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-brand-ink font-display text-sm font-bold shadow-sm transition-transform group-hover:scale-105"
             >
-              <span
-                aria-hidden="true"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-reward text-reward-ink font-display text-lg font-bold shadow-sm transition-transform group-hover:scale-105"
-              >
-                ST
+              ST
+            </span>
+            <div>
+              <span className="font-display text-base font-bold tracking-tight block leading-none">
+                {BRAND_CONFIG.productName}
               </span>
-              <div>
-                <span className="font-display text-lg font-bold tracking-tight block leading-none">
-                  {BRAND_CONFIG.productName}
-                </span>
-                <span className="text-xs text-ink-muted block mt-0.5">
-                  {BRAND_CONFIG.challengeBadge}
-                </span>
-              </div>
-            </Link>
-          </div>
+              <span className="text-xs text-ink-muted block mt-0.5">
+                {BRAND_CONFIG.challengeBadge}
+              </span>
+            </div>
+          </Link>
 
-          {/* 5 Primary Consumer Destinations Navbar */}
+          {/* 5 Primary Consumer Destinations Navbar (Desktop) */}
           <nav
-            aria-label="Primary consumer navigation"
-            className="hidden md:flex items-center gap-1 p-1 rounded-pill bg-surface-raised border border-border"
+            aria-label="Primary product navigation"
+            className="hidden md:flex items-center gap-1 p-1 rounded-full bg-surface-raised border border-border"
           >
             {consumerNavItems.map((item) => {
+              const Icon = item.icon
               const isActive =
-                item.path === '/'
-                  ? location.pathname === '/'
+                item.path === '/dashboard'
+                  ? location.pathname === '/dashboard' || location.pathname === '/'
                   : location.pathname.startsWith(item.path)
 
               return (
@@ -159,13 +215,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   key={item.path}
                   to={item.path}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`px-3.5 py-1.5 rounded-pill text-xs font-semibold no-underline transition-all ${
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold no-underline transition-all ${
                     isActive
                       ? 'bg-brand text-brand-ink shadow-sm'
                       : 'text-ink-muted hover:text-ink hover:bg-canvas'
                   }`}
                 >
-                  {item.label}
+                  <Icon size={15} aria-hidden="true" />
+                  <span>{item.label}</span>
                 </Link>
               )
             })}
@@ -173,114 +230,87 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
           {/* Utility Controls & Floating Judge Drawer Toggle */}
           <div className="flex items-center gap-2">
-            <Button
-              variant="secondary"
-              size="sm"
-              aria-pressed={theme === 'dark'}
-              onClick={toggleTheme}
-            >
-              {theme === 'light' ? '☾ Dark (Night Lab)' : '☀ Light (Playful Lab)'}
-            </Button>
-
-            <Button
-              variant="secondary"
-              size="sm"
-              aria-pressed={reducedMotion}
+            <button
+              type="button"
+              aria-label={reducedMotion ? 'Motion: Off' : 'Motion: On'}
+              title={reducedMotion ? 'Animations: Reduced' : 'Animations: Standard'}
               onClick={() => setReducedMotion(!reducedMotion)}
-              className="hidden lg:inline-flex"
+              className="focus-ring px-2.5 py-1 rounded-full text-xs font-semibold text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors cursor-pointer hidden lg:inline-flex"
             >
-              {reducedMotion ? 'Motion: Reduced' : 'Motion: Standard'}
-            </Button>
+              {reducedMotion ? 'Motion: Off' : 'Motion: On'}
+            </button>
 
-            <Link
-              to="/settings"
-              title="Settings & Accessibility"
-              aria-label="Settings"
-              className="p-2 rounded-pill text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center text-sm"
+            <button
+              type="button"
+              aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
+              title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
+              onClick={toggleTheme}
+              className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors cursor-pointer"
             >
-              ⚙
-            </Link>
+              {theme === 'light' ? <Moon size={18} aria-hidden="true" /> : <Sun size={18} aria-hidden="true" />}
+            </button>
 
             <Link
               to="/privacy"
-              title="Privacy Center & Non-Biometric Hardware Lock"
-              aria-label="Privacy"
-              className="p-2 rounded-pill text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center text-sm"
+              title="Privacy Center & Non-Biometric Lock"
+              aria-label="Privacy Center"
+              className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center"
             >
-              🔒
+              <ShieldCheck size={18} aria-hidden="true" />
             </Link>
 
-            {/* Glowing Judge & DevTools Drawer Toggle Pill */}
+            <Link
+              to="/settings"
+              title="Settings & Accessibility Controls"
+              aria-label="Settings"
+              className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center"
+            >
+              <Settings size={18} aria-hidden="true" />
+            </Link>
+
+            {/* Glowing Judge Mode Drawer Toggle Pill */}
             <button
               type="button"
               aria-expanded={isJudgeDrawerOpen}
               aria-controls="judge-devtools-drawer"
               onClick={() => setIsJudgeDrawerOpen(!isJudgeDrawerOpen)}
-              className="focus-ring relative inline-flex items-center gap-2 px-3.5 py-1.5 rounded-pill border-2 border-reward bg-reward text-reward-ink font-display text-xs font-bold transition-all shadow-sm cursor-pointer hover:opacity-90"
+              title="Evaluator Mode & Dimension Presets (Shift+J)"
+              className="focus-ring relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-reward bg-reward-subtle text-ink font-display text-xs font-semibold transition-all shadow-sm cursor-pointer hover:bg-reward hover:text-reward-ink"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-reward-ink opacity-60" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-reward-ink" />
-              </span>
-              <span>⚖️ Judge Controls &amp; All Views</span>
-              <span className="text-xs opacity-75">{isJudgeDrawerOpen ? '▲' : '▼'}</span>
+              <Scale size={14} aria-hidden="true" className="text-reward-ink" />
+              <span className="hidden sm:inline">Judge Mode</span>
+              <kbd className="hidden lg:inline text-xs font-mono-tabular opacity-70">⇧J</kbd>
+              {isJudgeDrawerOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
             </button>
           </div>
         </div>
-
-        {/* Mobile Consumer Navigation Bar (Fallback for small screens) */}
-        <nav
-          aria-label="Mobile consumer navigation"
-          className="md:hidden flex items-center justify-between gap-1 pt-2 border-t border-border mt-2 overflow-x-auto"
-        >
-          {consumerNavItems.map((item) => {
-            const isActive =
-              item.path === '/'
-                ? location.pathname === '/'
-                : location.pathname.startsWith(item.path)
-
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                aria-current={isActive ? 'page' : undefined}
-                className={`px-2.5 py-1 rounded-pill text-xs font-semibold no-underline whitespace-nowrap transition-all ${
-                  isActive
-                    ? 'bg-brand text-brand-ink'
-                    : 'text-ink-muted hover:text-ink'
-                }`}
-              >
-                {item.label}
-              </Link>
-            )
-          })}
-        </nav>
       </header>
 
-      {/* Collapsible Floating "⚖️ Judge & DevTools Quick-Bar" Drawer */}
+      {/* Collapsible "Judge & Evaluator Console" Drawer (Closed by default) */}
       <AnimatePresence initial={false}>
         {isJudgeDrawerOpen && (
           <motion.aside
             id="judge-devtools-drawer"
-            aria-label="Judge and DevTools drawer"
+            aria-label="Judge and Evaluator Console"
             initial={reducedMotion ? undefined : { height: 0, opacity: 0 }}
             animate={reducedMotion ? undefined : { height: 'auto', opacity: 1 }}
             exit={reducedMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
             className="border-b border-border bg-surface-raised/95 backdrop-blur-md px-4 py-3 shadow-md"
           >
-            <div className="max-w-7xl mx-auto space-y-3">
+            <div className="max-w-6xl mx-auto space-y-3">
               {/* Drawer Header & Quick Jump */}
               <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-border">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-display text-xs font-bold text-ink">
-                    ⚖️ Judge &amp; Evaluator Quick-Bar
+                  <span className="font-display text-xs font-bold text-ink flex items-center gap-1">
+                    <Scale size={14} aria-hidden="true" />
+                    <span>Competition Evaluator Console</span>
                   </span>
                   <Badge tone="brand" glyph="◈">
                     Active Registry: {dimensionPreset} Dimensions
                   </Badge>
                   <span className="text-xs text-ink-muted">
-                    Stress-Testing, Personas &amp; Dimension Generalisation
+                    Preset Switching, Personas &amp; Fault Injection
                   </span>
                 </div>
 
@@ -296,7 +326,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     onClick={() => setIsJudgeDrawerOpen(false)}
                     className="text-xs text-ink-muted hover:text-ink cursor-pointer px-2 py-0.5 rounded hover:bg-canvas"
                   >
-                    Hide Bar ▲
+                    Close Dock ▲
                   </button>
                 </div>
               </div>
@@ -309,7 +339,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <div
                   role="group"
                   aria-label="Cognitive dimension count preset"
-                  className="inline-flex flex-wrap items-center gap-1 rounded-xl border border-border bg-canvas p-1"
+                  className="inline-flex flex-wrap items-center gap-1 rounded-full border border-border bg-canvas p-1"
                 >
                   {DIMENSION_PRESETS.map((item) => {
                     const active = dimensionPreset === item.key
@@ -319,7 +349,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         type="button"
                         aria-pressed={active}
                         onClick={() => setDimensionPreset(item.key)}
-                        className={`focus-ring min-h-11 px-3 py-1 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+                        className={`focus-ring px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition-all ${
                           active
                             ? 'bg-brand text-brand-ink shadow-sm'
                             : 'bg-transparent text-ink hover:bg-surface-raised'
@@ -330,9 +360,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     )
                   })}
                 </div>
+
+                <span className="text-xs text-ink-muted ms-2">
+                  (Default: 6 Calibrated Dimensions matching Assessment Engine)
+                </span>
               </div>
 
-              {/* Categorized Deep-Links to All Views */}
+              {/* Categorized Deep-Links to All 19 Views */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
                 {deepLinkCategories.map((cat) => (
                   <div key={cat.group} className="space-y-1">
@@ -346,10 +380,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                           <Link
                             key={link.path}
                             to={link.path}
-                            className={`tactile-btn px-2.5 py-1 text-xs font-semibold no-underline inline-flex items-center transition-all ${
+                            className={`px-2.5 py-1 text-xs font-medium rounded-md no-underline inline-flex items-center transition-all ${
                               isCurrent
-                                ? 'bg-brand text-brand-ink border-border-strong'
-                                : 'bg-surface text-ink hover:bg-canvas'
+                                ? 'bg-brand text-brand-ink font-semibold'
+                                : 'bg-surface text-ink hover:bg-canvas border border-border/50'
                             }`}
                           >
                             {link.label}
@@ -365,22 +399,71 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      <main id="main-content" className="flex-1 max-w-7xl w-full min-w-0 mx-auto px-4 py-6">
+      {/* Main Content Column (Max width 1120px / 70rem per visual rules) */}
+      <main id="main-content" className="flex-1 max-w-6xl w-full min-w-0 mx-auto px-4 py-8">
         {children}
       </main>
 
+      {/* Product Footer with Quiet Demo Data Badge & Evaluator Link */}
       <footer
         role="contentinfo"
         className="border-t border-border bg-surface px-4 py-4 text-xs text-ink-muted"
       >
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <p>{BRAND_CONFIG.nonClinicalNotice}</p>
-          <p className="font-mono-tabular">
-            Active Registry: {dimensionPreset} dimensions · Theme: {theme}
-          </p>
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-raised border border-border text-ink-muted">
+              Demo Data Mode
+            </span>
+            <p className="m-0">{BRAND_CONFIG.nonClinicalNotice}</p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setIsJudgeDrawerOpen(true)}
+              className="text-xs font-medium text-brand hover:underline inline-flex items-center gap-1 cursor-pointer"
+            >
+              <Scale size={13} aria-hidden="true" />
+              <span>Evaluator Mode</span>
+            </button>
+            <span className="font-mono-tabular text-ink-muted">
+              Registry: {dimensionPreset} dims · Theme: {theme}
+            </span>
+          </div>
         </div>
       </footer>
+
+      {/* Mobile Bottom Tab Bar (Fixed, native app style ergonomics) */}
+      <nav
+        aria-label="Mobile bottom navigation"
+        className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md border-t border-border flex items-center justify-around py-1.5 px-2"
+      >
+        {consumerNavItems.map((item) => {
+          const Icon = item.icon
+          const isActive =
+            item.path === '/dashboard'
+              ? location.pathname === '/dashboard' || location.pathname === '/'
+              : location.pathname.startsWith(item.path)
+
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-xs no-underline transition-all ${
+                isActive
+                  ? 'text-brand font-bold'
+                  : 'text-ink-muted hover:text-ink'
+              }`}
+            >
+              <Icon size={18} aria-hidden="true" />
+              <span className="text-xs">{item.label}</span>
+            </Link>
+          )
+        })}
+      </nav>
     </div>
   )
 }
+
 export default AppShell
