@@ -25,6 +25,7 @@ import { Badge } from '../ui/Badge'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const location = useLocation()
+  const isTaskRoute = location.pathname.startsWith('/task')
   const {
     theme,
     toggleTheme,
@@ -171,132 +172,156 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Top Consumer Navigation Header (Strict 64px height on desktop, content starts <= 80px) */}
-      <header
-        role="banner"
-        className="sticky top-0 z-40 h-16 bg-surface/95 backdrop-blur-md border-b border-border px-4 transition-colors flex items-center"
-      >
-        <div className="max-w-6xl w-full mx-auto flex items-center justify-between gap-4">
-          {/* Product Brand Mark */}
-          <Link
-            to="/"
-            title="SynapseTwin Home"
-            className="focus-ring rounded-xl flex items-center gap-2.5 text-ink no-underline group"
-          >
-            <span
-              aria-hidden="true"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-brand-ink font-display text-sm font-bold shadow-sm transition-transform group-hover:scale-105"
+      {!isTaskRoute && (
+        <header
+          role="banner"
+          className="sticky top-0 z-40 h-16 bg-surface/95 backdrop-blur-md border-b border-border px-4 transition-colors flex items-center"
+        >
+          <div className="max-w-6xl w-full mx-auto flex items-center justify-between gap-4">
+            {/* Product Brand Mark */}
+            <Link
+              to="/"
+              title="SynapseTwin Home"
+              className="focus-ring rounded-xl flex items-center gap-2.5 text-ink no-underline group"
             >
-              ST
-            </span>
-            <div>
-              <span className="font-display text-base font-bold tracking-tight block leading-none">
-                {BRAND_CONFIG.productName}
-              </span>
-              <span className="text-xs text-ink-muted block mt-0.5">
-                {BRAND_CONFIG.challengeBadge}
-              </span>
-            </div>
-          </Link>
-
-          {/* 5 Primary Consumer Destinations Navbar (Desktop) or Skip intro on Welcome first run */}
-          {location.pathname === '/' ? (
-            <div className="flex-1 flex justify-end items-center mr-2">
-              <Link
-                to="/dashboard"
-                className="focus-ring px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline inline-flex items-center gap-1.5 border border-border"
+              <span
+                aria-hidden="true"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-brand-ink font-display text-sm font-bold shadow-sm transition-transform group-hover:scale-105"
               >
-                <span>Skip intro</span>
-                <span aria-hidden="true">→</span>
+                ST
+              </span>
+              <div>
+                <span className="font-display text-base font-bold tracking-tight block leading-none">
+                  {BRAND_CONFIG.productName}
+                </span>
+                <span className="text-xs text-ink-muted block mt-0.5">
+                  {BRAND_CONFIG.challengeBadge}
+                </span>
+              </div>
+            </Link>
+
+            {/* 5 Primary Consumer Destinations Navbar (Desktop) or Skip intro on Welcome first run */}
+            {location.pathname === '/' ? (
+              <div className="flex-1 flex justify-end items-center mr-2">
+                <Link
+                  to="/dashboard"
+                  className="focus-ring px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline inline-flex items-center gap-1.5 border border-border"
+                >
+                  <span>Skip intro</span>
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            ) : (
+              <nav
+                aria-label="Primary product navigation"
+                className="hidden md:flex items-center gap-1 p-1 rounded-full bg-surface-raised border border-border"
+              >
+                {consumerNavItems.map((item) => {
+                  const Icon = item.icon
+                  const isActive =
+                    item.path === '/dashboard'
+                      ? location.pathname === '/dashboard'
+                      : location.pathname.startsWith(item.path)
+
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold no-underline transition-all ${
+                        isActive
+                          ? 'bg-brand text-brand-ink shadow-sm'
+                          : 'text-ink-muted hover:text-ink hover:bg-canvas'
+                      }`}
+                    >
+                      <Icon size={15} aria-hidden="true" />
+                      <span>{item.label}</span>
+                    </Link>
+                  )
+                })}
+              </nav>
+            )}
+
+            {/* Utility Controls & Floating Judge Drawer Toggle */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label={reducedMotion ? 'Motion: Off' : 'Motion: On'}
+                title={reducedMotion ? 'Animations: Reduced' : 'Animations: Standard'}
+                onClick={() => setReducedMotion(!reducedMotion)}
+                className="focus-ring px-2.5 py-1 rounded-full text-xs font-semibold text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors cursor-pointer hidden lg:inline-flex"
+              >
+                {reducedMotion ? 'Motion: Off' : 'Motion: On'}
+              </button>
+
+              <button
+                type="button"
+                aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
+                title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
+                onClick={toggleTheme}
+                className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors cursor-pointer"
+              >
+                {theme === 'light' ? <Moon size={18} aria-hidden="true" /> : <Sun size={18} aria-hidden="true" />}
+              </button>
+
+              <Link
+                to="/privacy"
+                title="Privacy Center & Non-Biometric Lock"
+                aria-label="Privacy Center"
+                className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center"
+              >
+                <ShieldCheck size={18} aria-hidden="true" />
               </Link>
+
+              <Link
+                to="/settings"
+                title="Settings & Accessibility Controls"
+                aria-label="Settings"
+                className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center"
+              >
+                <Settings size={18} aria-hidden="true" />
+              </Link>
+
+              {/* Glowing Judge Mode Drawer Toggle Pill */}
+              <button
+                type="button"
+                aria-expanded={isJudgeDrawerOpen}
+                aria-controls="judge-devtools-drawer"
+                onClick={() => setIsJudgeDrawerOpen(!isJudgeDrawerOpen)}
+                title="Evaluator Mode & Dimension Presets (Shift+J)"
+                className="focus-ring relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-reward bg-reward-subtle text-ink font-display text-xs font-semibold transition-all shadow-sm cursor-pointer hover:bg-reward hover:text-reward-ink"
+              >
+                <Scale size={14} aria-hidden="true" className="text-reward-ink" />
+                <span className="hidden sm:inline">Judge Mode</span>
+                <kbd className="hidden lg:inline text-xs font-mono-tabular opacity-70">⇧J</kbd>
+                {isJudgeDrawerOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              </button>
             </div>
-          ) : (
-            <nav
-              aria-label="Primary product navigation"
-              className="hidden md:flex items-center gap-1 p-1 rounded-full bg-surface-raised border border-border"
-            >
-              {consumerNavItems.map((item) => {
-                const Icon = item.icon
-                const isActive =
-                  item.path === '/dashboard'
-                    ? location.pathname === '/dashboard'
-                    : location.pathname.startsWith(item.path)
-
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    aria-current={isActive ? 'page' : undefined}
-                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold no-underline transition-all ${
-                      isActive
-                        ? 'bg-brand text-brand-ink shadow-sm'
-                        : 'text-ink-muted hover:text-ink hover:bg-canvas'
-                    }`}
-                  >
-                    <Icon size={15} aria-hidden="true" />
-                    <span>{item.label}</span>
-                  </Link>
-                )
-              })}
-            </nav>
-          )}
-
-          {/* Utility Controls & Floating Judge Drawer Toggle */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label={reducedMotion ? 'Motion: Off' : 'Motion: On'}
-              title={reducedMotion ? 'Animations: Reduced' : 'Animations: Standard'}
-              onClick={() => setReducedMotion(!reducedMotion)}
-              className="focus-ring px-2.5 py-1 rounded-full text-xs font-semibold text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors cursor-pointer hidden lg:inline-flex"
-            >
-              {reducedMotion ? 'Motion: Off' : 'Motion: On'}
-            </button>
-
-            <button
-              type="button"
-              aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
-              title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
-              onClick={toggleTheme}
-              className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors cursor-pointer"
-            >
-              {theme === 'light' ? <Moon size={18} aria-hidden="true" /> : <Sun size={18} aria-hidden="true" />}
-            </button>
-
-            <Link
-              to="/privacy"
-              title="Privacy Center & Non-Biometric Lock"
-              aria-label="Privacy Center"
-              className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center"
-            >
-              <ShieldCheck size={18} aria-hidden="true" />
-            </Link>
-
-            <Link
-              to="/settings"
-              title="Settings & Accessibility Controls"
-              aria-label="Settings"
-              className="focus-ring p-2 rounded-full text-ink-muted hover:text-ink hover:bg-surface-raised transition-colors no-underline hidden sm:inline-flex items-center justify-center"
-            >
-              <Settings size={18} aria-hidden="true" />
-            </Link>
-
-            {/* Glowing Judge Mode Drawer Toggle Pill */}
-            <button
-              type="button"
-              aria-expanded={isJudgeDrawerOpen}
-              aria-controls="judge-devtools-drawer"
-              onClick={() => setIsJudgeDrawerOpen(!isJudgeDrawerOpen)}
-              title="Evaluator Mode & Dimension Presets (Shift+J)"
-              className="focus-ring relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-reward bg-reward-subtle text-ink font-display text-xs font-semibold transition-all shadow-sm cursor-pointer hover:bg-reward hover:text-reward-ink"
-            >
-              <Scale size={14} aria-hidden="true" className="text-reward-ink" />
-              <span className="hidden sm:inline">Judge Mode</span>
-              <kbd className="hidden lg:inline text-xs font-mono-tabular opacity-70">⇧J</kbd>
-              {isJudgeDrawerOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-            </button>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
+
+      {/* Floating Judge Mode Toggle for Practice Mode */}
+      {isTaskRoute && (
+        <aside
+          aria-label="Competition evaluator drawer toggle"
+          className="fixed bottom-3 right-3 z-50"
+        >
+          <button
+            type="button"
+            aria-expanded={isJudgeDrawerOpen}
+            aria-controls="judge-devtools-drawer"
+            onClick={() => setIsJudgeDrawerOpen(!isJudgeDrawerOpen)}
+            title="Evaluator Mode & Dimension Presets (Shift+J)"
+            className="focus-ring relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-reward bg-reward-subtle text-ink font-display text-xs font-semibold shadow-md cursor-pointer hover:bg-reward hover:text-reward-ink"
+          >
+            <Scale size={14} aria-hidden="true" className="text-reward-ink" />
+            <span>Judge Mode</span>
+            <kbd className="hidden lg:inline text-xs font-mono-tabular opacity-70">⇧J</kbd>
+            {isJudgeDrawerOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          </button>
+        </aside>
+      )}
 
       {/* Collapsible "Judge & Evaluator Console" Drawer (Closed by default) */}
       <AnimatePresence initial={false}>
@@ -327,6 +352,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </div>
 
                 <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    aria-label={theme === 'light' ? 'Switch to Dark (Night Lab)' : 'Switch to Light (Playful Lab)'}
+                    title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
+                    onClick={toggleTheme}
+                    className="focus-ring px-2.5 py-1 rounded-full text-xs font-semibold text-ink-muted hover:text-ink hover:bg-surface border border-border transition-colors cursor-pointer inline-flex items-center gap-1"
+                  >
+                    {theme === 'light' ? <Moon size={13} aria-hidden="true" /> : <Sun size={13} aria-hidden="true" />}
+                    <span>{theme === 'light' ? 'Dark (Night Lab)' : 'Light (Playful Lab)'}</span>
+                  </button>
                   <Link
                     to="/judge-mode"
                     className="text-xs font-bold text-brand hover:underline inline-flex items-center gap-1"
@@ -411,42 +446,51 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Main Content Column (Max width 1120px / 70rem per visual rules) */}
-      <main id="main-content" className="flex-1 max-w-6xl w-full min-w-0 mx-auto px-4 py-8">
+      {/* Main Content Column (Max width 1120px / 70rem per visual rules, distraction-free container on practice tasks) */}
+      <main
+        id="main-content"
+        className={`flex-1 w-full min-w-0 mx-auto px-4 ${
+          isTaskRoute
+            ? 'max-w-4xl py-2 sm:py-4 flex flex-col justify-between'
+            : 'max-w-6xl py-8'
+        }`}
+      >
         {children}
       </main>
 
-      {/* Product Footer with Quiet Demo Data Badge & Evaluator Link */}
-      <footer
-        role="contentinfo"
-        className="border-t border-border bg-surface px-4 py-4 text-xs text-ink-muted"
-      >
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-raised border border-border text-ink-muted">
-              Demo Data Mode
-            </span>
-            <p className="m-0">{BRAND_CONFIG.nonClinicalNotice}</p>
-          </div>
+      {/* Product Footer with Quiet Demo Data Badge & Evaluator Link (Hidden during distraction-free practice) */}
+      {!isTaskRoute && (
+        <footer
+          role="contentinfo"
+          className="border-t border-border bg-surface px-4 py-4 text-xs text-ink-muted"
+        >
+          <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-surface-raised border border-border text-ink-muted">
+                Demo Data Mode
+              </span>
+              <p className="m-0">{BRAND_CONFIG.nonClinicalNotice}</p>
+            </div>
 
-          <div className="flex items-center gap-4">
-            <button
-              type="button"
-              onClick={() => setIsJudgeDrawerOpen(true)}
-              className="text-xs font-medium text-brand hover:underline inline-flex items-center gap-1 cursor-pointer"
-            >
-              <Scale size={13} aria-hidden="true" />
-              <span>Evaluator Mode</span>
-            </button>
-            <span className="font-mono-tabular text-ink-muted">
-              Registry: {dimensionPreset} dims · Theme: {theme}
-            </span>
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => setIsJudgeDrawerOpen(true)}
+                className="text-xs font-medium text-brand hover:underline inline-flex items-center gap-1 cursor-pointer"
+              >
+                <Scale size={13} aria-hidden="true" />
+                <span>Evaluator Mode</span>
+              </button>
+              <span className="font-mono-tabular text-ink-muted">
+                Registry: {dimensionPreset} dims · Theme: {theme}
+              </span>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      )}
 
-      {/* Mobile Bottom Tab Bar (Fixed, native app style ergonomics - hidden on first-run Welcome) */}
-      {location.pathname !== '/' && (
+      {/* Mobile Bottom Tab Bar (Fixed, native app style ergonomics - hidden on first-run Welcome & Practice) */}
+      {location.pathname !== '/' && !isTaskRoute && (
         <nav
           aria-label="Mobile bottom navigation"
           className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md border-t border-border flex items-center justify-around py-1.5 px-2"
