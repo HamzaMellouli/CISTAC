@@ -8,11 +8,11 @@ import {
 import { useAppStore, type PersonaId } from '../store/useAppStore'
 import { UncertaintyRadar } from '../components/signature/UncertaintyRadar'
 import { WhyThisPanel } from '../components/signature/WhyThisPanel'
+import { BrianMascot } from '../components/brand/BrianMascot'
 import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { DoodleSquiggle, DoodleArrow } from '../components/ui/DoodleDecorations'
-import brianWavingImg from '../assets/mascot/brian-waving.png'
 
 type HeroPreviewState =
   | 'calibrated'
@@ -127,6 +127,7 @@ export default function WelcomePage() {
 
   const [previewState, setPreviewState] = useState<HeroPreviewState>('calibrated')
   const [selectedNotice, setSelectedNotice] = useState<string | null>(null)
+  const [activeArchetype, setActiveArchetype] = useState<'strategist' | 'processor' | 'deepfocus'>('strategist')
 
   const effectivePersona: PersonaId =
     previewState === 'low-confidence'
@@ -268,53 +269,120 @@ export default function WelcomePage() {
           </div>
         </div>
 
-        {/* Right Column: Brian Mascot Showcase */}
-        <div className="lg:col-span-6 relative flex flex-col items-center justify-center">
-          <div className="relative w-full max-w-lg mx-auto flex flex-col items-center">
-            {/* Friendly Speech Bubble */}
-            <div className="relative mb-6 bg-surface-raised p-4 sm:p-5 rounded-2xl border-2 border-border-strong shadow-doodle max-w-md w-full transition-transform hover:scale-[1.01]">
-              <p className="font-sans text-base sm:text-lg text-ink font-semibold leading-snug">
-                "Hey there! I'm Brian, your personal cognitive companion. Ready to map how your mind works in 2 minutes?"
+        {/* Right Column: Mascot, Confidence Halo & Interactive Cognitive Twin Radar Preview */}
+        <div className="lg:col-span-6 relative flex flex-col items-center">
+          {/* Mascot Greeting arrangement */}
+          <div className="relative w-full max-w-lg mb-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* Brian Speech Bubble */}
+            <div className="relative order-2 sm:order-1 bg-surface-raised p-4 rounded-2xl border-2 border-border-strong shadow-doodle max-w-xs transition-transform hover:scale-[1.02]">
+              <p className="font-sans text-sm sm:text-base text-ink font-semibold leading-snug">
+                "Hey there! Ready to see your cognitive rhythms in real-time action?"
               </p>
-              <div className="mt-3 flex items-center justify-between font-mono text-xs text-ink-muted">
+              <div className="mt-2 flex items-center justify-between font-mono text-xs text-ink-muted">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-pill bg-success animate-pulse" />
-                  Brian · Personal Cognitive Twin
+                  <span className="w-2 h-2 rounded-pill bg-success animate-pulse" />
+                  Brian · Twin Node
                 </span>
                 <span className="text-ink font-bold">Online</span>
               </div>
               {/* Tactical Speech Pointer */}
               <div
-                className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-t-8 border-t-border-strong"
+                className="hidden sm:block absolute -right-2 top-6 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-l-8 border-l-border-strong"
                 aria-hidden="true"
               />
             </div>
 
-            {/* Mascot Showcase Card */}
-            <div className="relative w-full rounded-3xl bg-surface-raised border-2 border-border-strong p-6 sm:p-8 shadow-doodle-lg flex flex-col items-center justify-center overflow-hidden group">
-              <div className="doodle-tape" />
-              <div className="absolute inset-0 bg-brand/5 rounded-3xl pointer-events-none" />
-
-              {/* Confidence Halo Glow */}
-              <div
-                className="absolute inset-12 rounded-full bg-brand/20 blur-3xl pointer-events-none animate-pulse"
-                aria-hidden="true"
+            {/* Brian Waving Avatar */}
+            <div className="order-1 sm:order-2 shrink-0">
+              <BrianMascot
+                pose="waving"
+                size={110}
+                halo={true}
+                badge="ACTIVE"
+                badgeTone="tertiary"
               />
+            </div>
+          </div>
 
-              {/* Brian Waving Mascot Image */}
-              <img
-                src={brianWavingImg}
-                alt="Brian the Axolotl mascot waving cheerfully"
-                className="relative z-10 w-full max-w-[320px] sm:max-w-[360px] h-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-md select-none"
-              />
+          {/* Floating Interactive Radar Preview Card */}
+          <div className="w-full max-w-lg bg-surface rounded-2xl p-5 sm:p-6 border-2 border-border-strong shadow-doodle-lg relative z-10 flex flex-col gap-4">
+            {/* Card Header & Persona Switcher */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-brand text-lg" aria-hidden="true">🌐</span>
+                  <span className="font-display text-lg font-bold text-ink">
+                    Cognitive Twin Preview
+                  </span>
+                </div>
+                <p className="font-mono text-xs text-ink-muted">
+                  Interactive Archetype Simulator
+                </p>
+              </div>
 
-              {/* Card Footer Badges */}
-              <div className="relative z-10 mt-6 flex items-center justify-between w-full pt-4 border-t-2 border-dashed border-border-strong/30 font-mono text-xs text-ink-muted">
-                <span className="flex items-center gap-1.5">
-                  <span className="text-brand font-bold text-sm">★</span>
-                  <span>Companion Node Active</span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-brand-subtle border-2 border-border-strong font-mono text-xs text-ink font-semibold shadow-doodle-sm">
+                <span className="w-2 h-2 rounded-pill bg-success" />
+                <span>
+                  {activeArchetype === 'strategist'
+                    ? 'Fit: 94% (±3%)'
+                    : activeArchetype === 'processor'
+                    ? 'Fit: 91% (±4%)'
+                    : 'Fit: 96% (±2%)'}
                 </span>
-                <span className="text-ink font-semibold">100% Non-Biometric</span>
+              </div>
+            </div>
+
+            {/* Archetype Selector Filter Chips */}
+            <div className="flex flex-wrap gap-2" role="tablist" aria-label="Cognitive Archetypes">
+              {[
+                { id: 'strategist', label: 'The Strategist' },
+                { id: 'processor', label: 'The Fast Processor' },
+                { id: 'deepfocus', label: 'The Deep Focus' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeArchetype === tab.id}
+                  onClick={() => setActiveArchetype(tab.id as typeof activeArchetype)}
+                  className={`px-3 py-1 rounded-pill font-mono text-xs font-bold transition-all border-2 border-border-strong cursor-pointer shadow-doodle-sm ${
+                    activeArchetype === tab.id
+                      ? 'bg-brand text-brand-ink'
+                      : 'bg-surface-raised text-ink hover:bg-brand-subtle'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Live Interactive Radar View */}
+            <div className="w-full">
+              <UncertaintyRadar
+                dimensions={activeDimensions}
+                estimates={estimates}
+                title="Preview Radar"
+              />
+            </div>
+
+            {/* Dynamic Archetype Insight Note */}
+            <div className="p-3 bg-surface-raised rounded-xl border-2 border-border-strong flex items-start gap-2.5">
+              <span className="text-brand text-base mt-0.5" aria-hidden="true">💡</span>
+              <div className="flex-1">
+                <span className="font-display text-xs font-bold text-ink block">
+                  {activeArchetype === 'strategist'
+                    ? 'Archetype Insight: High Strategic Depth'
+                    : activeArchetype === 'processor'
+                    ? 'Archetype Insight: High Velocity Processor'
+                    : 'Archetype Insight: Flow State Anchored'}
+                </span>
+                <p className="text-xs text-ink-muted mt-0.5 leading-snug">
+                  {activeArchetype === 'strategist'
+                    ? 'Conserves cognitive energy for complex nested decisions. Flourishes in asynchronous project environments.'
+                    : activeArchetype === 'processor'
+                    ? 'Rapid response reflex and swift visual pattern digestion. Excels in live tactical pivots and rapid triage.'
+                    : 'High resistance to context-switching overhead. Demonstrates steady cognitive stamina over uninterrupted sessions.'}
+                </p>
               </div>
             </div>
           </div>
@@ -454,15 +522,6 @@ export default function WelcomePage() {
               {tab.label}
             </button>
           ))}
-        </div>
-
-        {/* Live Interactive Radar View */}
-        <div className="w-full max-w-xl mx-auto p-4 sm:p-6 bg-surface rounded-2xl border-2 border-border-strong shadow-doodle-lg">
-          <UncertaintyRadar
-            dimensions={activeDimensions}
-            estimates={estimates}
-            title="Preview Radar"
-          />
         </div>
 
         {/* Evaluator Persona Launchers Grid */}

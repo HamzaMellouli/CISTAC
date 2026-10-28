@@ -1,0 +1,40 @@
+@import "./tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: var(--color-canvas);
+    background-image: radial-gradient(rgba(38, 61, 91, 0.09) 0.8px, transparent 0.8px);
+    background-size: 24px 24px;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Jitter prevention on all numerical telemetry */
+.tabular-nums {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Distraction-Free Chrome Dissolve */
+.chrome-dissolve {
+  transition: opacity var(--duration-fade) var(--ease-snappy);
+}
+
+.trial-mode-active .chrome-dissolve {
+  opacity: 0;
+  pointer-events: none;
+}

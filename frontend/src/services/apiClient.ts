@@ -251,4 +251,52 @@ export const apiClient = {
     }
     return (await res.json()) as ClusteringEvaluationResult
   },
+
+  /**
+   * AI Agent Cognitive Assessment & Training Session Init (POST /api/session/init)
+   */
+  async initAgentSession(userId = 'usr_default', intent = 'DAILY_TRAINING'): Promise<{
+    session_id: string
+    target_node: string
+    sandbox_html: string
+    task_config: Record<string, unknown>
+    reasoning_trace: string[]
+  } | null> {
+    try {
+      const res = await fetch(`${API_BASE}/api/session/init`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, intent }),
+      })
+      if (!res.ok) throw new Error(`Session init failed: HTTP ${res.status}`)
+      return await res.json()
+    } catch {
+      return null
+    }
+  },
+
+  /**
+   * AI Agent Telemetry Ingestion & Evaluation (POST /api/telemetry/ingest)
+   */
+  async postAgentTelemetry(payload: {
+    session_id: string
+    user_id: string
+    task_type: string
+    trials: unknown[]
+  }): Promise<unknown> {
+    try {
+      const res = await fetch(`${API_BASE}/api/telemetry/ingest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...payload,
+          task_version: '1.0.0',
+        }),
+      })
+      if (!res.ok) throw new Error(`Telemetry ingest failed: HTTP ${res.status}`)
+      return await res.json()
+    } catch {
+      return null
+    }
+  },
 }

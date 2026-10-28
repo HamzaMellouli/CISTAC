@@ -12,6 +12,8 @@ import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { DoodleSquiggle } from '../components/ui/DoodleDecorations'
+import { apiClient } from '../services/apiClient'
+import { AgentTaskSandbox } from '../components/signature/AgentTaskSandbox'
 
 type HubViewState =
   | 'calibrated'
@@ -50,6 +52,22 @@ export default function AssessmentHubPage() {
   const [queueFilter, setQueueFilter] = useState<QueueFilter>('all')
   const [showAsTable, setShowAsTable] = useState(false)
   const [showNextTaskJson, setShowNextTaskJson] = useState(false)
+  const [agentSession, setAgentSession] = useState<{
+    session_id: string
+    sandbox_html: string
+  } | null>(null)
+  const [isAgentLoading, setIsAgentLoading] = useState(false)
+
+  const handleLaunchAgentSandbox = async () => {
+    setIsAgentLoading(true)
+    const session = await apiClient.initAgentSession('usr_default', 'DAILY_TRAINING')
+    setIsAgentLoading(false)
+    if (session) {
+      setAgentSession(session)
+    } else {
+      navigate(`/task/${topPriorityModule.dim.id}`)
+    }
+  }
 
   const activeDimensions = useMemo(
     () => getDimensionsByPreset(dimensionPreset),
@@ -225,6 +243,14 @@ export default function AssessmentHubPage() {
               }
             >
               ▶ Start #1 Priority Block ({topPriorityModule.dim.code}) →
+            </Button>
+            <Button
+              variant="reward"
+              size="lg"
+              onClick={handleLaunchAgentSandbox}
+              isLoading={isAgentLoading}
+            >
+              ⚡ Launch AI Agent Adaptive Sandbox
             </Button>
             <Link
               to="/dashboard"
@@ -954,6 +980,19 @@ export default function AssessmentHubPage() {
             )}
           </Card>
         </>
+      )}
+
+      {agentSession && (
+        <AgentTaskSandbox
+          sessionId={agentSession.session_id}
+          sandboxHtml={agentSession.sandbox_html}
+          onTrialEvent={(ev) => console.log('Trial telemetry logged:', ev)}
+          onSessionComplete={(res) => {
+            console.log('Session completed:', res)
+            setAgentSession(null)
+          }}
+          onClose={() => setAgentSession(null)}
+        />
       )}
     </div>
   )

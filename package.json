@@ -1,0 +1,15 @@
+{
+  "name": "ai4brain",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI4Brain Cognitive Platform — Doodle Hand-Drawn Design System & Psychometric AI Agent Engine",
+  "scripts": {
+    "dev": "npm --prefix dashboard_ui run dev",
+    "dev:dashboard": "npm --prefix dashboard_ui run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix dashboard_ui run build",
+    "backend": "powershell -NoProfile -Command \"backend\\.venv\\Scripts\\uvicorn.exe app.main:app --reload --host 127.0.0.1 --port 8000 --app-dir backend\"",
+    "start": "powershell -ExecutionPolicy Bypass -File scripts/run_dev.ps1",
+    "test": "powershell -ExecutionPolicy Bypass -File scripts/run_tests.ps1"
+  }
+}
